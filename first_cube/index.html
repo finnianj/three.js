@@ -47,8 +47,12 @@
   const boxDepth = 1;
   const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 
-  function makeInstance(geometry, color, x) {
-    const material = new THREE.MeshPhongMaterial({color});
+  function makeInstance(geometry, color, x, url) {
+
+    const textureLoader = new THREE.TextureLoader();
+    const textureCubeOne = textureLoader.load(url)
+
+    const material = new THREE.MeshStandardMaterial({ map: textureCubeOne })
 
     const cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
@@ -58,10 +62,15 @@
     return cube;
   }
 
+  const mali = "./photos/mali.png"
+  const ewan = "./photos/ewan.png"
+  const nick = "./photos/nick.png"
+  const finn = "./photos/finn.png"
+
   const cubes = [
-    makeInstance(geometry, 0x009FBD,  0),
-    makeInstance(geometry, 0x159895, -2),
-    makeInstance(geometry, 0x1A5F7A,  2),
+    makeInstance(geometry, 0x009FBD,  0, mali),
+    makeInstance(geometry, 0x159895, -2, ewan),
+    makeInstance(geometry, 0x1A5F7A,  2, nick),
   ];
 
   function render(time) {
