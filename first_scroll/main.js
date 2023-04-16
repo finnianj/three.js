@@ -72,13 +72,31 @@ const moon = new THREE.Mesh(
 );
 
 scene.add(moon)
-moon.position.set(-20, 0, 50)
+moon.position.set(-10, 0, 30)
 
 
 
 // -------------------------------
 
 const controls = new OrbitControls(camera, renderer.domElement)
+
+function moveCamera() {
+  const t = document.body.getBoundingClientRect().top;
+
+  moon.rotation.x += 0.05;
+  moon.rotation.y += 0.075;
+  moon.rotation.z += 0.05;
+
+  finn.rotation.x += 0.05;
+  finn.rotation.y += 0.05;
+  finn.rotation.z += 0.05;
+
+  camera.position.z = t * -0.01;
+  camera.position.x = t * -0.0001;
+  camera.position.y = t * -0.0001;
+
+
+}
 
 function animate() {
   requestAnimationFrame( animate );
@@ -87,12 +105,9 @@ function animate() {
   torus.rotation.y +=0.005;
   torus.rotation.z += 0.01;
 
-  moon.rotation.x += 0.001;
-  moon.rotation.y += 0.001;
-  moon.rotation.z += 0.001;
-
   controls.update();
   renderer.render( scene, camera );
 }
 
 animate();
+document.body.onscroll = moveCamera
