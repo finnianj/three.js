@@ -50,6 +50,16 @@ Array(200).fill().forEach(addStar)
 const spaceTexture = new THREE.TextureLoader().load('space2.png');
 scene.background = spaceTexture;
 
+// avatar
+
+const finnTexture = new THREE.TextureLoader().load('finn.png');
+const finn = new THREE.Mesh(
+  new THREE.BoxGeometry(3,3,3),
+  new THREE.MeshBasicMaterial({ map: finnTexture })
+);
+scene.add(finn);
+
+
 
 // -------------------------------
 
