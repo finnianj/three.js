@@ -13,7 +13,7 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setPixelRatio( window.devicePixelRatio );
 renderer.setSize( window.innerWidth, window.innerHeight );
 
-camera.position.setZ(30);
+camera.position.setZ(80);
 
 renderer.render( scene, camera )
 
@@ -83,15 +83,13 @@ const controls = new OrbitControls(camera, renderer.domElement)
 function moveCamera() {
   const t = document.body.getBoundingClientRect().top;
 
-  moon.rotation.x += 0.05;
-  moon.rotation.y += 0.075;
-  moon.rotation.z += 0.05;
+  moon.rotation.x += 0.01;
+  moon.rotation.y += 0.002;
+  moon.rotation.z += 0.03;
 
-  finn.rotation.x += 0.05;
   finn.rotation.y += 0.05;
-  finn.rotation.z += 0.05;
 
-  camera.position.z = t * -0.01;
+  camera.position.z = t * -0.02;
   camera.position.x = t * -0.0001;
   camera.position.y = t * -0.0001;
 

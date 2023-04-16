@@ -11,12 +11,15 @@ main {
   padding: 120px;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 h1, h2, h3 {
   grid-column: 2 / 8;
+  margin: 50px;
 }
 
 p, ul, li, ol {
   grid-column: 4 / span 5;
+  margin: 50px;
 }
