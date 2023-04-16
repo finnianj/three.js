@@ -20,7 +20,7 @@ renderer.render( scene, camera )
 //  ------------------------------
 
 const geometry = new THREE.TorusGeometry( 10, 3, 16, 100 );
-const material = new THREE.MeshStandardMaterial({ color: 0x1A5F7A });
+const material = new THREE.MeshStandardMaterial({ color: 0xB8621B });
 const torus = new THREE.Mesh( geometry, material );
 
 scene.add(torus);
@@ -47,12 +47,12 @@ function addStar() {
 
 Array(200).fill().forEach(addStar)
 
-const spaceTexture = new THREE.TextureLoader().load('space2.png');
+const spaceTexture = new THREE.TextureLoader().load('images/space2.png');
 scene.background = spaceTexture;
 
 // avatar
 
-const finnTexture = new THREE.TextureLoader().load('finn.png');
+const finnTexture = new THREE.TextureLoader().load('images/finn.png');
 const finn = new THREE.Mesh(
   new THREE.BoxGeometry(3,3,3),
   new THREE.MeshBasicMaterial({ map: finnTexture })
@@ -61,8 +61,8 @@ scene.add(finn);
 
 // moon
 
-const moonTexture = new THREE.TextureLoader().load('moon.jpeg')
-const normalTexture = new THREE.TextureLoader().load('normal.jpeg')
+const moonTexture = new THREE.TextureLoader().load('images/moon.jpeg')
+const normalTexture = new THREE.TextureLoader().load('images/normal.jpeg')
 const moon = new THREE.Mesh(
   new THREE.SphereGeometry(3, 32, 32),
   new THREE.MeshStandardMaterial({
@@ -72,7 +72,7 @@ const moon = new THREE.Mesh(
 );
 
 scene.add(moon)
-moon.position.set(0, 0, -20)
+moon.position.set(-20, 0, 50)
 
 
 
