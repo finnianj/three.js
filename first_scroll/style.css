@@ -11,7 +11,8 @@ main {
   padding: 120px;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
+  opacity: 80%;
 }
 
 h1, h2, h3 {
