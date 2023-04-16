@@ -17,9 +17,25 @@ main {
 h1, h2, h3 {
   grid-column: 2 / 8;
   margin: 50px;
+  background-color: black;
+  padding: 10px;
 }
 
-p, ul, li, ol {
+p, ul, ol {
   grid-column: 4 / span 5;
   margin: 50px;
+  background-color: white;
+  color: black;
+  padding: 10px;
+}
+
+li {
+  padding: 10px;
+  margin: 15px;
+  margin-left: 25px;
+}
+
+ul, ol {
+  grid-column: 6 / span 5;
+
 }
