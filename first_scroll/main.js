@@ -38,6 +38,8 @@ scene.add(lighthelper, gridhelper)
 
 // -------------------------------
 
+const controls = new OrbitControls(camera, renderer.domElement)
+
 function animate() {
   requestAnimationFrame( animate );
 
@@ -45,6 +47,7 @@ function animate() {
   torus.rotation.y +=0.005;
   torus.rotation.z += 0.01;
 
+  controls.update();
   renderer.render( scene, camera );
 }
 
