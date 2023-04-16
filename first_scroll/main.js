@@ -59,6 +59,21 @@ const finn = new THREE.Mesh(
 );
 scene.add(finn);
 
+// moon
+
+const moonTexture = new THREE.TextureLoader().load('moon.jpeg')
+const normalTexture = new THREE.TextureLoader().load('normal.jpeg')
+const moon = new THREE.Mesh(
+  new THREE.SphereGeometry(3, 32, 32),
+  new THREE.MeshStandardMaterial({
+    map: moonTexture,
+    normalMap: normalTexture
+  })
+);
+
+scene.add(moon)
+moon.position.set(0, 0, -20)
+
 
 
 // -------------------------------
@@ -71,6 +86,10 @@ function animate() {
   torus.rotation.x += 0.01;
   torus.rotation.y +=0.005;
   torus.rotation.z += 0.01;
+
+  moon.rotation.x += 0.001;
+  moon.rotation.y += 0.001;
+  moon.rotation.z += 0.001;
 
   controls.update();
   renderer.render( scene, camera );
