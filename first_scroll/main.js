@@ -25,8 +25,15 @@ const torus = new THREE.Mesh( geometry, material );
 scene.add(torus);
 
 const pointlight= new THREE.PointLight(0xffffff);
-pointlight.position.set(5, 5, 5);
-scene.add(pointlight);
+pointlight.position.set(20, 20, 20);
+const ambientlight= new THREE.AmbientLight(0xffffff);
+
+scene.add(pointlight, ambientlight);
+
+const lighthelper = new THREE.PointLightHelper(pointlight);
+const gridhelper = new THREE.GridHelper(200, 50)
+
+scene.add(lighthelper, gridhelper)
 
 // -------------------------------
 
