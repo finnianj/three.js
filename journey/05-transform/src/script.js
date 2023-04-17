@@ -14,6 +14,11 @@ const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 
+mesh.position.z = 1
+console.log(mesh.position.length())
+// because position inherits from Vector3, you can use the length method.
+// this tells you how far an object is from the centre
+
 /**
  * Sizes
  */
