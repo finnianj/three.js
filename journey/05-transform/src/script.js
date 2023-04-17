@@ -20,6 +20,10 @@ console.log(mesh.position.length())
 // because position inherits from Vector3, you can use the length method.
 // this tells you how far an object is from the centre
 
+mesh.position.set(0.7, -0.6, 1);
+// setting x y and z simultaneously
+
+
 /**
  * Sizes
 */
