@@ -32,8 +32,12 @@ mesh.position.set(0.1, 0.5, 0.2);
 // setting x y and z simultaneously
 
 mesh.scale.x = 0.2;
-mesh.scale.y = 0.2;
+mesh.scale.y = 0.5;
 mesh.scale.z = 0.2;
+// changin the object scale
+
+// Rotation - imagine putting a stick through an object and twisting the stick - that is the axis that is being rotated on
+mesh.rotation.z = 0.5
 
 
 
@@ -51,7 +55,7 @@ scene.add(camera)
 console.log(mesh.position.distanceTo(camera.position))
 // calculating distance from one object to another
 
-camera.position.set(0.31, -0.01, 1.5)
+camera.position.set(0.31, 0.5, 1.5)
 
 /**
  * Renderer
