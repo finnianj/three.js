@@ -41,7 +41,6 @@ mesh.rotation.z = Math.PI;
 // makes a 90 degree rotation. Math.PI is a 180 degree rotation
 
 
-
 const axisHelper = new THREE.AxesHelper();
 scene.add(axisHelper)
 
@@ -57,6 +56,15 @@ console.log(mesh.position.distanceTo(camera.position))
 // calculating distance from one object to another
 
 camera.position.set(0.31, 0.5, 1.5)
+
+
+// Object 3d instances have a lookat method
+// They take a vector 3 as an argument
+camera.lookAt(new THREE.Vector3(0,0,0))
+
+// You can look at an object by passing it's vector as an argment
+camera.lookAt(mesh.position)
+console.log(mesh.position)
 
 /**
  * Renderer
