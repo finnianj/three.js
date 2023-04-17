@@ -1,5 +1,13 @@
 import * as THREE from 'three'
 
+/**
+ * Sizes
+*/
+const sizes = {
+  width: 800,
+  height: 600
+}
+
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
@@ -20,17 +28,13 @@ console.log(mesh.position.length())
 // because position inherits from Vector3, you can use the length method.
 // this tells you how far an object is from the centre
 
-mesh.position.set(0.7, -0.6, 1);
+mesh.position.set(0.7, 0.5, 1);
 // setting x y and z simultaneously
 
 
-/**
- * Sizes
-*/
-const sizes = {
-  width: 800,
-  height: 600
-}
+const axisHelper = new THREE.AxesHelper();
+scene.add(axisHelper)
+
 
 /**
  * Camera
@@ -41,6 +45,8 @@ scene.add(camera)
 
 console.log(mesh.position.distanceTo(camera.position))
 // calculating distance from one object to another
+
+camera.position.set(0.01, -0.01, 1.5)
 
 /**
  * Renderer
