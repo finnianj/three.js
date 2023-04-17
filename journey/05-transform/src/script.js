@@ -37,7 +37,8 @@ mesh.scale.z = 0.2;
 // changin the object scale
 
 // Rotation - imagine putting a stick through an object and twisting the stick - that is the axis that is being rotated on
-mesh.rotation.z = 0.5
+mesh.rotation.z = Math.PI;
+// makes a 90 degree rotation. Math.PI is a 180 degree rotation
 
 
 
