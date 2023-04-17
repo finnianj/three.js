@@ -28,7 +28,7 @@ console.log(mesh.position.length())
 // because position inherits from Vector3, you can use the length method.
 // this tells you how far an object is from the centre
 
-mesh.position.set(0.1, 0.5, 0.2);
+mesh.position.set(0.1, 0.5, -1);
 // setting x y and z simultaneously
 
 mesh.scale.x = 0.2;
@@ -55,7 +55,7 @@ scene.add(camera)
 console.log(mesh.position.distanceTo(camera.position))
 // calculating distance from one object to another
 
-camera.position.set(2.31, 0.5, 1.5)
+camera.position.set(0, 0, 1.5)
 
 
 // Object 3d instances have a lookat method
@@ -72,14 +72,30 @@ const group = new THREE.Group()
 scene.add(group);
 
 const cube1 = new THREE.Mesh(
-  new THREE.BoxGeometry(1, 1, 1),
+  new THREE.BoxGeometry(0.1, 0.1, 0.1),
   new THREE.MeshBasicMaterial({ color: 0x00ff00})
 )
-
+cube1.position.x = 0.1
 group.add(cube1)
 
+const cube2 = new THREE.Mesh(
+  new THREE.BoxGeometry(0.1, 0.1, 0.1),
+  new THREE.MeshBasicMaterial({ color: 0x0000ff})
+)
+group.add(cube2)
+cube2.position.x = 0.3
 
 
+const cube3 = new THREE.Mesh(
+  new THREE.BoxGeometry(0.1, 0.1, 0.1),
+  new THREE.MeshBasicMaterial({ color: 0xffffff})
+  )
+  cube3.position.x = 0.5
+  group.add(cube3)
+
+
+group.position.y = 0.5;
+group.rotation.z = Math.PI * 0.7
 // ----------------------------
 
 /**
