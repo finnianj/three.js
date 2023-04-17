@@ -17,3 +17,5 @@ const canvas = document.querySelector('#canvas')
 const renderer = new THREE.WebGLRenderer({
   canvas
 })
+
+renderer.setSize(sizes.width, sizes.height)
