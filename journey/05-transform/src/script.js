@@ -55,7 +55,7 @@ scene.add(camera)
 console.log(mesh.position.distanceTo(camera.position))
 // calculating distance from one object to another
 
-camera.position.set(0.31, 0.5, 1.5)
+camera.position.set(2.31, 0.5, 1.5)
 
 
 // Object 3d instances have a lookat method
@@ -65,6 +65,14 @@ camera.lookAt(new THREE.Vector3(0,0,0))
 // You can look at an object by passing it's vector as an argment
 camera.lookAt(mesh.position)
 console.log(mesh.position)
+
+// Groups ---------------------
+
+const group = new THREE.Group()
+
+
+
+// ----------------------------
 
 /**
  * Renderer
