@@ -28,8 +28,13 @@ console.log(mesh.position.length())
 // because position inherits from Vector3, you can use the length method.
 // this tells you how far an object is from the centre
 
-mesh.position.set(0.7, 0.5, 1);
+mesh.position.set(0.1, 0.5, 0.2);
 // setting x y and z simultaneously
+
+mesh.scale.x = 0.2;
+mesh.scale.y = 0.2;
+mesh.scale.z = 0.2;
+
 
 
 const axisHelper = new THREE.AxesHelper();
@@ -46,7 +51,7 @@ scene.add(camera)
 console.log(mesh.position.distanceTo(camera.position))
 // calculating distance from one object to another
 
-camera.position.set(0.01, -0.01, 1.5)
+camera.position.set(0.31, -0.01, 1.5)
 
 /**
  * Renderer
