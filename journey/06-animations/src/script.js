@@ -29,3 +29,14 @@ const renderer = new THREE.WebGLRenderer({
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.render(scene, camera)
+
+
+// Animations
+
+const animate = () => {
+  console.log('tick')
+  window.requestAnimationFrame(animate);
+
+}
+
+animate();
