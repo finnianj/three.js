@@ -64,7 +64,9 @@ const animate = () => {
     const elapsedTime = clock.getElapsedTime()
     console.log(elapsedTime)
     // Therefore we simply set the rotation to the elapsed time value
-    mesh.rotation.z = elapsedTime
+    // mesh.rotation.z = elapsedTime
+    // If we want one revolution per second, then we multiply our time value by 2pi, which is a full rotation
+    mesh.rotation.z = elapsedTime * Math.PI * 2;
 
   // ------------- Using built in Clock ---------------
 
