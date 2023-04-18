@@ -72,13 +72,21 @@ const animate = () => {
 
   // ------------- Using sin wave ---------------
     // If we want an oscillating value, then we can use Math.sin:
-    mesh.position.x = Math.sin(elapsedTime)
+    // mesh.position.x = Math.sin(elapsedTime)
     // Or cos, which is the inversion of sin:
-    mesh.position.y = Math.cos(elapsedTime);
-    mesh.position.z = Math.cos(elapsedTime);
-    mesh.rotation.z = elapsedTime * Math.PI
+    // mesh.position.y = Math.cos(elapsedTime);
+    // mesh.position.z = Math.cos(elapsedTime);
+    // mesh.rotation.z = elapsedTime * Math.PI
     // Crazy cube!!!
   // ------------- Using sin wave ---------------
+
+  // ------------- Using sin wave ---------------
+    // Moving the camera in a circle and looking at the cube:
+    camera.position.x = Math.sin(elapsedTime)
+    camera.position.y = Math.cos(elapsedTime)
+    camera.lookAt(mesh.position)
+  // ------------- Using sin wave ---------------
+
 
   console.log('tick')
   renderer.render(scene, camera)
