@@ -29,12 +29,31 @@ const renderer = new THREE.WebGLRenderer({
 })
 renderer.setSize(sizes.width, sizes.height)
 
+let time = Date.now();
 
 // Animations
 const animate = () => {
 
+  // Time
+  // Current timestamp
+  const currentTime = Date.now();
+
+  // We use delta (difference) to compare the two timestamps
+  const deltaTime = currentTime - time
+  time = currentTime;
+  console.log(deltaTime)
+
+
+
   // Update objects
   mesh.rotation.x -= 0.01
+  // However, this rotation will update every frame, and is therefore
+  // dependent on the fps. If fps changes, the animation will look stunted.
+  // The solution is to multiply the rotation by the delta time value.
+  // If there is a greater delay between frames, the rotation will be more!
+  // This will produce a much smoother animation
+  mesh.rotation.y -= 0.001 * deltaTime
+
   console.log('tick')
   renderer.render(scene, camera)
 
