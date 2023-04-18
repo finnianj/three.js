@@ -55,12 +55,16 @@ const animate = () => {
   // This will produce a much smoother animation:
 
   // mesh.rotation.y -= 0.001 * deltaTime <<<<< !!!
-  
+
   // ------------- Using Delta Time ---------------
 
 
   // ------------- Using built in Clock ---------------
-
+    // Counts up from 0 in whole seconds - does not reset to 0 between each frame
+    const elapsedTime = clock.getElapsedTime()
+    console.log(elapsedTime)
+    // Therefore we simply set the rotation to the elapsed time value
+    mesh.rotation.z = elapsedTime
 
   // ------------- Using built in Clock ---------------
 
