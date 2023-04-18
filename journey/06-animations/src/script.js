@@ -73,6 +73,11 @@ const animate = () => {
   // ------------- Using sin wave ---------------
     // If we want an oscillating value, then we can use Math.sin:
     mesh.position.x = Math.sin(elapsedTime)
+    // Or cos, which is the inversion of sin:
+    mesh.position.y = Math.cos(elapsedTime);
+    mesh.position.z = Math.cos(elapsedTime);
+    mesh.rotation.z = elapsedTime * Math.PI
+    // Crazy cube!!!
   // ------------- Using sin wave ---------------
 
   console.log('tick')
