@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import gsap from 'gsap'
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
@@ -80,12 +81,17 @@ const animate = () => {
     // Crazy cube!!!
   // ------------- Using sin wave ---------------
 
-  // ------------- Using sin wave ---------------
+  // ------------- Using lookat ---------------
     // Moving the camera in a circle and looking at the cube:
     camera.position.x = Math.sin(elapsedTime)
     camera.position.y = Math.cos(elapsedTime)
     camera.lookAt(mesh.position)
-  // ------------- Using sin wave ---------------
+  // ------------- Using lookat ---------------
+
+  // ------------- Using gsap ---------------
+    gsap.to(mesh.position, { duration: 1, delay: 1, x: 2 })
+    // gsap (greensock) has its own internal clock, so we don't need to multiply by elapsed time
+  // ------------- Using gsap ---------------
 
 
   console.log('tick')
