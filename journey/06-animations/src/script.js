@@ -66,9 +66,14 @@ const animate = () => {
     // Therefore we simply set the rotation to the elapsed time value
     // mesh.rotation.z = elapsedTime
     // If we want one revolution per second, then we multiply our time value by 2pi, which is a full rotation
-    mesh.rotation.z = elapsedTime * Math.PI * 2;
+    // mesh.rotation.z = elapsedTime * Math.PI * 2;
 
   // ------------- Using built in Clock ---------------
+
+  // ------------- Using sin wave ---------------
+    // If we want an oscillating value, then we can use Math.sin:
+    mesh.position.x = Math.sin(elapsedTime)
+  // ------------- Using sin wave ---------------
 
   console.log('tick')
   renderer.render(scene, camera)
