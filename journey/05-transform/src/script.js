@@ -96,6 +96,7 @@ const cube3 = new THREE.Mesh(
 
 group.position.y = 0.5;
 group.rotation.z = Math.PI * 0.7
+group.rotation.y = Math.PI * 0.7
 // ----------------------------
 
 /**
