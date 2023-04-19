@@ -1,8 +1,10 @@
 import * as THREE from 'three'
 
-const cursor = window.addEventListener('mousemove', (event) => {
-  console.log(event.clientX)
-  console.log(event.clientY)
+const cursor = {}
+
+window.addEventListener('mousemove', (event) => {
+  cursor.x = event.clientX
+  cursor.y = event.clientY
 })
 
 /**
