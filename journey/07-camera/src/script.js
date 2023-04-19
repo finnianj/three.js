@@ -1,5 +1,9 @@
 import * as THREE from 'three'
 
+const cursor = window.addEventListener('mousemove', (event) => {
+  console.log(event.clientX)
+})
+
 /**
  * Base
  */
@@ -23,17 +27,17 @@ const mesh = new THREE.Mesh(
 scene.add(mesh)
 
 // Camera
-// const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
-const aspectRatio = sizes.width / sizes.height
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
+// const aspectRatio = sizes.width / sizes.height
 // If you use an orthographic camera, then the render will be squashed on the y axis, so you need to implement the aspect ratio.
-const camera = new THREE.OrthographicCamera(
-  -1 * aspectRatio,
-   1 * aspectRatio,
-  1, -1, 0.1, 100
-  )
-camera.position.x = 2
-camera.position.y = 2
-camera.position.z = 2
+// const camera = new THREE.OrthographicCamera(
+//   -1 * aspectRatio,
+//    1 * aspectRatio,
+//   1, -1, 0.1, 100
+//   )
+// camera.position.x = 2
+// camera.position.y = 2
+camera.position.z = 3
 camera.lookAt(mesh.position)
 scene.add(camera)
 
@@ -51,7 +55,7 @@ const tick = () =>
     const elapsedTime = clock.getElapsedTime()
 
     // Update objects
-    mesh.rotation.y = elapsedTime;
+    // mesh.rotation.y = elapsedTime;
 
     // Render
     renderer.render(scene, camera)
