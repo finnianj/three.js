@@ -1,10 +1,19 @@
 import * as THREE from 'three'
 
-const cursor = {}
+const cursor = {
+  x:0,
+  y:0
+}
 
 window.addEventListener('mousemove', (event) => {
-  cursor.x = event.clientX
-  cursor.y = event.clientY
+  // cursor.x = event.clientX
+  // cursor.y = event.clientY
+  // we want to convert our values so that they have an amplitude of 1.
+  // i.e lowest possible value is 0, highest is 1
+  cursor.x = event.clientX / sizes.width - 0.5
+  cursor.y = event.clientY / sizes.height - 0.5
+  // You can also add -0.5 if you want to more clearly define the values to the left/right/above/below of the center
+  console.log(cursor)
 })
 
 /**
