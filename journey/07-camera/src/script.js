@@ -53,7 +53,8 @@ camera.position.z = 3
 camera.lookAt(mesh.position)
 scene.add(camera)
 
-
+// controls
+const controls = new OrbitControls(camera, canvas);
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({
