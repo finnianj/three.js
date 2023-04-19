@@ -3,6 +3,11 @@
   padding: 0;
 } */
 
+html, body {
+  /* prevents scrolling beyond canvas */
+  overflow: hidden;
+}
+
 .webgl{
   position: fixed;
   top: 0;
