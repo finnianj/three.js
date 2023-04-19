@@ -43,7 +43,7 @@ window.addEventListener('resize', () => {
 })
 
 window.addEventListener('dblclick', () => {
-  const fullscreenElement = document.fullscreenElement || document.webkit.FullscreenElement
+  const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement
 
   if (!fullscreenElement) {
     if (canvas.requestFullscreen()) {
