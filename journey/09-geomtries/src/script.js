@@ -15,8 +15,13 @@ const scene = new THREE.Scene()
 const positions = Float32Array([
   0, 0, 0,
   0, 1, 0,
-  1, 0, 0 
+  1, 0, 0
 ])
+
+const positionsAttribute = new THREE.BufferAttribute(positions, 3)
+
+const bufferGeometry = new THREE.BufferGeometry
+geometry.setAttribute('position', positionsAttribute)
 
 // Object
 const geometry = new THREE.BoxGeometry(1, 1, 1, 10, 10, 10)
