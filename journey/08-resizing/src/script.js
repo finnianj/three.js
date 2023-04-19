@@ -22,12 +22,20 @@ scene.add(mesh)
  * Sizes
  */
 const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight
+  width: window.innerWidth,
+  height: window.innerHeight
 }
 
 window.addEventListener('resize', () => {
   console.log("window has been resized")
+  // Update sizes:
+  sizes.width = window.innerWidth;
+  sizes.height = window.innerHeight;
+
+  // Update camera aspect ratio:
+
+  camera.aspect = sizes.width / sizes.height
+  camera.updateProjectionMatrix
 })
 
 /**
