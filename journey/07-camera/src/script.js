@@ -55,6 +55,8 @@ scene.add(camera)
 
 // controls
 const controls = new OrbitControls(camera, canvas);
+controls.target.y = 2
+controls.update()
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({
