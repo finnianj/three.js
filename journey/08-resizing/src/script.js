@@ -38,6 +38,7 @@ window.addEventListener('resize', () => {
 
   // Update renderer -- also updates the canvas! Woo!
   renderer.setSize(sizes.width, sizes.height)
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
 
 /**
