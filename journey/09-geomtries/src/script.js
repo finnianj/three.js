@@ -28,7 +28,7 @@ bufferGeometry.setAttribute('position', positionsAttribute)
 const count = 50;
 const positions2 = new Float32Array(count * 3 * 3)
 for (let i = 0; i < count * 3 * 3 ; i++) {
-  positions2[i] = Math.random() * 3;
+  positions2[i] = (Math.random() - 0.5) * 30;
 }
 const positions2Attribute = new THREE.BufferAttribute(positions2, 3)
 const buffer2Geometry = new THREE.BufferGeometry()
