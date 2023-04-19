@@ -43,11 +43,23 @@ window.addEventListener('resize', () => {
 })
 
 window.addEventListener('dblclick', () => {
-  if (!document.fullscreenElement) {
-    canvas.requestFullscreen()
+  const fullscreenElement = document.fullscreenElement || document.webkit.FullscreenElement
+
+  if (!fullscreenElement) {
+    if (canvas.requestFullscreen()) {
+      canvas.requestFullscreen()
+    } else if (canvas.webkitRequestFullscreen()) {
+      canvas.webkitRequestFullscreen()
+    }
   } else {
-    document.exitFullscreen()
+    if (document.exitFullscreen) {
+      document.exitFullscreen()
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen()
+    }
   }
+
+
 })
 
 /**
