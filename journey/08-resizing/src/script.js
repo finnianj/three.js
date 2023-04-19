@@ -36,7 +36,7 @@ window.addEventListener('resize', () => {
   camera.aspect = sizes.width / sizes.height
   camera.updateProjectionMatrix();
 
-  // Update renderer
+  // Update renderer -- also updates the canvas! Woo!
   renderer.setSize(sizes.width, sizes.height)
 })
 
