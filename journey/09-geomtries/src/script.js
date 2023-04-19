@@ -23,11 +23,24 @@ const positionsAttribute = new THREE.BufferAttribute(positions, 3)
 const bufferGeometry = new THREE.BufferGeometry()
 bufferGeometry.setAttribute('position', positionsAttribute)
 
+// Creating 50 triangles with random values
+
+const count = 50;
+const positions2 = new Float32Array(count * 3 * 3)
+for (let i = 0; i < count * 3 * 3 ; i++) {
+  positions2[i] = Math.random() * 3;
+}
+const positions2Attribute = new THREE.BufferAttribute(positions2, 3)
+const buffer2Geometry = new THREE.BufferGeometry()
+buffer2Geometry.setAttribute('position', positions2Attribute)
+
 // Object
 // const geometry = new THREE.BoxGeometry(1, 1, 1, 10, 10, 10)
 const material = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
 const mesh = new THREE.Mesh(bufferGeometry, material)
+const mesh2 = new THREE.Mesh(buffer2Geometry, material)
 scene.add(mesh)
+scene.add(mesh2)
 
 // Sizes
 const sizes = {
