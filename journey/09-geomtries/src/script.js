@@ -12,7 +12,7 @@ const scene = new THREE.Scene()
 
 // Creating my own Buffergeometry
 
-const positions = Float32Array([
+const positions = new Float32Array([
   0, 0, 0,
   0, 1, 0,
   1, 0, 0
@@ -20,13 +20,13 @@ const positions = Float32Array([
 
 const positionsAttribute = new THREE.BufferAttribute(positions, 3)
 
-const bufferGeometry = new THREE.BufferGeometry
-geometry.setAttribute('position', positionsAttribute)
+const bufferGeometry = new THREE.BufferGeometry()
+bufferGeometry.setAttribute('position', positionsAttribute)
 
 // Object
-const geometry = new THREE.BoxGeometry(1, 1, 1, 10, 10, 10)
+// const geometry = new THREE.BoxGeometry(1, 1, 1, 10, 10, 10)
 const material = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
-const mesh = new THREE.Mesh(geometry, material)
+const mesh = new THREE.Mesh(bufferGeometry, material)
 scene.add(mesh)
 
 // Sizes
