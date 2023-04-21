@@ -15,6 +15,18 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
   // Creating a texture using new THREE.TextureLoader -- much faster!
 const loadingManager = new THREE.LoadingManager()
+loadingManager.onStart = () => {
+  console.log('on load');
+}
+loadingManager.onLoaded = () => {
+  console.log('on loaded');
+}
+loadingManager.onProgress = () => {
+  console.log('on progress');
+}
+loadingManager.onError = () => {
+  console.log('on error');
+}
 const textureLoader = new THREE.TextureLoader(loadingManager)
 const texture = textureLoader.load('/textures/door/color.jpg',
  () => {
