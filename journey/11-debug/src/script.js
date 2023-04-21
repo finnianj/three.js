@@ -25,6 +25,8 @@ const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 // Debug
 lilgui.add(mesh.position, 'y', -3, 3, 0.01)
+lilgui.add(mesh.position, 'x', -3, 3, 0.01)
+lilgui.add(mesh.position, 'z', -3, 3, 0.01)
 
 /**
  * Sizes
