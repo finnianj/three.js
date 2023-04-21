@@ -73,6 +73,7 @@ material.map = doorColorTexture
 // ------------------ AO map -----------------------
 // See code below where a duplicate set of uv coorindates is assigned to each geometry
 material.aoMap = doorAmbientOcclusionTexture
+material.aoMapIntensity = 2
 // ------------------ AO map -----------------------
 
 
@@ -81,6 +82,7 @@ const debug = new gui.GUI()
 console.log(debug);
 debug.add(material, 'metalness', 0, 1, 0.01).name('Metalness')
 debug.add(material, 'roughness', 0, 1, 0.01).name('Roughness')
+debug.add(material, 'aoMapIntensity', 0, 10, 0.01).name('Ambient Occlusion')
 
 
 const sphere = new THREE.Mesh(
