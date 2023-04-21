@@ -23,7 +23,6 @@ const doorRoughnessTexture = textureLoader.load('/textures/door/roughness.jpg')
 const matcapTexture = textureLoader.load('/textures/matcaps/8.png')
 const gradientTexture = textureLoader.load('/textures/gradients/3.jpeg')
 
-
 // Objects
 //----------- Door color texture and alpha ------
 // const material = new THREE.MeshBasicMaterial();
@@ -49,14 +48,26 @@ const gradientTexture = textureLoader.load('/textures/gradients/3.jpeg')
 // // -------------- Mesh Matcap material --------
 
 // // -------------- Mesh Depth material --------
-// // Uses an image as a reference to apply to a geometry. It also uses the geometries normal values
 // const material = new THREE.MeshDepthMaterial()
 // // -------------- Mesh Depth material --------
 
-// -------------- Mesh Lambert material --------
-// Uses an image as a reference to apply to a geometry. It also uses the geometries normal values
-const material = new THREE.MeshDepthMaterial()
-// -------------- Mesh Lambert material --------
+// // -------------- Mesh Lambert material --------
+// const material = new THREE.MeshLambertMaterial()
+// // -------------- Mesh Lambert material --------
+
+// // -------------- Mesh Phong material --------
+// const material = new THREE.MeshPhongMaterial()
+// // -------------- Mesh Phong material --------
+
+// // -------------- Mesh Toon material --------
+// const material = new THREE.MeshToonMaterial()
+// material.gradientMap = gradientTexture
+// // -------------- Mesh Toon material --------
+
+// // -------------- Mesh Standard material --------
+// Better than Lambert and Phong
+const material = new THREE.MeshStandardMaterial()
+// // -------------- Mesh Standard material --------
 
 
 const sphere = new THREE.Mesh(
