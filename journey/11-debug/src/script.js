@@ -37,6 +37,7 @@ lilgui
   .name('Cube Z')
 
 lilgui.add(mesh, 'visible').name('Cube Visible')
+lilgui.add(mesh.material, 'wireframe').name('Cube Wireframe')
 
 
 /**
