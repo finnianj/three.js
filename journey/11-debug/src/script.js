@@ -24,7 +24,7 @@ const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 // Debug
-lilgui.add(mesh.position, 'y')
+lilgui.add(mesh.position, 'y', -3, 3, 0.01)
 
 /**
  * Sizes
