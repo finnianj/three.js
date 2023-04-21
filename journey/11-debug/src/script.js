@@ -39,6 +39,11 @@ lilgui
 lilgui.add(mesh, 'visible').name('Cube Visible')
 lilgui.add(mesh.material, 'wireframe').name('Cube Wireframe')
 
+const parameters = {
+  color: '#ff0000'
+}
+lilgui.addColor(mesh.material, 'color')
+
 
 /**
  * Sizes
