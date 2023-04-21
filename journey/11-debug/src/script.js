@@ -23,6 +23,7 @@ const geometry = new THREE.BoxGeometry(1, 1, 1)
 const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
+
 // Debug
 lilgui.add(mesh.position, 'y', -3, 3, 0.01).name('Cube Y')
 // Has the same result:
@@ -34,6 +35,9 @@ lilgui
   .max(3)
   .step(0.01)
   .name('Cube Z')
+
+lilgui.add(mesh, 'visible').name('Cube Visible')
+
 
 /**
  * Sizes
