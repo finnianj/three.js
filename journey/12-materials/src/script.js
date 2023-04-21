@@ -67,7 +67,14 @@ const gradientTexture = textureLoader.load('/textures/gradients/3.jpeg')
 // // -------------- Mesh Standard material --------
 // Better than Lambert and Phong
 const material = new THREE.MeshStandardMaterial()
+material.map = doorColorTexture
 // // -------------- Mesh Standard material --------
+
+// ------------------ AO map -----------------------
+// See code below where a duplicate set of uv coorindates is assigned to each geometry
+material.aoMap = doorAmbientOcclusionTexture
+// ------------------ AO map -----------------------
+
 
 // Debug
 const debug = new gui.GUI()
@@ -80,18 +87,24 @@ const sphere = new THREE.Mesh(
   new THREE.SphereGeometry(0.5, 16, 16),
   material
 )
+sphere.geometry.setAttribute('uv2', new THREE.BufferAttribute(sphere.geometry.attributes.uv.array, 2))
 sphere.position.x = - 1.5
 
 const plane = new THREE.Mesh(
   new THREE.PlaneGeometry(1, 1),
   material
 )
+// Duplicating UV coordinates in order to place ambient occlusion texture
+plane.geometry.setAttribute('uv2', new THREE.BufferAttribute(plane.geometry.attributes.uv.array, 2))
+
 const torus = new THREE.Mesh(
   new THREE.TorusGeometry(0.5, 0.2, 16, 32),
   material
 )
+torus.geometry.setAttribute('uv2', new THREE.BufferAttribute(torus.geometry.attributes.uv.array, 2))
 torus.position.x = 1.5
 scene.add(sphere, plane, torus)
+
 
 /**
  * Light
