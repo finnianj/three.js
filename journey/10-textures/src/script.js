@@ -3,14 +3,16 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 // import image from '/textures/door/color.jpg'
 // You don't need to write static for files in the static folder.
 
+// Creating a texture using new THREE.texture
 // const colorImage = new Image()
 // const texture = new THREE.Texture(colorImage)
 // colorImage.onload = () => {
-//   texture.needsUpdate = true;
-//   console.log(texture);
-// }
-// colorImage.src = '/textures/door/color.jpg'
+  //   texture.needsUpdate = true;
+  //   console.log(texture);
+  // }
+  // colorImage.src = '/textures/door/color.jpg'
 
+  // Creating a texture using new THREE.TextureLoader -- much faster!
 const textureLoader = new THREE.TextureLoader
 const texture = textureLoader.load('/textures/door/color.jpg')
 
