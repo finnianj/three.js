@@ -24,15 +24,16 @@ const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 // Debug
-lilgui.add(mesh.position, 'y', -3, 3, 0.01)
+lilgui.add(mesh.position, 'y', -3, 3, 0.01).name('Cube Y')
 // Has the same result:
-lilgui.add(mesh.position, 'x').min(-3).max(3).step(0.01)
+lilgui.add(mesh.position, 'x').min(-3).max(3).step(0.01).name('Cube X')
 // Or like this:
 lilgui
   .add(mesh.position, 'z')
   .min(-3)
   .max(3)
   .step(0.01)
+  .name('Cube Z')
 
 /**
  * Sizes
