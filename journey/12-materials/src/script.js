@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-
+import * as gui from 'lil-gui'
 /**
  * Base
  */
@@ -68,6 +68,11 @@ const gradientTexture = textureLoader.load('/textures/gradients/3.jpeg')
 // Better than Lambert and Phong
 const material = new THREE.MeshStandardMaterial()
 // // -------------- Mesh Standard material --------
+
+// Debug
+const debug = new gui.GUI()
+console.log(debug);
+debug.add(material, 'metalness', 0, 1).name('Metalness')
 
 
 const sphere = new THREE.Mesh(
