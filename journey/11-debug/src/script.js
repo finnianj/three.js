@@ -43,8 +43,8 @@ lilgui.addColor(mesh.material, 'color')
 
 const parameters = {
   spin: () => {
-  console.log('spin');
-}
+      gsap.to(mesh.rotation, { duration: 1, y: 6})
+  }
 }
 
 lilgui.add(parameters, 'spin').name('Spin Cube')
