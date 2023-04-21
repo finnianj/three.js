@@ -72,7 +72,8 @@ const material = new THREE.MeshStandardMaterial()
 // Debug
 const debug = new gui.GUI()
 console.log(debug);
-debug.add(material, 'metalness', 0, 1).name('Metalness')
+debug.add(material, 'metalness', 0, 1, 0.01).name('Metalness')
+debug.add(material, 'roughness', 0, 1, 0.01).name('Roughness')
 
 
 const sphere = new THREE.Mesh(
