@@ -76,6 +76,13 @@ material.aoMap = doorAmbientOcclusionTexture
 material.aoMapIntensity = 2
 // ------------------ AO map -----------------------
 
+// ------------------ Relief map -------------------
+material.displacementMap = doorHeightTexture
+// In order for the relief/height to work, I added more triangles below to the geometries. You can see them with the wireframe
+// material.wireframe = true
+material.displacementScale = 0.2
+// ------------------ Relief map -------------------
+
 
 // Debug
 const debug = new gui.GUI()
@@ -83,24 +90,24 @@ console.log(debug);
 debug.add(material, 'metalness', 0, 1, 0.01).name('Metalness')
 debug.add(material, 'roughness', 0, 1, 0.01).name('Roughness')
 debug.add(material, 'aoMapIntensity', 0, 10, 0.01).name('Ambient Occlusion')
-
+debug.add(material, 'displacementScale', 0, 5, 0.001).name('Relief')
 
 const sphere = new THREE.Mesh(
-  new THREE.SphereGeometry(0.5, 16, 16),
+  new THREE.SphereGeometry(0.5, 64, 64),
   material
 )
 sphere.geometry.setAttribute('uv2', new THREE.BufferAttribute(sphere.geometry.attributes.uv.array, 2))
 sphere.position.x = - 1.5
 
 const plane = new THREE.Mesh(
-  new THREE.PlaneGeometry(1, 1),
+  new THREE.PlaneGeometry(1, 1, 100, 100),
   material
 )
 // Duplicating UV coordinates in order to place ambient occlusion texture
 plane.geometry.setAttribute('uv2', new THREE.BufferAttribute(plane.geometry.attributes.uv.array, 2))
 
 const torus = new THREE.Mesh(
-  new THREE.TorusGeometry(0.5, 0.2, 16, 32),
+  new THREE.TorusGeometry(0.5, 0.2, 64, 128),
   material
 )
 torus.geometry.setAttribute('uv2', new THREE.BufferAttribute(torus.geometry.attributes.uv.array, 2))
