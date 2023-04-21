@@ -12,8 +12,10 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
   // }
   // colorImage.src = '/textures/door/color.jpg'
 
+
   // Creating a texture using new THREE.TextureLoader -- much faster!
-const textureLoader = new THREE.TextureLoader
+const loadingManager = new THREE.LoadingManager()
+const textureLoader = new THREE.TextureLoader(loadingManager)
 const texture = textureLoader.load('/textures/door/color.jpg',
  () => {
   console.log('load');
