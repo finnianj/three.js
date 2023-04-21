@@ -20,7 +20,7 @@ const doorNormalTexture = textureLoader.load('/textures/door/normal.jpg')
 const doorHeightTexture = textureLoader.load('/textures/door/height.jpg')
 const doorAmbientOcclusionTexture = textureLoader.load('/textures/door/ambientOcclusion.jpg')
 const doorRoughnessTexture = textureLoader.load('/textures/door/roughness.jpg')
-const matcapTexture = textureLoader.load('/textures/matcaps/1.png')
+const matcapTexture = textureLoader.load('/textures/matcaps/8.png')
 const gradientTexture = textureLoader.load('/textures/gradients/3.jpeg')
 
 
@@ -36,12 +36,27 @@ const gradientTexture = textureLoader.load('/textures/gradients/3.jpeg')
 // material.side = THREE.DoubleSide
 //----------- Door color texture and alpha ------
 
-//----------- Mesh normal material ------
-const material = new THREE.MeshNormalMaterial();
-material.flatShading = true;
-//----------- Mesh normal material ------
+// //----------- Mesh normal material ------
+// const material = new THREE.MeshNormalMaterial();
+// material.flatShading = true;
+// //----------- Mesh normal material ------
 
 
+// // -------------- Mesh Matcap material --------
+// // Uses an image as a reference to apply to a geometry. It also uses the geometries normal values
+// const material = new THREE.MeshMatcapMaterial()
+// material.matcap = matcapTexture
+// // -------------- Mesh Matcap material --------
+
+// // -------------- Mesh Depth material --------
+// // Uses an image as a reference to apply to a geometry. It also uses the geometries normal values
+// const material = new THREE.MeshDepthMaterial()
+// // -------------- Mesh Depth material --------
+
+// -------------- Mesh Lambert material --------
+// Uses an image as a reference to apply to a geometry. It also uses the geometries normal values
+const material = new THREE.MeshDepthMaterial()
+// -------------- Mesh Lambert material --------
 
 
 const sphere = new THREE.Mesh(
@@ -60,6 +75,16 @@ const torus = new THREE.Mesh(
 )
 torus.position.x = 1.5
 scene.add(sphere, plane, torus)
+
+/**
+ * Light
+ */
+
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
+const pointLight = new THREE.PointLight(0xffffff, 0.5)
+pointLight.position.set(2, 3, 4)
+scene.add(ambientLight, pointLight)
+
 
 
 /**
