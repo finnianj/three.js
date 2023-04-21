@@ -1,5 +1,8 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import image from '/textures/door/color.jpg'
+// You don't need to write static for files in the static folder.
+console.log(image)
 
 /**
  * Base
