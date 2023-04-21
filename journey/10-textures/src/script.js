@@ -6,7 +6,8 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 const colorImage = new Image()
 colorImage.src = '/textures/door/color.jpg'
 colorImage.onload = () => {
-  console.log(colorImage)
+  const texture = new THREE.Texture(colorImage)
+  console.log(texture);
 }
 
 /**
