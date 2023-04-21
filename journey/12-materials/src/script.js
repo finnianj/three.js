@@ -111,6 +111,7 @@ material.metalness = 0.7
 material.roughness = 0.2
 material.envMap = environmentMapTexture
 // How freaking awesome is that! Check out HDRI Heaven for other environment maps
+// Convert them to 6 separate images using https://matheowis.github.io/HDRI-to-CubeMap/
 // // ------------------ Environment map -------------------
 
 
