@@ -43,7 +43,7 @@ lilgui.addColor(mesh.material, 'color')
 
 const parameters = {
   spin: () => {
-      gsap.to(mesh.rotation, { duration: 1, y: 6})
+      gsap.to(mesh.rotation, { duration: 1, y: mesh.rotation.y + Math.PI * 2})
   }
 }
 
