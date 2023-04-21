@@ -65,34 +65,53 @@ const gradientTexture = textureLoader.load('/textures/gradients/3.jpeg')
 // // -------------- Mesh Toon material --------
 
 // // -------------- Mesh Standard material --------
-// Better than Lambert and Phong
+// // Better than Lambert and Phong
+// const material = new THREE.MeshStandardMaterial()
+// material.map = doorColorTexture
+// // // -------------- Mesh Standard material --------
+
+// // ------------------ AO map -----------------------
+// // See code below where a duplicate set of uv coorindates is assigned to each geometry
+// material.aoMap = doorAmbientOcclusionTexture
+// material.aoMapIntensity = 2
+// // ------------------ AO map -----------------------
+
+// // ------------------ Relief map -------------------
+// material.displacementMap = doorHeightTexture
+// // In order for the relief/height to work, I added more triangles below to the geometries. You can see them with the wireframe
+// // material.wireframe = true
+// material.displacementScale = 0.2
+// // ------------------ Relief map -------------------
+
+// // ------------------ Metalness/Roughness map -------------------
+// material.metalnessMap = doorMetalnessTexture
+// material.roughnessMap = doorRoughnessTexture
+// // ------------------ Metalness/Roughness map -------------------
+
+// // ------------------ Normal map -------------------
+// material.normalMap = doorNormalTexture
+// material.alphaMap = doorAlphaTexture
+// material.transparent = true;
+// // ------------------ Normal map -------------------
+
+
+// // ------------------ Environment map -------------------
+const cubeTextureLoader = new THREE.CubeTextureLoader()
+const environmentMapTexture = cubeTextureLoader.load([
+  // setting images for positive x, negative x, postive y etc.
+  '/textures/environmentMaps/1/px.jpg',
+  '/textures/environmentMaps/1/nx.jpg',
+  '/textures/environmentMaps/1/py.jpg',
+  '/textures/environmentMaps/1/ny.jpg',
+  '/textures/environmentMaps/1/pz.jpg',
+  '/textures/environmentMaps/1/nz.jpg'
+])
 const material = new THREE.MeshStandardMaterial()
-material.map = doorColorTexture
-// // -------------- Mesh Standard material --------
-
-// ------------------ AO map -----------------------
-// See code below where a duplicate set of uv coorindates is assigned to each geometry
-material.aoMap = doorAmbientOcclusionTexture
-material.aoMapIntensity = 2
-// ------------------ AO map -----------------------
-
-// ------------------ Relief map -------------------
-material.displacementMap = doorHeightTexture
-// In order for the relief/height to work, I added more triangles below to the geometries. You can see them with the wireframe
-// material.wireframe = true
-material.displacementScale = 0.2
-// ------------------ Relief map -------------------
-
-// ------------------ Metalness/Roughness map -------------------
-material.metalnessMap = doorMetalnessTexture
-material.roughnessMap = doorRoughnessTexture
-// ------------------ Metalness/Roughness map -------------------
-
-// ------------------ Normal map -------------------
-material.normalMap = doorNormalTexture
-material.alphaMap = doorAlphaTexture
-material.transparent = true;
-// ------------------ Normal map -------------------
+material.metalness = 0.7
+material.roughness = 0.2
+material.envMap = environmentMapTexture
+// How freaking awesome is that! Check out HDRI Heaven for other environment maps
+// // ------------------ Environment map -------------------
 
 
 // Debug
