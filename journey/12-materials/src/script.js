@@ -32,6 +32,8 @@ material.map = doorColorTexture
 // If you use alpha/opacity, then you need to specify transparent = true
 material.alphaMap = doorAlphaTexture
 material.transparent = true;
+// Makes both sides of an object visible, but is a lot of work for GPU
+material.side = THREE.DoubleSide
 
 const sphere = new THREE.Mesh(
   new THREE.SphereGeometry(0.5, 16, 16),
