@@ -25,15 +25,24 @@ const gradientTexture = textureLoader.load('/textures/gradients/3.jpeg')
 
 
 // Objects
+//----------- Door color texture and alpha ------
+// const material = new THREE.MeshBasicMaterial();
+// material.map = doorColorTexture
 
-const material = new THREE.MeshBasicMaterial();
-material.map = doorColorTexture
+// // If you use alpha/opacity, then you need to specify transparent = true
+// material.alphaMap = doorAlphaTexture
+// material.transparent = true;
+// // Makes both sides of an object visible, but is a lot of work for GPU
+// material.side = THREE.DoubleSide
+//----------- Door color texture and alpha ------
 
-// If you use alpha/opacity, then you need to specify transparent = true
-material.alphaMap = doorAlphaTexture
-material.transparent = true;
-// Makes both sides of an object visible, but is a lot of work for GPU
-material.side = THREE.DoubleSide
+//----------- Mesh normal material ------
+const material = new THREE.MeshNormalMaterial();
+material.flatShading = true;
+//----------- Mesh normal material ------
+
+
+
 
 const sphere = new THREE.Mesh(
   new THREE.SphereGeometry(0.5, 16, 16),
