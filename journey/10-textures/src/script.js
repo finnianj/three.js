@@ -4,11 +4,12 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 // You don't need to write static for files in the static folder.
 
 const colorImage = new Image()
-colorImage.src = '/textures/door/color.jpg'
+const texture = new THREE.Texture(colorImage)
 colorImage.onload = () => {
-  const texture = new THREE.Texture(colorImage)
+  texture.needsUpdate = true;
   console.log(texture);
 }
+colorImage.src = '/textures/door/color.jpg'
 
 /**
  * Base
@@ -23,7 +24,7 @@ const scene = new THREE.Scene()
  * Object
  */
 const geometry = new THREE.BoxGeometry(1, 1, 1)
-const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
+const material = new THREE.MeshBasicMaterial({ map: texture })
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 
