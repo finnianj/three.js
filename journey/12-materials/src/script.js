@@ -83,6 +83,17 @@ material.displacementMap = doorHeightTexture
 material.displacementScale = 0.2
 // ------------------ Relief map -------------------
 
+// ------------------ Metalness/Roughness map -------------------
+material.metalnessMap = doorMetalnessTexture
+material.roughnessMap = doorRoughnessTexture
+// ------------------ Metalness/Roughness map -------------------
+
+// ------------------ Normal map -------------------
+material.normalMap = doorNormalTexture
+material.alphaMap = doorAlphaTexture
+material.transparent = true;
+// ------------------ Normal map -------------------
+
 
 // Debug
 const debug = new gui.GUI()
