@@ -43,6 +43,10 @@ fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
       bevelSegments: 5
     }
   )
+  const textMaterial = new THREE.MeshBasicMaterial()
+  const text = new THREE.Mesh(textGeometry, textMaterial)
+
+  scene.add(text)
 })
 
 /**
@@ -53,7 +57,7 @@ const cube = new THREE.Mesh(
     new THREE.MeshBasicMaterial()
 )
 
-scene.add(cube)
+// scene.add(cube)
 
 /**
  * Sizes
