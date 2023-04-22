@@ -20,7 +20,8 @@ const scene = new THREE.Scene()
  * Textures
  */
 const textureLoader = new THREE.TextureLoader()
-const matcapTexture = textureLoader.load('/textures/matcaps/8.png')
+const matcapBlueTexture = textureLoader.load('/textures/matcaps/3.png')
+const matcapGreenTexture = textureLoader.load('/textures/matcaps/green.png')
 
 /**
  * Fonts
@@ -58,14 +59,14 @@ fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
   // Simple way:
   textGeometry.center()
 
-  const textMaterial = new THREE.MeshMatcapMaterial({ matcap: matcapTexture})
+  const textMaterial = new THREE.MeshMatcapMaterial({ matcap: matcapGreenTexture})
 
   const text = new THREE.Mesh(textGeometry, textMaterial)
   scene.add(text)
 
   for (let i = 0; i < 100; i ++) {
     const donutGeometry = new THREE.TorusGeometry(0.3, 0.2, 20, 45);
-    const donutMaterial = new THREE.MeshMatcapMaterial({ matcap: matcapTexture })
+    const donutMaterial = new THREE.MeshMatcapMaterial({ matcap: matcapBlueTexture })
     const donut = new THREE.Mesh(donutGeometry, donutMaterial)
 
     donut.position.x = (Math.random() - 0.5) * 10
@@ -74,6 +75,11 @@ fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
 
     donut.rotation.x = Math.random() * Math.PI
     donut.rotation.y = Math.random() * Math.PI
+
+    const scale = Math.random()
+    donut.scale.x = scale
+    donut.scale.y = scale
+    donut.scale.z = scale
     scene.add(donut)
   }
 })
@@ -82,8 +88,8 @@ fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
 /**
  * Axis Helper
  */
-const axesHelper = new THREE.AxesHelper()
-scene.add(axesHelper)
+// const axesHelper = new THREE.AxesHelper()
+// scene.add(axesHelper)
 
 /**
  * Object
