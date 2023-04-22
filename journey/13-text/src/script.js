@@ -43,9 +43,16 @@ fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
       bevelSegments: 4
     }
   )
+  // We need to center the geometry !Not the MESH, which by defualt is already centered!
+  textGeometry.computeBoundingBox()
+  textGeometry.translate(
+    - textGeometry.boundingBox.max.x * 0.5,
+    - textGeometry.boundingBox.max.y * 0.5,
+    - textGeometry.boundingBox.max.z * 0.5
+  )
+
   const textMaterial = new THREE.MeshBasicMaterial({wireframe: true})
   const text = new THREE.Mesh(textGeometry, textMaterial)
-  text.position.x = -2.5
   scene.add(text)
 })
 
