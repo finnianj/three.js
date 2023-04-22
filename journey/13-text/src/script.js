@@ -20,6 +20,7 @@ const scene = new THREE.Scene()
  * Textures
  */
 const textureLoader = new THREE.TextureLoader()
+const matcapTexture = textureLoader.load('/textures/matcaps/8.png')
 
 /**
  * Fonts
@@ -57,9 +58,15 @@ fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
   // Simple way:
   textGeometry.center()
 
-  const textMaterial = new THREE.MeshBasicMaterial({wireframe: true})
+  const textMaterial = new THREE.MeshMatcapMaterial({ matcap: matcapTexture})
+
   const text = new THREE.Mesh(textGeometry, textMaterial)
   scene.add(text)
+
+  for (let i = 0; i < 100; i ++) {
+    const donutGeometry = new THREE.TorusGeometry(0.3, 0.2, 20, 45);
+
+  }
 })
 
 
