@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js'
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry'
 import * as dat from 'lil-gui'
 
 /**
@@ -24,8 +25,24 @@ const textureLoader = new THREE.TextureLoader()
  * Fonts
  */
 const fontLoader = new FontLoader()
+// Loading the font requires a callback function
 fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
   console.log(font);
+  const textGeometry = new TextGeometry(
+    'Wyvern Art Fund',
+    {
+      // if the key and value have the same name in js, you can just write it once:
+      font,
+      size: 0.5,
+      height: 0.2,
+      curveSegments: 12,
+      bevelEnabled: true,
+      bevelThickness: 0.03,
+      bevelSize: 0.02,
+      bevelOffset: 0,
+      bevelSegments: 5
+    }
+  )
 })
 
 /**
