@@ -3,6 +3,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js'
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry'
 import * as dat from 'lil-gui'
+import gsap from 'gsap'
 
 /**
  * Base
@@ -63,6 +64,8 @@ fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
 
   const text = new THREE.Mesh(textGeometry, textMaterial)
   scene.add(text)
+  gsap.to(text.rotation, { duration: 10, y: text.rotation.y + Math.PI * 2})
+
 
   console.time('donuts')
 
