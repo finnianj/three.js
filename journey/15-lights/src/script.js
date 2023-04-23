@@ -44,7 +44,12 @@ pointLight.position.z = 2
 const rectLight = new THREE.RectAreaLight(0x4e00fff, 3, 3, 1)
 rectLight.position.set(-1.5, 1.5, 1.5)
 rectLight.lookAt(new THREE.Vector3())
-scene.add(rectLight)
+// scene.add(rectLight)
+
+const spotLight = new THREE.SpotLight(0xffff00, 2, 10, Math.PI * 0.1, 0.25, 1)
+spotLight.position.set(0, 2, 3)
+scene.add(spotLight)
+
 
 /**
  * Objects
