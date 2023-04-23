@@ -32,10 +32,13 @@ gui.add(ambientLight, 'intensity', 0, 1).name('Ambient light intensity')
 // const hemisphereLight = new THREE.HemisphereLight(0x0000ff, 0xff0000, 1)
 // scene.add(hemisphereLight)
 
-const pointLight = new THREE.PointLight(0xff9000, 0.8)
+const pointLight = new THREE.PointLight(0xff9000, 0.8, 7)
 pointLight.position.y = 2
 pointLight.position.z = 2
 scene.add(pointLight)
+gui.add(pointLight.position, 'x', -5, 5).name('P-light X')
+gui.add(pointLight.position, 'y', -5, 5).name('P-light Y')
+gui.add(pointLight.position, 'z', -5, 5).name('P-light Z')
 
 /**
  * Objects
