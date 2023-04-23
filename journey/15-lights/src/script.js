@@ -21,24 +21,30 @@ const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
 scene.add(ambientLight)
 gui.add(ambientLight, 'intensity', 0, 1).name('Ambient light intensity')
 
-// const directionalLight = new THREE.DirectionalLight(0xffff00, 0.5)
-// directionalLight.position.z = 2
+const directionalLight = new THREE.DirectionalLight(0xffff00, 0.5)
+directionalLight.position.z = 2
 // scene.add(directionalLight)
 
 // gui.add(directionalLight.position, 'x', -5, 5).name('D-light X')
 // gui.add(directionalLight.position, 'y', -5, 5).name('D-light Y')
 // gui.add(directionalLight.position, 'z', -5, 5).name('D-light Z')
 
-// const hemisphereLight = new THREE.HemisphereLight(0x0000ff, 0xff0000, 1)
+const hemisphereLight = new THREE.HemisphereLight(0x0000ff, 0xff0000, 1)
 // scene.add(hemisphereLight)
 
 const pointLight = new THREE.PointLight(0xff9000, 0.8, 7)
 pointLight.position.y = 2
 pointLight.position.z = 2
-scene.add(pointLight)
-gui.add(pointLight.position, 'x', -5, 5).name('P-light X')
-gui.add(pointLight.position, 'y', -5, 5).name('P-light Y')
-gui.add(pointLight.position, 'z', -5, 5).name('P-light Z')
+// scene.add(pointLight)
+// gui.add(pointLight.position, 'x', -5, 5).name('P-light X')
+// gui.add(pointLight.position, 'y', -5, 5).name('P-light Y')
+// gui.add(pointLight.position, 'z', -5, 5).name('P-light Z')
+
+// Only works with MeshStandard or MeshPhysical:
+const rectLight = new THREE.RectAreaLight(0x4e00fff, 3, 3, 1)
+rectLight.position.set(-1.5, 1.5, 1.5)
+rectLight.lookAt(new THREE.Vector3())
+scene.add(rectLight)
 
 /**
  * Objects
