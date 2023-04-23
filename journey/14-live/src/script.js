@@ -36,7 +36,7 @@ fontLoader.load(
 
         // Text
         const textGeometry = new TextGeometry(
-            'Hello Three.js',
+            'Wyvern Art Fund',
             {
                 font: font,
                 size: 0.5,
