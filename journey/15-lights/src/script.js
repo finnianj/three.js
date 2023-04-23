@@ -49,6 +49,7 @@ rectLight.lookAt(new THREE.Vector3())
 const spotLight = new THREE.SpotLight(0xffff00, 2, 10, Math.PI * 0.1, 0.25, 1)
 spotLight.position.set(0, 2, 3)
 scene.add(spotLight)
+// If you want to move the spotlight then you need to add spotlight.target to the scene, and move that rather than moving spotlight
 
 
 /**
