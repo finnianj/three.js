@@ -19,6 +19,7 @@ const scene = new THREE.Scene()
  */
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
 scene.add(ambientLight)
+// Minimal cost
 gui.add(ambientLight, 'intensity', 0, 1).name('Ambient light intensity')
 
 const directionalLight = new THREE.DirectionalLight(0xffff00, 0.5)
@@ -30,6 +31,7 @@ directionalLight.position.z = 2
 // gui.add(directionalLight.position, 'z', -5, 5).name('D-light Z')
 
 const hemisphereLight = new THREE.HemisphereLight(0x0000ff, 0xff0000, 1)
+// Minimal cost
 // scene.add(hemisphereLight)
 
 const pointLight = new THREE.PointLight(0xff9000, 0.8, 7)
@@ -45,12 +47,13 @@ const rectLight = new THREE.RectAreaLight(0x4e00fff, 3, 3, 1)
 rectLight.position.set(-1.5, 1.5, 1.5)
 rectLight.lookAt(new THREE.Vector3())
 // scene.add(rectLight)
+// RectAreaLight has a high performance cost
 
 const spotLight = new THREE.SpotLight(0xffff00, 2, 10, Math.PI * 0.1, 0.25, 1)
 spotLight.position.set(0, 2, 3)
 scene.add(spotLight)
 // If you want to move the spotlight then you need to add spotlight.target to the scene, and move that rather than moving spotlight
-
+// Spotlight has a high performance cost
 
 /**
  * Objects
