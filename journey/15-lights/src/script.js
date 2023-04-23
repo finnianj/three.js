@@ -32,7 +32,7 @@ directionalLight.position.z = 2
 
 const hemisphereLight = new THREE.HemisphereLight(0x0000ff, 0xff0000, 1)
 // Minimal cost
-// scene.add(hemisphereLight)
+scene.add(hemisphereLight)
 
 const pointLight = new THREE.PointLight(0xff9000, 0.8, 7)
 pointLight.position.y = 2
@@ -51,9 +51,13 @@ rectLight.lookAt(new THREE.Vector3())
 
 const spotLight = new THREE.SpotLight(0xffff00, 2, 10, Math.PI * 0.1, 0.25, 1)
 spotLight.position.set(0, 2, 3)
-scene.add(spotLight)
+// scene.add(spotLight)
 // If you want to move the spotlight then you need to add spotlight.target to the scene, and move that rather than moving spotlight
 // Spotlight has a high performance cost
+
+// Helpers:
+const hemisphereLightHelper = new THREE.HemisphereLightHelper(hemisphereLight)
+scene.add(hemisphereLightHelper)
 
 /**
  * Objects
