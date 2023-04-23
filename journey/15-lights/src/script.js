@@ -21,6 +21,14 @@ const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
 scene.add(ambientLight)
 gui.add(ambientLight, 'intensity', 0, 1).name('Ambient light intensity')
 
+const directionalLight = new THREE.DirectionalLight(0xffff00, 0.5)
+directionalLight.position.z = 2
+scene.add(directionalLight)
+
+gui.add(directionalLight.position, 'x', -5, 5).name('D-light X')
+gui.add(directionalLight.position, 'y', -5, 5).name('D-light Y')
+gui.add(directionalLight.position, 'z', -5, 5).name('D-light Z')
+
 /**
  * Objects
  */
