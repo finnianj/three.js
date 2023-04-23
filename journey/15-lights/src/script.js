@@ -29,8 +29,13 @@ gui.add(ambientLight, 'intensity', 0, 1).name('Ambient light intensity')
 // gui.add(directionalLight.position, 'y', -5, 5).name('D-light Y')
 // gui.add(directionalLight.position, 'z', -5, 5).name('D-light Z')
 
-const hemisphereLight = new THREE.HemisphereLight(0x0000ff, 0xff0000, 0.3)
-scene.add(hemisphereLight)
+// const hemisphereLight = new THREE.HemisphereLight(0x0000ff, 0xff0000, 1)
+// scene.add(hemisphereLight)
+
+const pointLight = new THREE.PointLight(0xff9000, 0.8)
+pointLight.position.y = 2
+pointLight.position.z = 2
+scene.add(pointLight)
 
 /**
  * Objects
