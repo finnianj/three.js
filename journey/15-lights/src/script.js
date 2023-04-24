@@ -26,27 +26,44 @@ const directionalLight = new THREE.DirectionalLight(0xffff00, 0.5)
 directionalLight.position.z = 2
 // scene.add(directionalLight)
 
+
+
 // gui.add(directionalLight.position, 'x', -5, 5).name('D-light X')
 // gui.add(directionalLight.position, 'y', -5, 5).name('D-light Y')
 // gui.add(directionalLight.position, 'z', -5, 5).name('D-light Z')
 
-const hemisphereLight = new THREE.HemisphereLight(0x0000ff, 0xff0000, 1)
+const hemisphereLight = new THREE.HemisphereLight(0x00ffff, 0xff0000, 1)
 // Minimal cost
 scene.add(hemisphereLight)
+gui.add(hemisphereLight, 'intensity', 0, 1)
 
-const pointLight = new THREE.PointLight(0xff9000, 0.8, 7)
-pointLight.position.y = 2
+const pointLight = new THREE.PointLight(0xffffff, 0.8, 0)
+pointLight.position.y = 22
 pointLight.position.z = 2
 // scene.add(pointLight)
-// gui.add(pointLight.position, 'x', -5, 5).name('P-light X')
-// gui.add(pointLight.position, 'y', -5, 5).name('P-light Y')
-// gui.add(pointLight.position, 'z', -5, 5).name('P-light Z')
+gui.add(pointLight, 'intensity', 0, 50).name('P-light Intensity')
+gui.add(pointLight.position, 'x', -50, 50).name('P-light X')
+gui.add(pointLight.position, 'y', -50, 50).name('P-light Y')
+gui.add(pointLight.position, 'z', -50, 50).name('P-light Z')
+
+const plHelper = new THREE.PointLightHelper(pointLight)
+scene.add(plHelper)
+
 
 // Only works with MeshStandard or MeshPhysical:
-const rectLight = new THREE.RectAreaLight(0x4e00fff, 3, 3, 1)
+const rectLight = new THREE.RectAreaLight('red', 3, 10, 10)
 rectLight.position.set(-1.5, 1.5, 1.5)
 rectLight.lookAt(new THREE.Vector3())
-// scene.add(rectLight)
+scene.add(rectLight)
+console.log(rectLight);
+gui.add(rectLight, 'intensity', 0, 20).name('Rect Intensity')
+gui.add(rectLight.color, 'r', 0, 10, 0.001).name('Rect R')
+gui.add(rectLight.color, 'g', 0, 10, 0.001).name('Rect G')
+gui.add(rectLight.color, 'b', 0, 10, 0.001).name('Rect B')
+gui.add(rectLight.position, 'x', -50, 50).name('Rect X')
+gui.add(rectLight.position, 'y', -50, 50).name('Rect Y')
+gui.add(rectLight.position, 'z', -50, 50).name('Rect Z')
+
 // RectAreaLight has a high performance cost
 
 const spotLight = new THREE.SpotLight(0xffff00, 2, 10, Math.PI * 0.1, 0.25, 1)
@@ -57,7 +74,8 @@ spotLight.position.set(0, 2, 3)
 
 // Helpers:
 const hemisphereLightHelper = new THREE.HemisphereLightHelper(hemisphereLight)
-scene.add(hemisphereLightHelper)
+
+// scene.add(hemisphereLightHelper)
 
 /**
  * Objects
@@ -71,27 +89,50 @@ const sphere = new THREE.Mesh(
     new THREE.SphereGeometry(0.5, 32, 32),
     material
 )
+sphere.position.y = 2
 sphere.position.x = - 1.5
 
 const cube = new THREE.Mesh(
     new THREE.BoxGeometry(0.75, 0.75, 0.75),
     material
 )
+cube.position.y = 2
+
 
 const torus = new THREE.Mesh(
     new THREE.TorusGeometry(0.3, 0.2, 32, 64),
     material
 )
+torus.position.y = 2
 torus.position.x = 1.5
 
 const plane = new THREE.Mesh(
-    new THREE.PlaneGeometry(5, 5),
+    new THREE.PlaneGeometry(50, 50),
     material
 )
 plane.rotation.x = - Math.PI * 0.5
-plane.position.y = - 0.65
+plane.position.y = - 17
 
 scene.add(sphere, cube, torus, plane)
+
+// 100 cubes
+let cubes = []
+for (let i = 0; i < 100; i ++) {
+  const scale = Math.random() * 5
+  const cube = new THREE.Mesh(
+    new THREE.BoxGeometry(scale, scale, scale),
+    material
+  )
+  cubes.push(cube)
+  cube.position.x = (Math.random() - 0.5) * 30
+  cube.position.y = (Math.random() - 0.5) * 30
+  cube.position.z = (Math.random() - 0.5) * 30
+
+  cube.rotation.x = (Math.random() * 2 * Math.PI)
+  cube.rotation.y = (Math.random() * 2 * Math.PI)
+
+  scene.add(cube)
+}
 
 /**
  * Sizes
@@ -129,6 +170,7 @@ scene.add(camera)
 // Controls
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
+controls.target = cube.position
 
 /**
  * Renderer
@@ -156,6 +198,13 @@ const tick = () =>
     sphere.rotation.x = 0.15 * elapsedTime
     cube.rotation.x = 0.15 * elapsedTime
     torus.rotation.x = 0.15 * elapsedTime
+
+    cubes.forEach ((cube, index) =>  {
+      cube.rotation.x = (elapsedTime * (0.005 * index))
+      cube.rotation.y = (elapsedTime * (0.005 * index))
+    })
+
+    rectLight.lookAt(0, 0, 0)
 
     // Update controls
     controls.update()
