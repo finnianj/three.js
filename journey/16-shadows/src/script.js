@@ -42,8 +42,8 @@ directionalLight.shadow.camera.left = - 2
 // directionalLight.shadow.radius = 10
 const dlHelper = new THREE.CameraHelper(directionalLight.shadow.camera)
 // scene.add(dlHelper)
-scene.add(directionalLight)
-console.log(directionalLight.shadow);
+// scene.add(directionalLight)
+// console.log(directionalLight.shadow);
 
 // Spot light
 const spotLight = new THREE.SpotLight(0x0000ff, 2, 10, Math.PI * 0.3)
@@ -51,15 +51,26 @@ const spotLight = new THREE.SpotLight(0x0000ff, 2, 10, Math.PI * 0.3)
 spotLight.castShadow = true
 
 spotLight.position.set(0, 2, 2)
-scene.add(spotLight)
+// scene.add(spotLight)
 scene.add(spotLight.target)
+spotLight.shadow.camera.fov = 30
 
 const spotLightCameraHelper = new THREE.CameraHelper(spotLight.shadow.camera)
 scene.add(spotLightCameraHelper)
 
 const rectLight = new THREE.RectAreaLight(0x00ffff, 3, 2, 2)
 rectLight.position.z = 2
-scene.add(rectLight)
+// scene.add(rectLight)
+
+const pointLight = new THREE.PointLight(0x00ffff, 0.3)
+
+pointLight.castShadow = true
+
+pointLight.position.set(- 1, 2, 0)
+scene.add(pointLight)
+
+const pointLightCameraHelper = new THREE.CameraHelper(pointLight.shadow.camera)
+scene.add(pointLightCameraHelper)
 
 /**
  * Materials
@@ -94,27 +105,31 @@ const cube1 = new THREE.Mesh(
   material
 )
 cube1.position.x = 1
+cube1.castShadow = true
 
 const cube2 = new THREE.Mesh(
   new THREE.BoxGeometry(0.5, 0.5, 0.5),
   material
 )
+cube2.castShadow = true
 cube2.position.x = -1
 
 const cube3 = new THREE.Mesh(
   new THREE.BoxGeometry(0.5, 0.5, 0.5),
   material
 )
+cube3.castShadow = true
 cube3.position.z = 1
 const cube4 = new THREE.Mesh(
   new THREE.BoxGeometry(0.5, 0.5, 0.5),
   material
 )
+cube4.castShadow = true
 cube4.position.z = -1
 
 
 
-scene.add(cube2, cube1, cube3, cube4)
+// scene.add(cube2, cube1, cube3, cube4)
 
 scene.add(sphere, plane)
 
@@ -179,22 +194,29 @@ const tick = () =>
     const elapsedTime = clock.getElapsedTime()
     let scaler = elapsedTime
 
-    cube1.position.y = Math.sin(elapsedTime)
-    // cube1.scale.set(scaler, scaler, scaler)
-    cube2.position.y = Math.sin(elapsedTime) * -1
+    // cube1.position.y = Math.sin(elapsedTime)
+    // // cube1.scale.set(scaler, scaler, scaler)
+    // cube2.position.y = Math.sin(elapsedTime) * -1
 
-    cube3.position.y = Math.cos(elapsedTime) * -1
-    cube4.position.y = Math.cos(elapsedTime)
+    // cube1.position.x = Math.sin(elapsedTime + 1)
+    // cube2.position.x = Math.sin(elapsedTime + 2)
+    // cube3.position.x = Math.sin(elapsedTime + 3)
+    // cube4.position.x = Math.sin(elapsedTime + 4)
 
-    cube1.rotation.x = elapsedTime
-    cube2.rotation.x = elapsedTime - 0.2
-    cube3.rotation.x = elapsedTime - 0.4
-    cube4.rotation.x = elapsedTime - 0.6
+    // cube1.position.z = Math.cos(elapsedTime + 1)
+    // cube2.position.z = Math.cos(elapsedTime + 2)
+    // cube3.position.z = Math.cos(elapsedTime + 3)
+    // cube4.position.z = Math.cos(elapsedTime + 4)
+
+    // cube1.rotation.x = elapsedTime
+    // cube2.rotation.x = elapsedTime - 0.2
+    // cube3.rotation.x = elapsedTime - 0.4
+    // cube4.rotation.x = elapsedTime - 0.6
 
 
 
-    sphere.position.x = Math.sin(elapsedTime)
-    sphere.position.z = Math.cos(elapsedTime)
+    // sphere.position.x = Math.sin(elapsedTime)
+    // sphere.position.z = Math.cos(elapsedTime)
 
     // Update controls
     controls.update()
