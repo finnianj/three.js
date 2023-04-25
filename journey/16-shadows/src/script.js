@@ -23,7 +23,7 @@ gui.add(ambientLight, 'intensity').min(0).max(1).step(0.001)
 scene.add(ambientLight)
 
 // Directional light
-const directionalLight = new THREE.DirectionalLight(0xff5000, 2)
+const directionalLight = new THREE.DirectionalLight(0xff0000, 2)
 directionalLight.position.set(2, 2, - 1)
 gui.add(directionalLight, 'intensity').min(0).max(1).step(0.001)
 gui.add(directionalLight.position, 'x').min(- 5).max(5).step(0.001)
@@ -39,7 +39,7 @@ directionalLight.shadow.camera.top = 2
 directionalLight.shadow.camera.right = 2
 directionalLight.shadow.camera.bottom = - 2
 directionalLight.shadow.camera.left = - 2
-directionalLight.shadow.radius = 10
+// directionalLight.shadow.radius = 10
 const dlHelper = new THREE.CameraHelper(directionalLight.shadow.camera)
 // scene.add(dlHelper)
 scene.add(directionalLight)
@@ -117,6 +117,7 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.shadowMap.enabled = true
+renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
 /**
  * Animate
