@@ -18,13 +18,13 @@ const scene = new THREE.Scene()
  * Lights
  */
 // Ambient light
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.2)
 gui.add(ambientLight, 'intensity').min(0).max(1).step(0.001)
 scene.add(ambientLight)
 
 // Directional light
-const directionalLight = new THREE.DirectionalLight(0xff0000, 2)
-directionalLight.position.set(2, 2, - 1)
+const directionalLight = new THREE.DirectionalLight(0xffffff, 0.2)
+directionalLight.position.set(2, 20, - 1)
 gui.add(directionalLight, 'intensity').min(0).max(1).step(0.001)
 gui.add(directionalLight.position, 'x').min(- 5).max(5).step(0.001)
 gui.add(directionalLight.position, 'y').min(- 5).max(5).step(0.001)
@@ -45,6 +45,22 @@ const dlHelper = new THREE.CameraHelper(directionalLight.shadow.camera)
 scene.add(directionalLight)
 console.log(directionalLight.shadow);
 
+// Spot light
+const spotLight = new THREE.SpotLight(0x0000ff, 2, 10, Math.PI * 0.3)
+
+spotLight.castShadow = true
+
+spotLight.position.set(0, 2, 2)
+scene.add(spotLight)
+scene.add(spotLight.target)
+
+const spotLightCameraHelper = new THREE.CameraHelper(spotLight.shadow.camera)
+scene.add(spotLightCameraHelper)
+
+const rectLight = new THREE.RectAreaLight(0x00ffff, 3, 2, 2)
+rectLight.position.z = 2
+scene.add(rectLight)
+
 /**
  * Materials
  */
@@ -62,12 +78,43 @@ const sphere = new THREE.Mesh(
 )
 sphere.castShadow = true
 const plane = new THREE.Mesh(
-    new THREE.PlaneGeometry(5, 5),
+    new THREE.PlaneGeometry(500, 500),
     material
 )
 plane.rotation.x = - Math.PI * 0.5
 plane.position.y = - 0.5
 plane.receiveShadow = true;
+
+// gui.add(sphere.position, 'x', 0, 5)
+// gui.add(sphere.position, 'y', 0, 5)
+// gui.add(sphere.position, 'z', 0, 5)
+
+const cube1 = new THREE.Mesh(
+  new THREE.BoxGeometry(0.5, 0.5, 0.5),
+  material
+)
+cube1.position.x = 1
+
+const cube2 = new THREE.Mesh(
+  new THREE.BoxGeometry(0.5, 0.5, 0.5),
+  material
+)
+cube2.position.x = -1
+
+const cube3 = new THREE.Mesh(
+  new THREE.BoxGeometry(0.5, 0.5, 0.5),
+  material
+)
+cube3.position.z = 1
+const cube4 = new THREE.Mesh(
+  new THREE.BoxGeometry(0.5, 0.5, 0.5),
+  material
+)
+cube4.position.z = -1
+
+
+
+scene.add(cube2, cube1, cube3, cube4)
 
 scene.add(sphere, plane)
 
@@ -107,6 +154,7 @@ scene.add(camera)
 // Controls
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
+controls.target = sphere.position
 
 /**
  * Renderer
@@ -119,6 +167,8 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
+console.log(cube1
+  );
 /**
  * Animate
  */
@@ -127,6 +177,24 @@ const clock = new THREE.Clock()
 const tick = () =>
 {
     const elapsedTime = clock.getElapsedTime()
+    let scaler = elapsedTime
+
+    cube1.position.y = Math.sin(elapsedTime)
+    // cube1.scale.set(scaler, scaler, scaler)
+    cube2.position.y = Math.sin(elapsedTime) * -1
+
+    cube3.position.y = Math.cos(elapsedTime) * -1
+    cube4.position.y = Math.cos(elapsedTime)
+
+    cube1.rotation.x = elapsedTime
+    cube2.rotation.x = elapsedTime - 0.2
+    cube3.rotation.x = elapsedTime - 0.4
+    cube4.rotation.x = elapsedTime - 0.6
+
+
+
+    sphere.position.x = Math.sin(elapsedTime)
+    sphere.position.z = Math.cos(elapsedTime)
 
     // Update controls
     controls.update()
