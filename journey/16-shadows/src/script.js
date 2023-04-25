@@ -30,6 +30,9 @@ gui.add(directionalLight.position, 'x').min(- 5).max(5).step(0.001)
 gui.add(directionalLight.position, 'y').min(- 5).max(5).step(0.001)
 gui.add(directionalLight.position, 'z').min(- 5).max(5).step(0.001)
 scene.add(directionalLight)
+const dlHelper = new THREE.DirectionalLightHelper(directionalLight)
+scene.add(dlHelper)
+gui.add(directionalLight.position, 'y', 0, 5)
 
 /**
  * Materials
