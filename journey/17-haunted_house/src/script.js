@@ -25,6 +25,11 @@ const textureLoader = new THREE.TextureLoader()
 const house = new THREE.Group()
 scene.add(house)
 
+const walls = new THREE.Mesh(
+  new THREE.BoxGeometry(1, 1, 1),
+  new THREE.MeshStandardMaterial()
+)
+
 
 // Floor
 const floor = new THREE.Mesh(
