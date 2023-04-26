@@ -387,7 +387,11 @@ const tick = () =>
 
 tick()
 
+
 window.addEventListener('load', () => {
-  console.log('hi');
-  document.querySelector('audio').play()
+  setTimeout(() => {
+    console.log('hi');
+    document.querySelector('audio').currentTime = 0;
+    document.querySelector('audio').play()
+  }, 6000);
 })
