@@ -35,6 +35,24 @@ const bricksColorTexture = textureLoader.load('/textures/bricks/color.jpg')
 const bricksAOTexture = textureLoader.load('/textures/bricks/ambientOcclusion.jpg')
 const bricksNormalTexture = textureLoader.load('/textures/bricks/normal.jpg')
 const bricksRoughnessTexture = textureLoader.load('/textures/bricks/roughness.jpg')
+
+const grassColorTexture = textureLoader.load('/textures/grass/color.jpg')
+const grassAOTexture = textureLoader.load('/textures/grass/ambientOcclusion.jpg')
+const grassNormalTexture = textureLoader.load('/textures/grass/normal.jpg')
+const grassRoughnessTexture = textureLoader.load('/textures/grass/roughness.jpg')
+
+grassColorTexture.repeat.set(8, 8)
+grassColorTexture.wrapS = THREE.RepeatWrapping
+grassColorTexture.wrapT = THREE.RepeatWrapping
+grassAOTexture.repeat.set(8, 8)
+grassAOTexture.wrapS = THREE.RepeatWrapping
+grassAOTexture.wrapT = THREE.RepeatWrapping
+grassNormalTexture.repeat.set(8, 8)
+grassNormalTexture.wrapS = THREE.RepeatWrapping
+grassNormalTexture.wrapT = THREE.RepeatWrapping
+grassRoughnessTexture.repeat.set(8, 8)
+grassRoughnessTexture.wrapS = THREE.RepeatWrapping
+grassRoughnessTexture.wrapT = THREE.RepeatWrapping
 /**
  * House
  */
@@ -130,8 +148,14 @@ for(let i = 0; i < 50; i++) {
 // Floor
 const floor = new THREE.Mesh(
     new THREE.PlaneGeometry(20, 20),
-    new THREE.MeshStandardMaterial({ color: '#a9c388' })
+    new THREE.MeshStandardMaterial({
+      map: grassColorTexture,
+      aoMap: grassAOTexture,
+      roughnessMap: grassRoughnessTexture,
+      normalMap: grassNormalTexture
+     })
 )
+floor.geometry.setAttribute('uv2', new THREE.Float32BufferAttribute(floor.geometry.attributes.uv.array, 2))
 floor.rotation.x = - Math.PI * 0.5
 floor.position.y = 0
 scene.add(floor)
