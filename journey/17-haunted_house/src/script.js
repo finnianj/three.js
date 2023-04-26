@@ -280,9 +280,9 @@ window.addEventListener('resize', () =>
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.x = 4
+camera.position.x = 4.5
 camera.position.y = 2
-camera.position.z = 5
+camera.position.z = 5.5
 scene.add(camera)
 
 // Controls
@@ -386,3 +386,8 @@ const tick = () =>
 }
 
 tick()
+
+window.addEventListener('load', () => {
+  console.log('hi');
+  document.querySelector('audio').play()
+})
