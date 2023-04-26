@@ -32,6 +32,14 @@ const walls = new THREE.Mesh(
 walls.position.y = 1.25
 house.add(walls)
 
+const roof = new THREE.Mesh(
+  new THREE.ConeGeometry(3.5, 1, 4),
+  new THREE.MeshStandardMaterial({ color: '#b35f45' })
+)
+roof.position.y = 3
+roof.rotation.y = Math.PI * 0.25
+house.add(roof)
+
 
 // Floor
 const floor = new THREE.Mesh(
