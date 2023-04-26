@@ -11,8 +11,13 @@ const gui = new dat.GUI()
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
+
 // Scene
 const scene = new THREE.Scene()
+
+// Fog
+const fog = new THREE.Fog('#262837', 1, 15)
+scene.fog = fog
 
 /**
  * Textures
@@ -170,6 +175,7 @@ const renderer = new THREE.WebGLRenderer({
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+renderer.setClearColor('#262837')
 
 /**
  * Animate
