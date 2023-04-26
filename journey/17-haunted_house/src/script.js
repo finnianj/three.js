@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import * as dat from 'lil-gui'
+// import * as dat from 'lil-gui'
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js'
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry'
 import gsap from 'gsap'
@@ -9,7 +9,7 @@ import gsap from 'gsap'
  * Base
  */
 // Debug
-const gui = new dat.GUI()
+// const gui = new dat.GUI()
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
@@ -58,20 +58,69 @@ grassRoughnessTexture.wrapS = THREE.RepeatWrapping
 grassRoughnessTexture.wrapT = THREE.RepeatWrapping
 
 
-const matcapTexture = textureLoader.load('/textures/3.png')
+const matcapTexture = textureLoader.load('/textures/spook.png')
 
 /**
  * Fonts
  */
+const textGroup = new THREE.Group()
+textGroup.position.y = 4
+scene.add(textGroup)
+const textGroup2 = new THREE.Group()
+textGroup2.position.y = 4
+textGroup2.position.x = -2.5
+scene.add(textGroup2)
+const textGroup3 = new THREE.Group()
+textGroup3.position.y = 4
+textGroup3.position.x = 2.5
+scene.add(textGroup3)
 const fontLoader = new FontLoader()
+
+const textMaterial = new THREE.MeshMatcapMaterial({ matcap: matcapTexture})
+
 // Loading the font requires a callback function
+fontLoader.load('/fonts/gentilis_bold.typeface.json', (font) => {
+  console.log(font);
+  const textGeometry = new TextGeometry(
+    'Spooky', {font,
+    size: 0.5,
+    height: 0.2,
+    curveSegments: 5,
+    bevelEnabled: true,
+    bevelThickness: 0.03,
+    bevelSize: 0.02,
+    bevelOffset: 0,
+    bevelSegments: 4}
+  )
+  // Simple way:
+  textGeometry.center()
+  const text = new THREE.Mesh(textGeometry, textMaterial)
+  // text.position.y = 4
+  textGroup.add(text)
+})
 fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
   console.log(font);
   const textGeometry = new TextGeometry(
-    'Finn\'s Spooky House',
-    {
-      // if the key and value have the same name in js, you can just write it once:
-      font,
+    'Finn\'s', {font,
+    size: 0.5,
+    height: 0.2,
+    curveSegments: 5,
+    bevelEnabled: true,
+    bevelThickness: 0.03,
+    bevelSize: 0.02,
+    bevelOffset: 0,
+    bevelSegments: 4}
+  )
+  // Simple way:
+  textGeometry.center()
+  const text = new THREE.Mesh(textGeometry, textMaterial)
+  // text.position.y = 4
+  textGroup2.add(text)
+})
+fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
+  console.log(font);
+  const textGeometry = new TextGeometry(
+    'House', {font,
       size: 0.5,
       height: 0.2,
       curveSegments: 5,
@@ -79,32 +128,13 @@ fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
       bevelThickness: 0.03,
       bevelSize: 0.02,
       bevelOffset: 0,
-      bevelSegments: 4
-    }
+      bevelSegments: 4}
   )
-  // // We need to center the geometry !Not the MESH, which by defualt is already centered!
-  // // Complex way:
-  // textGeometry.computeBoundingBox()
-  // textGeometry.translate(
-  //   - (textGeometry.boundingBox.max.x - 0.02) * 0.5,
-  //   - (textGeometry.boundingBox.max.y - 0.02) * 0.5,
-  //   - (textGeometry.boundingBox.max.z - 0.03) * 0.5
-  //   )
-  //   textGeometry.computeBoundingBox()
-  //   console.log(textGeometry.boundingBox);
-
   // Simple way:
   textGeometry.center()
-
-  const textMaterial = new THREE.MeshMatcapMaterial({ matcap: matcapTexture})
-
   const text = new THREE.Mesh(textGeometry, textMaterial)
-  text.position.y = 4
-  scene.add(text)
-  const elapsedTime = clock.getElapsedTime()
-  gsap.to(text.rotation, { duration: 1000, y: text.rotation.y + Math.PI * 200})
-
-
+  // text.position.y = 4
+  textGroup3.add(text)
 })
 
 /**
@@ -220,16 +250,16 @@ scene.add(floor)
  */
 // Ambient light
 const ambientLight = new THREE.AmbientLight('#b9d5ff', 0.12)
-gui.add(ambientLight, 'intensity').min(0).max(1).step(0.001)
+// gui.add(ambientLight, 'intensity').min(0).max(1).step(0.001)
 scene.add(ambientLight)
 
 // Directional light
 const moonLight = new THREE.DirectionalLight('#b9d5ff', 0.12)
 moonLight.position.set(4, 5, - 2)
-gui.add(moonLight, 'intensity').min(0).max(1).step(0.001)
-gui.add(moonLight.position, 'x').min(- 5).max(5).step(0.001)
-gui.add(moonLight.position, 'y').min(- 5).max(5).step(0.001)
-gui.add(moonLight.position, 'z').min(- 5).max(5).step(0.001)
+// gui.add(moonLight, 'intensity').min(0).max(1).step(0.001)
+// gui.add(moonLight.position, 'x').min(- 5).max(5).step(0.001)
+// gui.add(moonLight.position, 'y').min(- 5).max(5).step(0.001)
+// gui.add(moonLight.position, 'z').min(- 5).max(5).step(0.001)
 scene.add(moonLight)
 
 // Door light
@@ -275,9 +305,9 @@ window.addEventListener('resize', () =>
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.x = 4
+camera.position.x = 4.5
 camera.position.y = 2
-camera.position.z = 5
+camera.position.z = 5.5
 scene.add(camera)
 
 // Controls
@@ -368,6 +398,18 @@ const tick = () =>
     ghost3.position.z = Math.sin(ghost3Angle * 0.4) * (7 + Math.sin(elapsedTime * 0.3))
     ghost3.position.y = Math.sin(elapsedTime * 1.5) + Math.sin(elapsedTime * 2.5)
 
+    // Rotate text:
+    // textGroup.rotation.y = elapsedTime
+    textGroup.rotation.z = Math.sin(elapsedTime * 4) * 0.3
+    // textGroup2.rotation.y = elapsedTime
+    textGroup2.rotation.z = Math.cos(elapsedTime) * 0.3
+    // textGroup3.rotation.y = elapsedTime
+    textGroup3.rotation.z = Math.sin(elapsedTime) * 0.3
+    textGroup.position.y = 4.2 + Math.sin(elapsedTime + 1) * 0.2
+    textGroup2.position.y = 4.2 + Math.sin(elapsedTime) * 0.2
+    textGroup3.position.y = 4.2 + Math.cos(elapsedTime) * 0.2
+
+
     // Render
     renderer.render(scene, camera)
 
@@ -376,3 +418,12 @@ const tick = () =>
 }
 
 tick()
+
+
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    console.log('hi');
+    document.querySelector('audio').currentTime = 0;
+    document.querySelector('audio').play()
+  }, 6000);
+})
