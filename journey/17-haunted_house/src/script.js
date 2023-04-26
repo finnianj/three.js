@@ -81,13 +81,16 @@ const graveGeometry = new THREE.BoxGeometry(0.6, 0.8, 0.2)
 const graveMaterial = new THREE.MeshStandardMaterial({ color: '#b2b6b1'})
 console.log(Math.PI * 2);
 for(let i = 0; i < 50; i++) {
-  const radius = 3 + Math.random() * 6
+  const radius = 4 + Math.random() * 5.5
   const circumference = Math.random() * Math.PI * 2
   const x = Math.sin(circumference) * radius
   const z = Math.cos(circumference) * radius
 
   const grave = new THREE.Mesh(graveGeometry, graveMaterial)
-  grave.position.set(x, 0.4001, z)
+  grave.position.set(x, 0.3001, z)
+  grave.position.y = Math.random() * 0.3
+  grave.rotation.y = (Math.random() - 0.5) * 0.4
+  grave.rotation.z = (Math.random() - 0.5) * 0.4
   graves.add(grave)
 }
 
