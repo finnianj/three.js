@@ -63,6 +63,9 @@ const matcapTexture = textureLoader.load('/textures/3.png')
 /**
  * Fonts
  */
+const textGroup = new THREE.Group()
+textGroup.position.y = 4
+scene.add(textGroup)
 const fontLoader = new FontLoader()
 // Loading the font requires a callback function
 fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
@@ -99,10 +102,12 @@ fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
   const textMaterial = new THREE.MeshMatcapMaterial({ matcap: matcapTexture})
 
   const text = new THREE.Mesh(textGeometry, textMaterial)
-  text.position.y = 4
-  scene.add(text)
-  const elapsedTime = clock.getElapsedTime()
-  gsap.to(text.rotation, { duration: 1000, y: text.rotation.y + Math.PI * 200})
+  // text.position.y = 4
+  textGroup.add(text)
+  // const elapsedTime = clock.getElapsedTime()
+  // var tl = gsap.timeline({repeat: Infinity, repeatDelay: 0});
+  // tl.to(text.rotation, {y: text.rotation.y + Math.PI * 2, duration: 6});
+
 
 
 })
@@ -367,6 +372,11 @@ const tick = () =>
     ghost3.position.x = Math.cos(ghost3Angle * 0.4) * (7 + Math.sin(elapsedTime * 0.3))
     ghost3.position.z = Math.sin(ghost3Angle * 0.4) * (7 + Math.sin(elapsedTime * 0.3))
     ghost3.position.y = Math.sin(elapsedTime * 1.5) + Math.sin(elapsedTime * 2.5)
+
+    // Rotate text:
+    textGroup.rotation.y = elapsedTime
+    textGroup.rotation.z = Math.sin(elapsedTime) * 0.2
+
 
     // Render
     renderer.render(scene, camera)
