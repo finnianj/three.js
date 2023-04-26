@@ -1,6 +1,9 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js'
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry'
+import gsap from 'gsap'
 
 /**
  * Base
@@ -53,6 +56,56 @@ grassNormalTexture.wrapT = THREE.RepeatWrapping
 grassRoughnessTexture.repeat.set(8, 8)
 grassRoughnessTexture.wrapS = THREE.RepeatWrapping
 grassRoughnessTexture.wrapT = THREE.RepeatWrapping
+
+
+const matcapTexture = textureLoader.load('/textures/3.png')
+
+/**
+ * Fonts
+ */
+const fontLoader = new FontLoader()
+// Loading the font requires a callback function
+fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
+  console.log(font);
+  const textGeometry = new TextGeometry(
+    'Finn\'s Spooky House',
+    {
+      // if the key and value have the same name in js, you can just write it once:
+      font,
+      size: 0.5,
+      height: 0.2,
+      curveSegments: 5,
+      bevelEnabled: true,
+      bevelThickness: 0.03,
+      bevelSize: 0.02,
+      bevelOffset: 0,
+      bevelSegments: 4
+    }
+  )
+  // // We need to center the geometry !Not the MESH, which by defualt is already centered!
+  // // Complex way:
+  // textGeometry.computeBoundingBox()
+  // textGeometry.translate(
+  //   - (textGeometry.boundingBox.max.x - 0.02) * 0.5,
+  //   - (textGeometry.boundingBox.max.y - 0.02) * 0.5,
+  //   - (textGeometry.boundingBox.max.z - 0.03) * 0.5
+  //   )
+  //   textGeometry.computeBoundingBox()
+  //   console.log(textGeometry.boundingBox);
+
+  // Simple way:
+  textGeometry.center()
+
+  const textMaterial = new THREE.MeshMatcapMaterial({ matcap: matcapTexture})
+
+  const text = new THREE.Mesh(textGeometry, textMaterial)
+  text.position.y = 4
+  scene.add(text)
+  const elapsedTime = clock.getElapsedTime()
+  gsap.to(text.rotation, { duration: 1000, y: text.rotation.y + Math.PI * 200})
+
+
+})
 
 /**
  * House
