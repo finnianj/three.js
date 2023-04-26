@@ -53,6 +53,7 @@ grassNormalTexture.wrapT = THREE.RepeatWrapping
 grassRoughnessTexture.repeat.set(8, 8)
 grassRoughnessTexture.wrapS = THREE.RepeatWrapping
 grassRoughnessTexture.wrapT = THREE.RepeatWrapping
+
 /**
  * House
  */
@@ -181,6 +182,16 @@ scene.add(moonLight)
 const doorLight = new THREE.PointLight('#ff7d46', 1, 7)
 doorLight.position.set(0, 2.2, 2.7)
 house.add(doorLight)
+
+// Ghosts
+const ghost1 = new THREE.PointLight('#ff00ff', 2, 3)
+scene.add(ghost1)
+
+const ghost2 = new THREE.PointLight('#00ffff', 2, 3)
+scene.add(ghost1)
+
+const ghost3 = new THREE.PointLight('#ffff00', 2, 3)
+scene.add(ghost1)
 
 /**
  * Sizes
