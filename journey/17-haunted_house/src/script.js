@@ -58,7 +58,7 @@ grassRoughnessTexture.wrapS = THREE.RepeatWrapping
 grassRoughnessTexture.wrapT = THREE.RepeatWrapping
 
 
-const matcapTexture = textureLoader.load('/textures/3.png')
+const matcapTexture = textureLoader.load('/textures/spook.png')
 
 /**
  * Fonts
@@ -79,7 +79,7 @@ const fontLoader = new FontLoader()
 const textMaterial = new THREE.MeshMatcapMaterial({ matcap: matcapTexture})
 
 // Loading the font requires a callback function
-fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
+fontLoader.load('/fonts/gentilis_bold.typeface.json', (font) => {
   console.log(font);
   const textGeometry = new TextGeometry(
     'Spooky', {font,
