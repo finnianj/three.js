@@ -252,6 +252,12 @@ const tick = () =>
     // Update controls
     controls.update()
 
+    // Update ghosts
+    const ghost1Angle = elapsedTime
+    ghost1.position.x = Math.cos(ghost1Angle * 0.25) * 4
+    ghost1.position.z = Math.sin(ghost1Angle * 0.25) * 4
+    ghost1.position.y = Math.sin(elapsedTime * 1.5)
+
     // Render
     renderer.render(scene, camera)
 
