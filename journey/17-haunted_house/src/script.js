@@ -259,9 +259,14 @@ const tick = () =>
     ghost1.position.y = Math.sin(elapsedTime * 1.5)
 
     const ghost2Angle = - elapsedTime
-    ghost2.position.x = Math.cos(ghost2Angle) * 5
-    ghost2.position.z = Math.sin(ghost2Angle) * 5
-    ghost2.position.y = Math.sin(elapsedTime * 1.5)
+    ghost2.position.x = Math.cos(ghost2Angle * 0.4) * 5
+    ghost2.position.z = Math.sin(ghost2Angle * 0.4) * 5
+    ghost2.position.y = Math.sin(elapsedTime * 1.5) + Math.sin(elapsedTime * 2.5)
+
+    const ghost3Angle = - elapsedTime * 0.18
+    ghost3.position.x = Math.cos(ghost3Angle * 0.4) * (7 + Math.sin(elapsedTime * 0.3))
+    ghost3.position.z = Math.sin(ghost3Angle * 0.4) * (7 + Math.sin(elapsedTime * 0.3))
+    ghost3.position.y = Math.sin(elapsedTime * 1.5) + Math.sin(elapsedTime * 2.5)
 
     // Render
     renderer.render(scene, camera)
