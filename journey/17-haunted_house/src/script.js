@@ -61,6 +61,10 @@ const bush4 = new THREE.Mesh(bushGeometry, bushMaterial)
 
 bush1.scale.set(0.5, 0.5, 0.5)
 bush1.position.set(0.8, 0.2, 2.2)
+
+bush2.scale.set(0.25, 0.25, 0.25)
+bush2.position.set(1.4, 0.1, 2.1)
+
 house.add(bush1, bush2, bush3, bush4)
 
 // Floor
