@@ -58,8 +58,14 @@ house.add(roof)
 // Door
 const door = new THREE.Mesh(
   new THREE.PlaneGeometry(2, 2),
-  new THREE.MeshStandardMaterial({ color: '#aa7b7b' })
+  new THREE.MeshStandardMaterial({
+    map: doorColorTexture,
+    transparent: true,
+    alphaMap: doorAlphaTexture,
+    aoMap: doorAOTexture,
+   })
 )
+door.geometry.setAttribute('uv2', new THREE.Float32BufferAttribute(door.geometry.attributes.uv.array, 2))
 door.position.y = 1
 door.position.z = 2.001
 scene.add(door)
