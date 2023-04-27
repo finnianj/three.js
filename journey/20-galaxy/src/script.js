@@ -78,9 +78,10 @@ const generateGalaxy = () => {
 
     // Color
     const mixedColor = innerColor.clone()
-    colors[i3 + 0] = 1
-    colors[i3 + 1] = 0
-    colors[i3 + 2] = 0
+    mixedColor.lerp(outerColor, radius / parameters.radius)
+    colors[i3 + 0] = mixedColor.r
+    colors[i3 + 1] = mixedColor.g
+    colors[i3 + 2] = mixedColor.b
   }
 
   geometry.setAttribute(
