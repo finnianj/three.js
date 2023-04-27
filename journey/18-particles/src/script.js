@@ -19,6 +19,8 @@ const scene = new THREE.Scene()
  */
 const textureLoader = new THREE.TextureLoader()
 
+
+
 // Particles
 const particlesGeometry = new THREE.SphereGeometry(1, 32, 32)
 
@@ -28,42 +30,25 @@ const particlesMaterial = new THREE.PointsMaterial({
   sizeAttenuation: true,
 })
 
-const geometry = new THREE.BufferGeometry();
-// create a simple square shape. We duplicate the top left and bottom right
-// vertices because each vertex needs to appear once per triangle.
-const vertices = new Float32Array( [
-	-1.0, -1.0,  1.0,
-	 1.0, -1.0,  1.0,
-	 1.0,  1.0,  1.0,
-
-	 1.0,  1.0,  1.0,
-	-1.0,  1.0,  1.0,
-	-1.0, -1.0,  1.0,
-
-   0.0, 0.0, 1.0,
-   1.0, -1.0, 1.0,
-   -1.0, -1.0, 1.0,
-
-   1.0, 1.0, -1.0,
-   1.0, 1.0, 1.0,
-   1.0, -1.0, -1.0,
-
-   1.0, 1.0, 1.0,
-   1.0, -1.0, -1.0,
-   1.0, -1.0, 1.0
-
-] );
-
-// itemSize = 3 because there are 3 values (components) per vertex
-geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-const material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
-const mesh = new THREE.Mesh( geometry, material );
-
-scene.add(mesh)
-
 // Points
 const particles = new THREE.Points(particlesGeometry, particlesMaterial)
 // scene.add(particles)
+
+// Custom
+const count = 500
+const customGeometry = new THREE.BufferGeometry()
+const vertices = new Float32Array(count * 3)
+
+for (let i = 0; i < count * 3; i++) {
+  vertices[i] = Math.random()
+}
+customGeometry.setAttribute(
+  'position',
+  new THREE.BufferAttribute(vertices, 3)
+)
+
+
+
 
 /**
  * Sizes
