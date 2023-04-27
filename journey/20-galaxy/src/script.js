@@ -16,8 +16,8 @@ const scene = new THREE.Scene()
 
 // Galaxy
 const parameters = {
-  count: 1000,
-  size: 0.02
+  count: 100000,
+  size: 0.01
 }
 
 let geometry = null;
