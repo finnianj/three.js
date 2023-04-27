@@ -49,11 +49,13 @@ customGeometry.setAttribute(
   new THREE.BufferAttribute(vertices, 3)
 )
 const customParticles = new THREE.Points(customGeometry, particlesMaterial)
-particlesMaterial.color = new THREE.Color('#ff88cc')
+particlesMaterial.color = new THREE.Color('#ffffff')
 // particlesMaterial.map = particlesTexture
 particlesMaterial.transparent = true;
 particlesMaterial.alphaMap = particlesTexture
-particlesMaterial.alphaTest = 0.001
+// particlesMaterial.alphaTest = 0.001
+// Means the GPU will just draw without trying to guess what is infront:
+particlesMaterial.depthTest = false;
 scene.add(customParticles)
 
 
