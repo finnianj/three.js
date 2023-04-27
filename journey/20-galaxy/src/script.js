@@ -41,12 +41,18 @@ const generateGalaxy = () => {
   console.log('generate galaxy');
 
   const vertices = new Float32Array(parameters.count * 3)
+
+  const colors = new Float32Array(parameters.count * 3)
+  const innerColor = new THREE.Color(parameters.insideColor)
+  const outerColor = new THREE.Color(parameters.outsideColor)
+
   geometry = new THREE.BufferGeometry()
   material = new THREE.PointsMaterial({
     size: parameters.size,
     sizeAttenuation: true,
     depthWrite: false,
-    blending: THREE.AdditiveBlending
+    blending: THREE.AdditiveBlending,
+    vertexColors: true
   })
   points = new THREE.Points(geometry, material)
 
@@ -70,15 +76,23 @@ const generateGalaxy = () => {
     vertices[i3 + 1] = randomY
     vertices[i3 + 2] = Math.sin(radian + spinAngle) * radius + randomZ
 
+    // Color
+    const mixedColor = innerColor.clone()
+    colors[i3 + 0] = 1
+    colors[i3 + 1] = 0
+    colors[i3 + 2] = 0
   }
 
   geometry.setAttribute(
     'position',
     new THREE.BufferAttribute(vertices, 3)
-    )
+  )
+  geometry.setAttribute(
+    'color',
+    new THREE.BufferAttribute(colors, 3)
+  )
 
     scene.add(points)
-    console.log(geometry.attributes.position);
 }
 
 generateGalaxy()
@@ -90,6 +104,8 @@ gui.add(parameters, 'branches').min(2).max(20).step(1).name('Galaxy Branches').o
 gui.add(parameters, 'spin').min(-5).max(5).step(0.1).name('Branch Spin').onFinishChange(generateGalaxy)
 // gui.add(parameters, 'randomness').min(0).max(2).step(0.01).name('Randomness').onFinishChange(generateGalaxy)
 gui.add(parameters, 'randomnessPower').min(1).max(10).step(0.01).name('Uniformity').onFinishChange(generateGalaxy)
+gui.add(parameters, 'insideColor').name('Inner Colour').onFinishChange(generateGalaxy)
+gui.add(parameters, 'outsideColor').name('Outer Colour').onFinishChange(generateGalaxy)
 
 // /**
 //  * Test cube
