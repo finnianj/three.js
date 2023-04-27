@@ -17,7 +17,9 @@ const scene = new THREE.Scene()
 // Galaxy
 const parameters = {
   count: 100000,
-  size: 0.01
+  size: 0.01,
+  radius: 5,
+  branches: 3
 }
 
 let geometry = null;
@@ -45,9 +47,11 @@ const generateGalaxy = () => {
 
   for (let i = 0; i < parameters.count; i++) {
     const i3 = i * 3
-    vertices[i3 + 0] = (Math.random() - 0.5) * 3
-    vertices[i3 + 1] = (Math.random() - 0.5) * 3
-    vertices[i3 + 2] = (Math.random() - 0.5) * 3
+    const radius = Math.random() * parameters.radius
+
+    vertices[i3 + 0] = radius
+    vertices[i3 + 1] = 0
+    vertices[i3 + 2] = 0
   }
   geometry.setAttribute(
     'position',
@@ -62,6 +66,8 @@ generateGalaxy()
 
 gui.add(parameters, 'count').min(100).max(1000000).step(100).name('Star count').onFinishChange(generateGalaxy)
 gui.add(parameters, 'size').min(0.001).max(0.1).step(0.001).name('Star size').onFinishChange(generateGalaxy)
+gui.add(parameters, 'radius').min(0.001).max(20).step(0.001).name('Galaxy Radius').onFinishChange(generateGalaxy)
+gui.add(parameters, 'branches').min(2).max(20).step(1).name('Galaxy Branches').onFinishChange(generateGalaxy)
 
 // /**
 //  * Test cube
