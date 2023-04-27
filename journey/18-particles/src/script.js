@@ -141,7 +141,7 @@ const tick = () =>
       customGeometry.attributes.position.array[i3 + 1] = Math.sin(elapsedTime + x)
 
     }
-    customGeometry.attributes.position.needsUpdate = true;
+    // customGeometry.attributes.position.needsUpdate = true;
 
     // Render
     renderer.render(scene, camera)
