@@ -134,7 +134,13 @@ const tick = () =>
     controls.update()
 
     // animate particles
-    customParticles.position.y = - elapsedTime * 0.05
+    // customParticles.position.y = - elapsedTime * 0.05
+    for (let i = 0; i < count; i++) {
+      const i3 = i * 3
+      customGeometry.attributes.position.array[i3 + 1] = Math.sin(elapsedTime)
+
+    }
+    customGeometry.attributes.position.needsUpdate = true;
 
     // Render
     renderer.render(scene, camera)
