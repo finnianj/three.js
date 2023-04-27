@@ -21,8 +21,12 @@ const parameters = {
 
 
 const generateGalaxy = () => {
+
   console.log('generate galaxy');
+
   const vertices = new Float32Array(parameters.count * 3)
+  const geometry = new THREE.BufferGeometry()
+  const material = new THREE.PointsMaterial()
 
   for (let i = 0; i < parameters.count; i++) {
     const i3 = i * 3
@@ -30,10 +34,11 @@ const generateGalaxy = () => {
     vertices[i3 + 1] = Math.random()
     vertices[i3 + 2] = Math.random()
   }
-  console.log(vertices);
-
-  const geometry = new THREE.BufferGeometry()
-  const material = new THREE.PointsMaterial()
+  geometry.setAttribute(
+    'position',
+    new THREE.BufferAttribute(vertices, 3)
+  )
+  console.log(geometry.attributes.position);
 }
 
 generateGalaxy()
