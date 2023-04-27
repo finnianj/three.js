@@ -133,6 +133,8 @@ const tick = () =>
     // Update controls
     controls.update()
 
+    // animate particles
+    customParticles.position.y = - elapsedTime * 0.05
 
     // Render
     renderer.render(scene, camera)
