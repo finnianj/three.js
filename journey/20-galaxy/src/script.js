@@ -20,20 +20,28 @@ const parameters = {
   size: 0.02
 }
 
+let geometry = null;
+let material = null;
+let points = null;
 
 const generateGalaxy = () => {
-
+  // Destroy old galaxy
+  if (points !== null) {
+    geometry.dispose()
+    material.dispose()
+    scene.remove(points)
+  }
   console.log('generate galaxy');
 
   const vertices = new Float32Array(parameters.count * 3)
-  const geometry = new THREE.BufferGeometry()
-  const material = new THREE.PointsMaterial({
+  geometry = new THREE.BufferGeometry()
+  material = new THREE.PointsMaterial({
     size: parameters.size,
     sizeAttenuation: true,
     depthWrite: false,
     blending: THREE.AdditiveBlending
   })
-  const points = new THREE.Points(geometry, material)
+  points = new THREE.Points(geometry, material)
 
   for (let i = 0; i < parameters.count; i++) {
     const i3 = i * 3
@@ -44,13 +52,16 @@ const generateGalaxy = () => {
   geometry.setAttribute(
     'position',
     new THREE.BufferAttribute(vertices, 3)
-  )
+    )
 
-  scene.add(points)
-  console.log(geometry.attributes.position);
+    scene.add(points)
+    console.log(geometry.attributes.position);
 }
 
 generateGalaxy()
+
+gui.add(parameters, 'count').min(100).max(1000000).step(100).name('Star count').onFinishChange(generateGalaxy)
+gui.add(parameters, 'size').min(0.001).max(0.1).step(0.001).name('Star size').onFinishChange(generateGalaxy)
 
 // /**
 //  * Test cube
