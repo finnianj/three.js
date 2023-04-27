@@ -19,7 +19,8 @@ const parameters = {
   count: 100000,
   size: 0.01,
   radius: 5,
-  branches: 3
+  branches: 3,
+  spin: 1
 }
 
 let geometry = null;
@@ -75,6 +76,7 @@ gui.add(parameters, 'count').min(100).max(1000000).step(100).name('Star count').
 gui.add(parameters, 'size').min(0.001).max(0.1).step(0.001).name('Star size').onFinishChange(generateGalaxy)
 gui.add(parameters, 'radius').min(0.001).max(20).step(0.001).name('Galaxy Radius').onFinishChange(generateGalaxy)
 gui.add(parameters, 'branches').min(2).max(20).step(1).name('Galaxy Branches').onFinishChange(generateGalaxy)
+gui.add(parameters, 'spin').min(-5).max(5).step(0.1).name('Branch Spin').onFinishChange(generateGalaxy)
 
 // /**
 //  * Test cube
