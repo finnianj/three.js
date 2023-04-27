@@ -54,9 +54,11 @@ const generateGalaxy = () => {
     // i.e if branches is 3, then you will get radians equalling 1/3, 1/6 and one whole circle
     const radian = (i % parameters.branches) / parameters.branches * Math.PI * 2
 
-    vertices[i3 + 0] = radius
+    // When you use sin and cos, you get a position on a circle, whose default radius is 1
+    // We need to increase the radius
+    vertices[i3 + 0] = Math.cos(radian) * radius
     vertices[i3 + 1] = 0
-    vertices[i3 + 2] = 0
+    vertices[i3 + 2] = Math.sin(radian) * radius
   }
   geometry.setAttribute(
     'position',
