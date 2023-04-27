@@ -7,7 +7,9 @@
 html,
 body
 {
-    overflow: hidden;
+  width: 100%;
+  overflow: hidden;
+  background-color: black;
 }
 
 .webgl
@@ -16,4 +18,15 @@ body
     top: 0;
     left: 0;
     outline: none;
+}
+
+audio{
+  visibility: hidden;
+}
+
+#enter{
+  width: 40vh;
+  height: 20vh;
+  margin: 40% auto;
+  font-size: 10vh;
 }

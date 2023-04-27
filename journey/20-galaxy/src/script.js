@@ -2,6 +2,10 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
 
+const runProgram = () => {
+  document.querySelector('audio').currentTime = 0;
+  document.querySelector('audio').play()
+
 /**
  * Base
  */
@@ -186,9 +190,6 @@ const tick = () =>
 
 tick()
 
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    document.querySelector('audio').currentTime = 0;
-    document.querySelector('audio').play()
-  }, 6000);
-})
+}
+const button = document.getElementById("enter")
+button.addEventListener('click', runProgram)
