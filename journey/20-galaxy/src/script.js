@@ -16,9 +16,9 @@ const scene = new THREE.Scene()
 
 // Galaxy
 const parameters = {
-  count: 100000,
+  count: 1000000,
   size: 0.01,
-  radius: 5,
+  radius: 10,
   branches: 3,
   spin: 1,
   randomnessPower: 3,
@@ -145,8 +145,8 @@ window.addEventListener('resize', () =>
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
 camera.position.x = 3
-camera.position.y = 0.2
-camera.position.z = 5
+camera.position.y = 0.5
+camera.position.z = parameters.radius
 scene.add(camera)
 
 // Controls
@@ -174,8 +174,8 @@ const tick = () =>
     // Update controls
     controls.update()
 
-    camera.position.x = -elapsedTime * 0.01
-    camera.position.z = camera.position.z - (elapsedTime * 0.0002)
+    camera.position.x = Math.cos(elapsedTime * 0.5)
+    camera.position.z = Math.sin(elapsedTime * 0.05) * parameters.radius
 
     // Render
     renderer.render(scene, camera)
