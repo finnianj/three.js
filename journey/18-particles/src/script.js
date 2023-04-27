@@ -19,14 +19,9 @@ const scene = new THREE.Scene()
  */
 const textureLoader = new THREE.TextureLoader()
 
-/**
- * Test cube
- */
-const cube = new THREE.Mesh(
-    new THREE.BoxGeometry(1, 1, 1),
-    new THREE.MeshBasicMaterial()
-)
-scene.add(cube)
+// Particles
+
+const particlesGeometry = new THREE.SphereGeometry(1, 32, 32)
 
 /**
  * Sizes
