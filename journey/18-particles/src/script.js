@@ -41,7 +41,7 @@ const customGeometry = new THREE.BufferGeometry()
 const vertices = new Float32Array(count * 3)
 
 for (let i = 0; i < count * 3; i++) {
-  vertices[i] = (Math.random() - 0.5) * 100
+  vertices[i] = (Math.random() - 0.5) * 10
 }
 
 customGeometry.setAttribute(
@@ -50,8 +50,10 @@ customGeometry.setAttribute(
 )
 const customParticles = new THREE.Points(customGeometry, particlesMaterial)
 particlesMaterial.color = new THREE.Color('#ff88cc')
-particlesMaterial.map = particlesTexture
-
+// particlesMaterial.map = particlesTexture
+particlesMaterial.transparent = true;
+particlesMaterial.alphaMap = particlesTexture
+particlesMaterial.alphaTest = 0.001
 scene.add(customParticles)
 
 
