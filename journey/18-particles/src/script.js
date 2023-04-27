@@ -40,12 +40,15 @@ const customGeometry = new THREE.BufferGeometry()
 const vertices = new Float32Array(count * 3)
 
 for (let i = 0; i < count * 3; i++) {
-  vertices[i] = Math.random()
+  vertices[i] = (Math.random() - 0.5) * 10
 }
+
 customGeometry.setAttribute(
   'position',
   new THREE.BufferAttribute(vertices, 3)
 )
+const customParticles = new THREE.Points(customGeometry, particlesMaterial)
+scene.add(customParticles)
 
 
 
