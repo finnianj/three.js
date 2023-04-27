@@ -54,8 +54,13 @@ particlesMaterial.color = new THREE.Color('#ffffff')
 particlesMaterial.transparent = true;
 particlesMaterial.alphaMap = particlesTexture
 // particlesMaterial.alphaTest = 0.001
-// Means the GPU will just draw without trying to guess what is infront:
-particlesMaterial.depthTest = false;
+
+// // Means the GPU will just draw without trying to guess what is infront:
+// particlesMaterial.depthTest = false;
+
+// Telling the GPU not to store particles in the depth buffer (the place where depth is stored) This is better than deactivating the entire depth test
+particlesMaterial.depthWrite = false
+
 scene.add(customParticles)
 
 
