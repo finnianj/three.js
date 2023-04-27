@@ -21,7 +21,8 @@ const parameters = {
   radius: 5,
   branches: 3,
   spin: 1,
-  randomness: 0.2
+  // randomness: 0.2,
+  randomnessPower: 3
 }
 
 let geometry = null;
@@ -57,9 +58,9 @@ const generateGalaxy = () => {
     // i.e if branches is 3, then you will get radians equalling 1/3, 1/6 and one whole circle
     const radian = (i % parameters.branches) / parameters.branches * Math.PI * 2
 
-    const randomX = (Math.random() - 0.5) * parameters.randomness
-    const randomY = (Math.random() - 0.5) * parameters.randomness
-    const randomZ = (Math.random() - 0.5) * parameters.randomness
+    const randomX = Math.pow(Math.random(), parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : -1)
+    const randomY = Math.pow(Math.random(), parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : -1)
+    const randomZ = Math.pow(Math.random(), parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : -1)
 
     // When you use sin and cos, you get a position on a circle, whose default radius is 1
     // We need to increase the radius
@@ -85,7 +86,8 @@ gui.add(parameters, 'size').min(0.001).max(0.1).step(0.001).name('Star size').on
 gui.add(parameters, 'radius').min(0.001).max(20).step(0.001).name('Galaxy Radius').onFinishChange(generateGalaxy)
 gui.add(parameters, 'branches').min(2).max(20).step(1).name('Galaxy Branches').onFinishChange(generateGalaxy)
 gui.add(parameters, 'spin').min(-5).max(5).step(0.1).name('Branch Spin').onFinishChange(generateGalaxy)
-gui.add(parameters, 'randomness').min(0).max(2).step(0.01).name('Randomness').onFinishChange(generateGalaxy)
+// gui.add(parameters, 'randomness').min(0).max(2).step(0.01).name('Randomness').onFinishChange(generateGalaxy)
+gui.add(parameters, 'randomnessPower').min(1).max(10).step(0.01).name('Uniformity').onFinishChange(generateGalaxy)
 
 // /**
 //  * Test cube
