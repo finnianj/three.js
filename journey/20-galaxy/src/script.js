@@ -48,6 +48,11 @@ const generateGalaxy = () => {
   for (let i = 0; i < parameters.count; i++) {
     const i3 = i * 3
     const radius = Math.random() * parameters.radius
+    // The angles of a circle are measured in radians
+    // 2piRadians will always equal a full circle in radians (see wikipedia for radians)
+    // The circle is divided into the number of branches. For each i value, you will get a radian.
+    // i.e if branches is 3, then you will get radians equalling 1/3, 1/6 and one whole circle
+    const radian = (i % parameters.branches) / parameters.branches * Math.PI * 2
 
     vertices[i3 + 0] = radius
     vertices[i3 + 1] = 0
