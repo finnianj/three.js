@@ -185,3 +185,10 @@ const tick = () =>
 }
 
 tick()
+
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.querySelector('audio').currentTime = 0;
+    document.querySelector('audio').play()
+  }, 6000);
+})
