@@ -39,8 +39,10 @@ const particles = new THREE.Points(particlesGeometry, particlesMaterial)
 const count = 5000
 const customGeometry = new THREE.BufferGeometry()
 const vertices = new Float32Array(count * 3)
+const colors = new Float32Array(count * 3)
 
 for (let i = 0; i < count * 3; i++) {
+  colors[i] = Math.random()
   vertices[i] = (Math.random() - 0.5) * 10
 }
 
@@ -48,8 +50,14 @@ customGeometry.setAttribute(
   'position',
   new THREE.BufferAttribute(vertices, 3)
 )
+customGeometry.setAttribute(
+  'color',
+  new THREE.BufferAttribute(colors, 3)
+)
+particlesMaterial.vertexColors = true
+
 const customParticles = new THREE.Points(customGeometry, particlesMaterial)
-particlesMaterial.color = new THREE.Color('#ffffff')
+// particlesMaterial.color = new THREE.Color('#ffffff')
 // particlesMaterial.map = particlesTexture
 particlesMaterial.transparent = true;
 particlesMaterial.alphaMap = particlesTexture
@@ -61,6 +69,7 @@ particlesMaterial.alphaMap = particlesTexture
 // Telling the GPU not to store particles in the depth buffer (the place where depth is stored) This is better than deactivating the entire depth test
 particlesMaterial.depthWrite = false
 
+// Means the particles occupying the same pixel will stack together and become brighter.
 particlesMaterial.blending = THREE.AdditiveBlending
 
 scene.add(customParticles)
