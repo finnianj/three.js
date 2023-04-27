@@ -18,6 +18,7 @@ const scene = new THREE.Scene()
  * Textures
  */
 const textureLoader = new THREE.TextureLoader()
+const particlesTexture = textureLoader.load('/textures/particles/9.png')
 
 
 
@@ -26,7 +27,7 @@ const particlesGeometry = new THREE.SphereGeometry(1, 32, 32)
 
 // Particles material
 const particlesMaterial = new THREE.PointsMaterial({
-  size: 0.02,
+  size: 0.1,
   sizeAttenuation: true,
 })
 
@@ -35,12 +36,12 @@ const particles = new THREE.Points(particlesGeometry, particlesMaterial)
 // scene.add(particles)
 
 // Custom
-const count = 500
+const count = 5000
 const customGeometry = new THREE.BufferGeometry()
 const vertices = new Float32Array(count * 3)
 
 for (let i = 0; i < count * 3; i++) {
-  vertices[i] = (Math.random() - 0.5) * 10
+  vertices[i] = (Math.random() - 0.5) * 100
 }
 
 customGeometry.setAttribute(
@@ -48,6 +49,9 @@ customGeometry.setAttribute(
   new THREE.BufferAttribute(vertices, 3)
 )
 const customParticles = new THREE.Points(customGeometry, particlesMaterial)
+particlesMaterial.color = new THREE.Color('#ff88cc')
+particlesMaterial.map = particlesTexture
+
 scene.add(customParticles)
 
 
