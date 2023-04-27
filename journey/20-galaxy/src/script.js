@@ -17,6 +17,7 @@ const scene = new THREE.Scene()
 // Galaxy
 const parameters = {
   count: 1000,
+  size: 0.02
 }
 
 
@@ -26,7 +27,12 @@ const generateGalaxy = () => {
 
   const vertices = new Float32Array(parameters.count * 3)
   const geometry = new THREE.BufferGeometry()
-  const material = new THREE.PointsMaterial()
+  const material = new THREE.PointsMaterial({
+    size: parameters.size,
+    sizeAttenuation: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending
+  })
 
   for (let i = 0; i < parameters.count; i++) {
     const i3 = i * 3
