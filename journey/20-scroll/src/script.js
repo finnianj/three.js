@@ -22,6 +22,10 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 
+// Textures
+const textureLoader = new THREE.TextureLoader()
+const gradient = textureLoader.load('textures/gradients/3.jpg')
+
 // /**
 //  * Test cube
 //  */
@@ -30,7 +34,10 @@ const scene = new THREE.Scene()
 //     new THREE.MeshBasicMaterial({ color: '#ff0000' })
 // )
 // scene.add(cube)
-const material = new THREE.MeshToonMaterial({ color: parameters.materialColor})
+const material = new THREE.MeshToonMaterial({
+  color: parameters.materialColor,
+  gradientMap: gradient
+})
 const mesh1 = new THREE.Mesh(
   new THREE.TorusGeometry(1, 0.4, 16, 60),
   material
