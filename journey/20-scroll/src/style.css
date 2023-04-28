@@ -9,6 +9,9 @@ body
 {
     overflow: hidden;
 } */
+html {
+  background-color: #1e1a20;
+}
 
 .webgl
 {
