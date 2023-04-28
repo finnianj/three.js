@@ -25,6 +25,9 @@ const scene = new THREE.Scene()
 // Textures
 const textureLoader = new THREE.TextureLoader()
 const gradient = textureLoader.load('textures/gradients/3.jpg')
+// By defualt, three will blend pixels if the light value is close to the boundary between
+// two different pixels. If we change the mag filter then we will get the hard change/minecraft effect.
+gradient.magFilter = THREE.NearestFilter
 
 // /**
 //  * Test cube
