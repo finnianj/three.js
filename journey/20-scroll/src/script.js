@@ -7,15 +7,14 @@ import * as dat from 'lil-gui'
 const gui = new dat.GUI()
 
 const parameters = {
-    materialColor: '#38ffde'
+    materialColor: '#38ffde',
+    particleColor: '#ffffff'
 }
 
-gui
-    .addColor(parameters, 'materialColor').onChange(() => { material.color.set(parameters.materialColor) })
 
 /**
  * Base
- */
+*/
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
@@ -33,56 +32,59 @@ gradient.magFilter = THREE.NearestFilter
 //  * Test cube
 //  */
 // const cube = new THREE.Mesh(
-//     new THREE.BoxGeometry(1, 1, 1),
-//     new THREE.MeshBasicMaterial({ color: '#ff0000' })
-// )
-// scene.add(cube)
-const material = new THREE.MeshToonMaterial({
-  color: parameters.materialColor,
-  gradientMap: gradient
-})
-const objectDistance = 4;
-const mesh1 = new THREE.Mesh(
-  new THREE.TorusGeometry(1, 0.4, 16, 60),
-  material
-)
-const mesh2 = new THREE.Mesh(
-  new THREE.ConeGeometry(1, 2, 32),
-  material
-)
-const mesh3 = new THREE.Mesh(
-  new THREE.TorusKnotGeometry(0.8, 0.35, 100, 16),
-  material
-)
-mesh1.position.y = - objectDistance * 0
-mesh2.position.y = - objectDistance * 1
-mesh3.position.y = - objectDistance * 2
-scene.add(mesh1, mesh2, mesh3)
+  //     new THREE.BoxGeometry(1, 1, 1),
+  //     new THREE.MeshBasicMaterial({ color: '#ff0000' })
+  // )
+  // scene.add(cube)
+  const material = new THREE.MeshToonMaterial({
+    color: parameters.materialColor,
+    gradientMap: gradient
+  })
+  const objectDistance = 4;
+  const mesh1 = new THREE.Mesh(
+    new THREE.TorusGeometry(1, 0.4, 16, 60),
+    material
+    )
+    const mesh2 = new THREE.Mesh(
+      new THREE.ConeGeometry(1, 2, 32),
+      material
+      )
+      const mesh3 = new THREE.Mesh(
+        new THREE.TorusKnotGeometry(0.8, 0.35, 100, 16),
+        material
+        )
+        mesh1.position.y = - objectDistance * 0
+        mesh2.position.y = - objectDistance * 1
+        mesh3.position.y = - objectDistance * 2
+        scene.add(mesh1, mesh2, mesh3)
 
-const sectionMeshes = [mesh1, mesh2, mesh3]
+        const sectionMeshes = [mesh1, mesh2, mesh3]
 
-// Particles
-const particlesCount = 200
-const vertices = new Float32Array(particlesCount * 3)
-for (let i = 0; i < particlesCount; i++) {
-  let i3 = i * 3
-  vertices[i3 + 0] = (Math.random() - 0.5) * 10
-  vertices[i3 + 1] = objectDistance * 0.5 - Math.random() * objectDistance * sectionMeshes.length
-  vertices[i3 + 2] = (Math.random() - 0.5) * 10
-}
-const particleGeometry = new THREE.BufferGeometry()
-particleGeometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3))
+        // Particles
+        const particlesCount = 200
+        const vertices = new Float32Array(particlesCount * 3)
+        for (let i = 0; i < particlesCount; i++) {
+          let i3 = i * 3
+          vertices[i3 + 0] = (Math.random() - 0.5) * 10
+          vertices[i3 + 1] = objectDistance * 0.5 - Math.random() * objectDistance * sectionMeshes.length
+          vertices[i3 + 2] = (Math.random() - 0.5) * 10
+        }
+        const particleGeometry = new THREE.BufferGeometry()
+        particleGeometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3))
 
-const particleMaterial = new THREE.PointsMaterial({
-  color: '#ffffff',
-  sizeAttenuation: true,
-  size: 0.03
-})
-const particles = new THREE.Points(particleGeometry, particleMaterial)
-scene.add(particles)
+        const particleMaterial = new THREE.PointsMaterial({
+          color: '#ffffff',
+          sizeAttenuation: true,
+          size: 0.03
+        })
+        const particles = new THREE.Points(particleGeometry, particleMaterial)
+        scene.add(particles)
 
-// Lights
-const directionalLight = new THREE.DirectionalLight('#ffffff', 1)
+      gui.addColor(parameters, 'materialColor').onChange(() => { material.color.set(parameters.materialColor) })
+      gui.addColor(parameters, 'particleColor').onChange(() => { particleMaterial.color.set(parameters.particleColor) })
+
+        // Lights
+        const directionalLight = new THREE.DirectionalLight('#ffffff', 1)
 directionalLight.position.set(1, 1, 0)
 scene.add(directionalLight)
 
@@ -149,6 +151,8 @@ let scrollY = window.scrollY
 window.addEventListener('scroll', () => {
   scrollY = window.scrollY
 })
+
+let currentSection = 0
 
 
 /**
