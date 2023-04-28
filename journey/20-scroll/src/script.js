@@ -151,7 +151,7 @@ const tick = () =>
     const parallaxY = - cursor.y
 
     camera.position.x = parallaxX
-    camera.position.y = parallaxY
+    camera.position.y = camera.position.y + parallaxY
 
     // Render
     renderer.render(scene, camera)
