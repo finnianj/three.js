@@ -26,7 +26,7 @@ const scene = new THREE.Scene()
 const textureLoader = new THREE.TextureLoader()
 const gradient = textureLoader.load('textures/gradients/3.jpg')
 // By defualt, three will blend pixels if the light value is close to the boundary between
-// two different pixels. If we change the mag filter then we will get the hard change/minecraft effect.
+// two different pixels. If we change the mag filter then we will get the hard change between pixels without gradient, like a minecraft effect.
 gradient.magFilter = THREE.NearestFilter
 
 // /**
@@ -41,6 +41,7 @@ const material = new THREE.MeshToonMaterial({
   color: parameters.materialColor,
   gradientMap: gradient
 })
+const objectDistance = 4;
 const mesh1 = new THREE.Mesh(
   new THREE.TorusGeometry(1, 0.4, 16, 60),
   material
@@ -53,6 +54,9 @@ const mesh3 = new THREE.Mesh(
   new THREE.TorusKnotGeometry(0.8, 0.35, 100, 16),
   material
 )
+mesh1.position.y = - objectDistance * 0
+mesh2.position.y = - objectDistance * 1
+mesh3.position.y = - objectDistance * 2
 scene.add(mesh1, mesh2, mesh3)
 
 // Lights
