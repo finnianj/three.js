@@ -66,13 +66,20 @@ const particlesCount = 200
 const vertices = new Float32Array(particlesCount * 3)
 for (let i = 0; i < particlesCount; i++) {
   let i3 = i * 3
-  vertices[i3 + 0] = Math.random()
-  vertices[i3 + 1] = Math.random()
-  vertices[i3 + 2] = Math.random()
+  vertices[i3 + 0] = (Math.random() - 0.5) * 10
+  vertices[i3 + 1] = objectDistance * 0.5 - Math.random() * objectDistance * sectionMeshes.length
+  vertices[i3 + 2] = (Math.random() - 0.5) * 10
 }
 const particleGeometry = new THREE.BufferGeometry()
 particleGeometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3))
 
+const particleMaterial = new THREE.PointsMaterial({
+  color: '#ffffff',
+  sizeAttenuation: true,
+  size: 0.03
+})
+const particles = new THREE.Points(particleGeometry, particleMaterial)
+scene.add(particles)
 
 // Lights
 const directionalLight = new THREE.DirectionalLight('#ffffff', 1)
