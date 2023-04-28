@@ -104,10 +104,16 @@ window.addEventListener('mousemove', (event) => {
 /**
  * Camera
  */
+
+// Camera Group
+const cameraGroup = new THREE.Group()
+scene.add(cameraGroup)
+
 // Base camera
 const camera = new THREE.PerspectiveCamera(35, sizes.width / sizes.height, 0.1, 100)
 camera.position.z = 6
-scene.add(camera)
+cameraGroup.add(camera)
+// scene.add(camera)
 
 /**
  * Renderer
@@ -125,14 +131,19 @@ window.addEventListener('scroll', () => {
   scrollY = window.scrollY
 })
 
+
 /**
  * Animate
  */
 const clock = new THREE.Clock()
+let previousTime = 0;
 
 const tick = () =>
 {
     const elapsedTime = clock.getElapsedTime()
+    const deltaTime = elapsedTime - previousTime
+    previousTime = elapsedTime
+
 
     // Animate objects
     for (const mesh of sectionMeshes) {
@@ -147,12 +158,12 @@ const tick = () =>
     // Use this formula to get a scroll of 1000px to equal the distance between objects
     camera.position.y =  - scrollY / sizes.height * objectDistance
 
-    const parallaxX = cursor.x
-    const parallaxY = - cursor.y
+    const parallaxX = cursor.x * 0.5
+    const parallaxY = - cursor.y * 0.5
 
     // Easing:
-    camera.position.x += (parallaxX - camera.position.x) * 0.05
-    camera.position.y += (parallaxY - camera.position.y) * 0.05
+    cameraGroup.position.x += (parallaxX - cameraGroup.position.x) * 3 * deltaTime
+    cameraGroup.position.y += (parallaxY - cameraGroup.position.y) * 3 * deltaTime
 
     // Render
     renderer.render(scene, camera)
