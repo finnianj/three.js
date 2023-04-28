@@ -150,8 +150,9 @@ const tick = () =>
     const parallaxX = cursor.x
     const parallaxY = - cursor.y
 
-    camera.position.x = parallaxX
-    camera.position.y = camera.position.y + parallaxY
+    // Easing:
+    camera.position.x += (parallaxX - camera.position.x) * 0.05
+    camera.position.y += (parallaxY - camera.position.y) * 0.05
 
     // Render
     renderer.render(scene, camera)
