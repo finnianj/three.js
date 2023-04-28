@@ -59,6 +59,9 @@ mesh2.position.y = - objectDistance * 1
 mesh3.position.y = - objectDistance * 2
 scene.add(mesh1, mesh2, mesh3)
 
+const sectionMeshes = [mesh1, mesh2, mesh3]
+
+
 // Lights
 const directionalLight = new THREE.DirectionalLight('#ffffff', 1)
 directionalLight.position.set(1, 1, 0)
@@ -113,6 +116,12 @@ const clock = new THREE.Clock()
 const tick = () =>
 {
     const elapsedTime = clock.getElapsedTime()
+
+    // Animate objects
+    for (const mesh of sectionMeshes) {
+      mesh.rotation.x = elapsedTime * 0.2
+      mesh.rotation.y = elapsedTime * 0.1
+    }
 
     // Render
     renderer.render(scene, camera)
