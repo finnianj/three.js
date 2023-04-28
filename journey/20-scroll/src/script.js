@@ -7,7 +7,7 @@ import * as dat from 'lil-gui'
 const gui = new dat.GUI()
 
 const parameters = {
-    materialColor: '#ffeded'
+    materialColor: '#38ffde'
 }
 
 gui
@@ -90,6 +90,17 @@ window.addEventListener('resize', () =>
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
 
+// Cursor
+const cursor = {
+  x: 0,
+  y: 0
+}
+
+window.addEventListener('mousemove', (event) => {
+  cursor.x = (event.clientX / sizes.width) - 0.5
+  cursor.y = (event.clientY / sizes.height) - 0.5
+})
+
 /**
  * Camera
  */
@@ -108,6 +119,12 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
+// Scroll
+let scrollY = window.scrollY
+window.addEventListener('scroll', () => {
+  scrollY = window.scrollY
+})
+
 /**
  * Animate
  */
@@ -122,6 +139,19 @@ const tick = () =>
       mesh.rotation.x = elapsedTime * 0.2
       mesh.rotation.y = elapsedTime * 0.1
     }
+    mesh1.position.x = 2
+    mesh2.position.x = -2
+    mesh3.position.x = 2
+
+    // Animate camera
+    // Use this formula to get a scroll of 1000px to equal the distance between objects
+    camera.position.y =  - scrollY / sizes.height * objectDistance
+
+    const parallaxX = cursor.x
+    const parallaxY = - cursor.y
+
+    camera.position.x = parallaxX
+    camera.position.y = parallaxY
 
     // Render
     renderer.render(scene, camera)
