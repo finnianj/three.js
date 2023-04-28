@@ -61,6 +61,18 @@ scene.add(mesh1, mesh2, mesh3)
 
 const sectionMeshes = [mesh1, mesh2, mesh3]
 
+// Particles
+const particlesCount = 200
+const vertices = new Float32Array(particlesCount * 3)
+for (let i = 0; i < particlesCount; i++) {
+  let i3 = i * 3
+  vertices[i3 + 0] = Math.random()
+  vertices[i3 + 1] = Math.random()
+  vertices[i3 + 2] = Math.random()
+}
+const particleGeometry = new THREE.BufferGeometry()
+particleGeometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3))
+
 
 // Lights
 const directionalLight = new THREE.DirectionalLight('#ffffff', 1)
