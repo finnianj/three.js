@@ -35,28 +35,19 @@ const environmentMapTexture = cubeTextureLoader.load([
 /**
  * Test sphere
  */
-const sphere = new THREE.Mesh(
-    new THREE.SphereGeometry(0.5, 32, 32),
-    new THREE.MeshStandardMaterial({
-        metalness: 0.3,
-        roughness: 0.4,
-        envMap: environmentMapTexture,
-        envMapIntensity: 0.5
-    })
-)
-const sphere2 = new THREE.Mesh(
-    new THREE.SphereGeometry(0.5, 32, 32),
-    new THREE.MeshStandardMaterial({
-        metalness: 0.3,
-        roughness: 0.4,
-        envMap: environmentMapTexture,
-        envMapIntensity: 0.5
-    })
-)
-sphere.castShadow = true
-sphere.position.y = 0.5
-sphere2.position.y = 5
-scene.add(sphere, sphere2)
+// const sphere = new THREE.Mesh(
+//     new THREE.SphereGeometry(0.5, 32, 32),
+//     new THREE.MeshStandardMaterial({
+//         metalness: 0.3,
+//         roughness: 0.4,
+//         envMap: environmentMapTexture,
+//         envMapIntensity: 0.5
+//     })
+// )
+
+// sphere.castShadow = true
+// sphere.position.y = 0.5
+// scene.add(sphere)
 
 /**
  * Floor
@@ -210,6 +201,8 @@ const createSphere = (radius, position) => {
   world.addBody(body)
 }
 
+createSphere(0.5, {x: 0, y: 3, z: 0})
+
 /**
  * Renderer
  */
@@ -233,11 +226,11 @@ const tick = () =>
     const deltaTime = elapsedTime - oldElapsedTime
     oldElapsedTime = elapsedTime
 
-    sphereBody.applyForce(new CANNON.Vec3(-0.5, 0, 0), sphereBody.position)
+    // sphereBody.applyForce(new CANNON.Vec3(-0.5, 0, 0), sphereBody.position)
 
     //Update physics
     world.step(1/60, deltaTime, 3)
-    sphere.position.copy(sphereBody.position)
+    mesh.position.copy(body.position)
 
     // Update controls
     controls.update()
