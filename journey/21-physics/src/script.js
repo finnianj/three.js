@@ -44,9 +44,19 @@ const sphere = new THREE.Mesh(
         envMapIntensity: 0.5
     })
 )
+const sphere2 = new THREE.Mesh(
+    new THREE.SphereGeometry(0.5, 32, 32),
+    new THREE.MeshStandardMaterial({
+        metalness: 0.3,
+        roughness: 0.4,
+        envMap: environmentMapTexture,
+        envMapIntensity: 0.5
+    })
+)
 sphere.castShadow = true
 sphere.position.y = 0.5
-scene.add(sphere)
+sphere2.position.y = 5
+scene.add(sphere, sphere2)
 
 /**
  * Floor
@@ -113,14 +123,20 @@ const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 
 camera.position.set(- 3, 3, 3)
 scene.add(camera)
 
+//axes helper
+const axesHelper = new THREE.AxesHelper( 5 );
+scene.add( axesHelper );
+
 // Controls
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
 
-// Physics
+// Physics -----------------------------------
 
 const world = new CANNON.World()
 world.gravity.set(0, -9.82, 0)
+
+// cannon sphere
 const sphereShape = new CANNON.Sphere(0.5)
 const sphereBody = new CANNON.Body({
   mass: 1,
@@ -129,11 +145,19 @@ const sphereBody = new CANNON.Body({
 })
 world.addBody(sphereBody)
 
+// Cannon floor
 const floorShape = new CANNON.Plane()
 const floorBody = new CANNON.Body()
 floorBody.mass = 0
 floorBody.addShape(floorShape)
+// floorBody.quaternion.setFromAxisAngle(
+//   new CANNON.Vec3(-1, 0, 0),
+//   Math.PI * 0.5
+// )
+
 world.addBody(floorBody)
+
+// -----------------------------------
 
 /**
  * Renderer
