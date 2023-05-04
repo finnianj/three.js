@@ -117,6 +117,10 @@ scene.add(camera)
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
 
+// Physics
+
+const world = new CANNON.World()
+
 /**
  * Renderer
  */
