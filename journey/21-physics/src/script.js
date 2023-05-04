@@ -205,6 +205,8 @@ const tick = () =>
     const deltaTime = elapsedTime - oldElapsedTime
     oldElapsedTime = elapsedTime
 
+    sphereBody.applyForce(new CANNON.Vec3(-0.5, 0, 0), sphereBody.position)
+
     //Update physics
     world.step(1/60, deltaTime, 3)
     sphere.position.copy(sphereBody.position)
