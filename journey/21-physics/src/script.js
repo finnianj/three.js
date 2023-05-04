@@ -210,7 +210,6 @@ const tick = () =>
     //Update physics
     world.step(1/60, deltaTime, 3)
     sphere.position.copy(sphereBody.position)
-    // console.log(sphereBody.position.y)
 
     // Update controls
     controls.update()
