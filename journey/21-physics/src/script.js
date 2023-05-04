@@ -143,7 +143,7 @@ const concretePlasticContactMaterial = new CANNON.ContactMaterial(
   plasticMaterial,
   {
     friction: 0.1,
-    restitution: 0.7
+    restitution: 1
   }
 )
 world.addContactMaterial(concretePlasticContactMaterial)
@@ -200,6 +200,9 @@ const tick = () =>
     world.step(1/60, deltaTime, 3)
     sphere.position.copy(sphereBody.position)
     // console.log(sphereBody.position.y)
+
+    sphere.position.x = Math.sin(elapsedTime)
+    sphere.position.z = Math.cos(elapsedTime)
 
     // Update controls
     controls.update()
