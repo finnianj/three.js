@@ -184,7 +184,7 @@ world.addBody(floorBody)
 
 // Utils
 const createSphere = (radius, position) => {
-  // Three js body
+  // Three js mesh
   const mesh = new THREE.Mesh(
     new THREE.SphereGeometry(radius, 20, 20),
     new THREE.MeshStandardMaterial({
@@ -197,6 +197,17 @@ const createSphere = (radius, position) => {
   mesh.castShadow = true
   mesh.position.copy(position)
   scene.add(mesh)
+
+  // Cannon js body
+  const shape = new CANNON.Sphere(radius)
+  const body = new CANNON.Body({
+    mass: 1,
+    position: new CANNON.Vec3(0, 3, 0),
+    shape: shape,
+    material: defaultMaterial,
+  })
+  body.position.copy(position)
+  world.addBody(body)
 }
 
 /**
