@@ -184,7 +184,19 @@ world.addBody(floorBody)
 
 // Utils
 const createSphere = (radius, position) => {
-
+  // Three js body
+  const mesh = new THREE.Mesh(
+    new THREE.SphereGeometry(radius, 20, 20),
+    new THREE.MeshStandardMaterial({
+      metalness: 0.3,
+      roughness: 0.4,
+      envMap: environmentMapTexture,
+      envMapIntensity: 0.5
+    })
+  )
+  mesh.castShadow = true
+  mesh.position.copy(position)
+  scene.add(mesh)
 }
 
 /**
