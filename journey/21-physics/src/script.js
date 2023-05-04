@@ -164,6 +164,8 @@ const sphereBody = new CANNON.Body({
   // material: defaultMaterial
 })
 world.addBody(sphereBody)
+// Pushing: first param is vector of force, second is point on object where the force comes from
+sphereBody.applyLocalForce(new CANNON.Vec3(150, 0, 0), new CANNON.Vec3(0, 0, 0))
 
 // Cannon floor
 const floorShape = new CANNON.Plane()
@@ -207,9 +209,6 @@ const tick = () =>
     world.step(1/60, deltaTime, 3)
     sphere.position.copy(sphereBody.position)
     // console.log(sphereBody.position.y)
-
-    sphere.position.x = Math.sin(elapsedTime)
-    sphere.position.z = Math.cos(elapsedTime)
 
     // Update controls
     controls.update()
