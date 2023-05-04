@@ -155,17 +155,17 @@ const defaultContactMaterial = new CANNON.ContactMaterial(
 // world.addContactMaterial(defaultContactMaterial)
 world.defaultContactMaterial = defaultContactMaterial
 
-// cannon sphere
-const sphereShape = new CANNON.Sphere(0.5)
-const sphereBody = new CANNON.Body({
-  mass: 1,
-  position: new CANNON.Vec3(0, 3, 0),
-  shape: sphereShape,
-  // material: defaultMaterial
-})
-world.addBody(sphereBody)
-// Pushing: first param is vector of force, second is point on object where the force comes from
-sphereBody.applyLocalForce(new CANNON.Vec3(150, 0, 0), new CANNON.Vec3(0, 0, 0))
+// // cannon sphere
+// const sphereShape = new CANNON.Sphere(0.5)
+// const sphereBody = new CANNON.Body({
+//   mass: 1,
+//   position: new CANNON.Vec3(0, 3, 0),
+//   shape: sphereShape,
+//   // material: defaultMaterial
+// })
+// world.addBody(sphereBody)
+// // Pushing: first param is vector of force, second is point on object where the force comes from
+// sphereBody.applyLocalForce(new CANNON.Vec3(150, 0, 0), new CANNON.Vec3(0, 0, 0))
 
 // Cannon floor
 const floorShape = new CANNON.Plane()
@@ -181,6 +181,11 @@ floorBody.quaternion.setFromAxisAngle(
 world.addBody(floorBody)
 
 // -----------------------------------
+
+// Utils
+const createSphere = (radius, position) => {
+
+}
 
 /**
  * Renderer
