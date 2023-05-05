@@ -9,6 +9,12 @@ import CANNON from 'cannon'
 const gui = new dat.GUI()
 const debugObject = {};
 
+debugObject.createSphere = () => {
+  console.log('creating a sphere');
+  createSphere(0.5, {x: 0, y: 3, z: 0})
+}
+gui.add(debugObject, 'createSphere').name('Create a sphere')
+
 /**
  * Base
  */
@@ -204,9 +210,6 @@ const createSphere = (radius, position) => {
   objectsToUpdate.push({ mesh: mesh, body: body })
 }
 
-createSphere(0.5, {x: 0, y: 3, z: 0})
-createSphere(0.5, {x: 2, y: 5, z: 2})
-createSphere(0.5, {x: 1, y: 1, z: 3})
 
 /**
  * Renderer
