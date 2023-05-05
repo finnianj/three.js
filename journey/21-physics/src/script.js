@@ -200,6 +200,13 @@ world.addBody(floorBody)
 
 // -----------------------------------
 
+
+// Sounds
+const sound = new Audio('/sounds/hit.mp3')
+const playSound = () => {
+  sound.play()
+}
+
 // Utils
 const objectsToUpdate = []
 const sphereGeometry = new THREE.SphereGeometry(1, 20, 20)
