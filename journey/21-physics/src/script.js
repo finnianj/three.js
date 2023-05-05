@@ -150,6 +150,7 @@ controls.enableDamping = true
 // Physics -----------------------------------
 
 const world = new CANNON.World()
+world.broadphase = new CANNON.SAPBroadphase(world)
 world.gravity.set(0, -9.82, 0)
 
 // const concreteMaterial = new CANNON.Material('concrete')
