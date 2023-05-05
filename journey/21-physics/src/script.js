@@ -1,12 +1,47 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
-import CANNON from 'cannon'
+import * as CANNON from 'cannon-es'
 
 /**
  * Debug
  */
 const gui = new dat.GUI()
+const debugObject = {};
+
+debugObject.createSphere = () => {
+  console.log('creating a sphere');
+  createSphere(Math.random( ) * 0.5,
+  {
+    x: (Math.random() - 0.5) * 3,
+    y: 3,
+    z: (Math.random() - 0.5) * 3
+  })
+}
+debugObject.createCube = () => {
+  console.log('creating a cube');
+  createCube(
+    Math.random() * 1,
+    Math.random() * 1,
+    Math.random() * 1,
+  {
+    x: (Math.random() - 0.5) * 3,
+    y: 3,
+    z: (Math.random() - 0.5) * 3
+  })
+}
+debugObject.reset = () => {
+  console.log(objectsToUpdate);
+  for(const object of objectsToUpdate) {
+    object.body.removeEventListener('collide', 'playSound')
+    world.removeBody(object.body)
+    scene.remove(object.mesh)
+  }
+  objectsToUpdate = []
+}
+gui.add(debugObject, 'createSphere').name('Create a sphere')
+gui.add(debugObject, 'createCube').name('Create a cube')
+gui.add(debugObject, 'reset').name('Reset')
 
 /**
  * Base
@@ -55,7 +90,7 @@ const environmentMapTexture = cubeTextureLoader.load([
 const floor = new THREE.Mesh(
     new THREE.PlaneGeometry(10, 10),
     new THREE.MeshStandardMaterial({
-        color: '#777777',
+        color: '#ffffff',
         metalness: 0.3,
         roughness: 0.4,
         envMap: environmentMapTexture,
@@ -65,6 +100,36 @@ const floor = new THREE.Mesh(
 floor.receiveShadow = true
 floor.rotation.x = - Math.PI * 0.5
 scene.add(floor)
+
+const wall1 = new THREE.Mesh(
+  new THREE.PlaneGeometry(10, 10),
+  new THREE.MeshStandardMaterial({
+      color: '#777777',
+      metalness: 0.3,
+      roughness: 0.4,
+      envMap: environmentMapTexture,
+      envMapIntensity: 0.5
+  })
+)
+wall1.receiveShadow = true
+wall1.position.x = 5
+wall1.rotation.y = - Math.PI * 0.5
+scene.add(wall1)
+
+const wall2 = new THREE.Mesh(
+  new THREE.PlaneGeometry(10, 10),
+  new THREE.MeshStandardMaterial({
+      color: '#777777',
+      metalness: 0.3,
+      roughness: 0.4,
+      envMap: environmentMapTexture,
+      envMapIntensity: 0.5
+  })
+)
+wall2.receiveShadow = true
+wall2.position.z = - 5
+wall2.rotation.y = Math.PI * 2
+scene.add(wall2)
 
 /**
  * Lights
@@ -115,8 +180,8 @@ camera.position.set(- 3, 3, 3)
 scene.add(camera)
 
 //axes helper
-const axesHelper = new THREE.AxesHelper( 5 );
-scene.add( axesHelper );
+// const axesHelper = new THREE.AxesHelper( 5 );
+// scene.add( axesHelper );
 
 // Controls
 const controls = new OrbitControls(camera, canvas)
@@ -125,6 +190,8 @@ controls.enableDamping = true
 // Physics -----------------------------------
 
 const world = new CANNON.World()
+world.broadphase = new CANNON.SAPBroadphase(world)
+world.allowSleep = true
 world.gravity.set(0, -9.82, 0)
 
 // const concreteMaterial = new CANNON.Material('concrete')
@@ -169,23 +236,62 @@ floorBody.quaternion.setFromAxisAngle(
   Math.PI * 0.5
 )
 
+const wallShape = new CANNON.Plane()
+const wallBody1 = new CANNON.Body()
+wallBody1.mass = 0
+wallBody1.addShape(wallShape)
+// floorBody.material = defaultMaterial
+wallBody1.position.x = 5
+wallBody1.quaternion.setFromAxisAngle(
+  new CANNON.Vec3(0, 1, 0),
+  - Math.PI * 0.5
+  )
+const wallBody2 = new CANNON.Body()
+wallBody2.mass = 0
+wallBody2.addShape(wallShape)
+// floorBody.material = defaultMaterial
+wallBody2.position.z = -5
+// wallBody2.quaternion.setFromAxisAngle(
+//   new CANNON.Vec3(0, 1, 0),
+//   Math.PI
+//   )
+
+console.log(wallBody2.position);
+
 world.addBody(floorBody)
+world.addBody(wallBody1)
+world.addBody(wallBody2)
 
 // -----------------------------------
 
-const objectsToUpdate = []
+
+// Sounds
+const sound = new Audio('/sounds/hit.mp3')
+const playSound = (collision) => {
+  const impact = collision.contact.getImpactVelocityAlongNormal();
+  if (impact > 1.5) {
+    sound.volume = (Math.min(impact, 10) / 10)
+    sound.currentTime = 0
+    sound.play()
+  }
+}
+
 // Utils
+let objectsToUpdate = []
+const sphereGeometry = new THREE.SphereGeometry(1, 20, 20)
 const createSphere = (radius, position) => {
+  let color = new THREE.Color( 0xffffff );
+  color.setHex( Math.random() * 0xffffff );
+  const sphereMaterial = new THREE.MeshStandardMaterial({
+    metalness: 0.3,
+    roughness: 0.4,
+    envMap: environmentMapTexture,
+    envMapIntensity: 0.5,
+    color: color
+  })
   // Three js mesh
-  const mesh = new THREE.Mesh(
-    new THREE.SphereGeometry(radius, 20, 20),
-    new THREE.MeshStandardMaterial({
-      metalness: 0.3,
-      roughness: 0.4,
-      envMap: environmentMapTexture,
-      envMapIntensity: 0.5
-    })
-  )
+  const mesh = new THREE.Mesh(sphereGeometry, sphereMaterial)
+  mesh.scale.set(radius, radius, radius)
   mesh.castShadow = true
   mesh.position.copy(position)
   scene.add(mesh)
@@ -199,11 +305,45 @@ const createSphere = (radius, position) => {
     material: defaultMaterial,
   })
   body.position.copy(position)
+  body.addEventListener('collide', playSound)
   world.addBody(body)
   objectsToUpdate.push({ mesh: mesh, body: body })
 }
 
-createSphere(0.5, {x: 0, y: 3, z: 0})
+const cubeGeometry = new THREE.BoxGeometry(1, 1, 1)
+
+const createCube = (width, height, depth, position) => {
+  let color = new THREE.Color( 0xffffff );
+  color.setHex( Math.random() * 0xffffff );
+  const cubeMaterial = new THREE.MeshStandardMaterial({
+    metalness: 0.3,
+    roughness: 0.4,
+    envMap: environmentMapTexture,
+    envMapIntensity: 0.5,
+    color: color
+  })
+  // Three js mesh
+  const mesh = new THREE.Mesh(cubeGeometry, cubeMaterial)
+  mesh.scale.set(width, height, depth)
+  mesh.castShadow = true
+  mesh.position.copy(position)
+  scene.add(mesh)
+
+  // Cannon js body
+  const shape = new CANNON.Box(new CANNON.Vec3(width / 2, height / 2, depth / 2))
+  const body = new CANNON.Body({
+    mass: 1,
+    position: new CANNON.Vec3(0, 3, 0),
+    shape: shape,
+    material: defaultMaterial,
+  })
+  body.addEventListener('collide', playSound)
+  body.position.copy(position)
+  world.addBody(body)
+  objectsToUpdate.push({ mesh: mesh, body: body })
+
+}
+
 
 /**
  * Renderer
@@ -235,7 +375,10 @@ const tick = () =>
 
     // Loop through update objects
     for (const object of objectsToUpdate) {
+
       object.mesh.position.copy(object.body.position)
+      //update rotation
+      object.mesh.quaternion.copy(object.body.quaternion)
     }
     // Update controls
     controls.update()
