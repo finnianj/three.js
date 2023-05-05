@@ -224,7 +224,7 @@ const playSound = (collision) => {
 }
 
 // Utils
-const objectsToUpdate = []
+let objectsToUpdate = []
 const sphereGeometry = new THREE.SphereGeometry(1, 20, 20)
 const createSphere = (radius, position) => {
   let color = new THREE.Color( 0xffffff );
@@ -252,6 +252,7 @@ const createSphere = (radius, position) => {
     material: defaultMaterial,
   })
   body.position.copy(position)
+  body.addEventListener('collide', playSound)
   world.addBody(body)
   objectsToUpdate.push({ mesh: mesh, body: body })
 }
