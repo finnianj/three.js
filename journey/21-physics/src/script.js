@@ -187,20 +187,20 @@ world.addBody(floorBody)
 
 // Utils
 const objectsToUpdate = []
+const sphereGeometry = new THREE.SphereGeometry(1, 20, 20)
 const createSphere = (radius, position) => {
   let color = new THREE.Color( 0xffffff );
   color.setHex( Math.random() * 0xffffff );
+  const sphereMaterial = new THREE.MeshStandardMaterial({
+    metalness: 0.3,
+    roughness: 0.4,
+    envMap: environmentMapTexture,
+    envMapIntensity: 0.5,
+    color: color
+  })
   // Three js mesh
-  const mesh = new THREE.Mesh(
-    new THREE.SphereGeometry(radius, 20, 20),
-    new THREE.MeshStandardMaterial({
-      metalness: 0.3,
-      roughness: 0.4,
-      envMap: environmentMapTexture,
-      envMapIntensity: 0.5,
-      color: color
-    })
-  )
+  const mesh = new THREE.Mesh(sphereGeometry, sphereMaterial)
+  mesh.scale.set(radius, radius, radius)
   mesh.castShadow = true
   mesh.position.copy(position)
   scene.add(mesh)
