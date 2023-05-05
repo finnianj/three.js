@@ -90,7 +90,7 @@ const environmentMapTexture = cubeTextureLoader.load([
 const floor = new THREE.Mesh(
     new THREE.PlaneGeometry(10, 10),
     new THREE.MeshStandardMaterial({
-        color: '#777777',
+        color: '#ffffff',
         metalness: 0.3,
         roughness: 0.4,
         envMap: environmentMapTexture,
@@ -115,6 +115,21 @@ wall1.receiveShadow = true
 wall1.position.x = 5
 wall1.rotation.y = - Math.PI * 0.5
 scene.add(wall1)
+
+const wall2 = new THREE.Mesh(
+  new THREE.PlaneGeometry(10, 10),
+  new THREE.MeshStandardMaterial({
+      color: '#777777',
+      metalness: 0.3,
+      roughness: 0.4,
+      envMap: environmentMapTexture,
+      envMapIntensity: 0.5
+  })
+)
+wall2.receiveShadow = true
+wall2.position.z = - 5
+wall2.rotation.y = Math.PI * 2
+scene.add(wall2)
 
 /**
  * Lights
@@ -165,8 +180,8 @@ camera.position.set(- 3, 3, 3)
 scene.add(camera)
 
 //axes helper
-const axesHelper = new THREE.AxesHelper( 5 );
-scene.add( axesHelper );
+// const axesHelper = new THREE.AxesHelper( 5 );
+// scene.add( axesHelper );
 
 // Controls
 const controls = new OrbitControls(camera, canvas)
@@ -231,11 +246,21 @@ wallBody1.quaternion.setFromAxisAngle(
   new CANNON.Vec3(0, 1, 0),
   - Math.PI * 0.5
   )
+const wallBody2 = new CANNON.Body()
+wallBody2.mass = 0
+wallBody2.addShape(wallShape)
+// floorBody.material = defaultMaterial
+wallBody2.position.z = -5
+// wallBody2.quaternion.setFromAxisAngle(
+//   new CANNON.Vec3(0, 1, 0),
+//   Math.PI
+//   )
 
-  console.log(wallBody1.position);
+console.log(wallBody2.position);
 
 world.addBody(floorBody)
 world.addBody(wallBody1)
+world.addBody(wallBody2)
 
 // -----------------------------------
 
@@ -245,7 +270,7 @@ const sound = new Audio('/sounds/hit.mp3')
 const playSound = (collision) => {
   const impact = collision.contact.getImpactVelocityAlongNormal();
   if (impact > 1.5) {
-    sound.volume = impact / 10
+    sound.volume = (Math.min(impact, 10) / 10)
     sound.currentTime = 0
     sound.play()
   }
