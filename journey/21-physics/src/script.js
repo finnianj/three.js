@@ -11,7 +11,12 @@ const debugObject = {};
 
 debugObject.createSphere = () => {
   console.log('creating a sphere');
-  createSphere(0.5, {x: 0, y: 3, z: 0})
+  createSphere(Math.random( ) * 0.5,
+  {
+    x: (Math.random() - 0.5) * 3,
+    y: 3,
+    z: (Math.random() - 0.5) * 3
+  })
 }
 gui.add(debugObject, 'createSphere').name('Create a sphere')
 
