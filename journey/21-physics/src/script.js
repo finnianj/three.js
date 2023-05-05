@@ -7,6 +7,7 @@ import CANNON from 'cannon'
  * Debug
  */
 const gui = new dat.GUI()
+const debugObject = {};
 
 /**
  * Base
@@ -173,8 +174,8 @@ world.addBody(floorBody)
 
 // -----------------------------------
 
-const objectsToUpdate = []
 // Utils
+const objectsToUpdate = []
 const createSphere = (radius, position) => {
   // Three js mesh
   const mesh = new THREE.Mesh(
@@ -204,6 +205,8 @@ const createSphere = (radius, position) => {
 }
 
 createSphere(0.5, {x: 0, y: 3, z: 0})
+createSphere(0.5, {x: 2, y: 5, z: 2})
+createSphere(0.5, {x: 1, y: 1, z: 3})
 
 /**
  * Renderer
