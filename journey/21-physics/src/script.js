@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
-import CANNON from 'cannon'
+import * as CANNON from 'cannon-es'
 
 /**
  * Debug
@@ -100,6 +100,21 @@ const floor = new THREE.Mesh(
 floor.receiveShadow = true
 floor.rotation.x = - Math.PI * 0.5
 scene.add(floor)
+
+const wall1 = new THREE.Mesh(
+  new THREE.PlaneGeometry(10, 10),
+  new THREE.MeshStandardMaterial({
+      color: '#777777',
+      metalness: 0.3,
+      roughness: 0.4,
+      envMap: environmentMapTexture,
+      envMapIntensity: 0.5
+  })
+)
+wall1.receiveShadow = true
+wall1.position.x = 5
+wall1.rotation.y = - Math.PI * 0.5
+scene.add(wall1)
 
 /**
  * Lights
@@ -206,7 +221,21 @@ floorBody.quaternion.setFromAxisAngle(
   Math.PI * 0.5
 )
 
+const wallShape = new CANNON.Plane()
+const wallBody1 = new CANNON.Body()
+wallBody1.mass = 0
+wallBody1.addShape(wallShape)
+// floorBody.material = defaultMaterial
+wallBody1.position.x = 5
+wallBody1.quaternion.setFromAxisAngle(
+  new CANNON.Vec3(0, 1, 0),
+  - Math.PI * 0.5
+  )
+
+  console.log(wallBody1.position);
+
 world.addBody(floorBody)
+world.addBody(wallBody1)
 
 // -----------------------------------
 
@@ -215,7 +244,6 @@ world.addBody(floorBody)
 const sound = new Audio('/sounds/hit.mp3')
 const playSound = (collision) => {
   const impact = collision.contact.getImpactVelocityAlongNormal();
-  console.log(impact);
   if (impact > 1.5) {
     sound.volume = impact / 10
     sound.currentTime = 0
