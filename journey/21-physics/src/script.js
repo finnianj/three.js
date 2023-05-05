@@ -267,6 +267,7 @@ const createCube = (width, height, depth, position) => {
     shape: shape,
     material: defaultMaterial,
   })
+  body.addEventListener('collide', playSound)
   body.position.copy(position)
   world.addBody(body)
   objectsToUpdate.push({ mesh: mesh, body: body })
