@@ -205,8 +205,9 @@ world.addBody(floorBody)
 const sound = new Audio('/sounds/hit.mp3')
 const playSound = (collision) => {
   const impact = collision.contact.getImpactVelocityAlongNormal();
+  console.log(impact);
   if (impact > 1.5) {
-    sound.volume = Math.random()
+    sound.volume = impact / 10
     sound.currentTime = 0
     sound.play()
   }
