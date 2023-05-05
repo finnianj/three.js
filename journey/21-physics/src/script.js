@@ -204,6 +204,7 @@ world.addBody(floorBody)
 // Sounds
 const sound = new Audio('/sounds/hit.mp3')
 const playSound = () => {
+  sound.currentTime = 0
   sound.play()
 }
 
