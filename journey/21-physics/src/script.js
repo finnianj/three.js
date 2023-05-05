@@ -30,8 +30,18 @@ debugObject.createCube = () => {
     z: (Math.random() - 0.5) * 3
   })
 }
+debugObject.reset = () => {
+  console.log(objectsToUpdate);
+  for(const object of objectsToUpdate) {
+    object.body.removeEventListener('collide', 'playSound')
+    world.removeBody(object.body)
+    scene.remove(object.mesh)
+  }
+  objectsToUpdate = []
+}
 gui.add(debugObject, 'createSphere').name('Create a sphere')
 gui.add(debugObject, 'createCube').name('Create a cube')
+gui.add(debugObject, 'reset').name('Reset')
 
 /**
  * Base
