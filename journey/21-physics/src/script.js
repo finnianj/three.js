@@ -188,6 +188,8 @@ world.addBody(floorBody)
 // Utils
 const objectsToUpdate = []
 const createSphere = (radius, position) => {
+  let color = new THREE.Color( 0xffffff );
+  color.setHex( Math.random() * 0xffffff );
   // Three js mesh
   const mesh = new THREE.Mesh(
     new THREE.SphereGeometry(radius, 20, 20),
@@ -195,7 +197,8 @@ const createSphere = (radius, position) => {
       metalness: 0.3,
       roughness: 0.4,
       envMap: environmentMapTexture,
-      envMapIntensity: 0.5
+      envMapIntensity: 0.5,
+      color: color
     })
   )
   mesh.castShadow = true
