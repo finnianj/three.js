@@ -18,22 +18,58 @@ body
 
 .webgl
 {
-    animation-duration: 5s;
-    position: fixed;
-    top: 0;
-    left: 0;
-    outline: none;
+  animation-duration: 15s;
+  position: fixed;
+  top: 0;
+  left: 0;
+  outline: none;
 }
 
-main {
+#text-grid{
+  animation-duration: 5s;
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100vw;
   color: white;
   padding: 120px;
   display: grid;
+  visibility: hidden;
   grid-template-columns: repeat(12, 1fr);
   font-family: Arial, Helvetica, sans-serif;
   opacity: 80%;
+}
+
+
+h1 {
+  grid-column: 2 / span 6;
+  font-size: 100px;
+}
+
+h2, h3 {
+  grid-column: 2 / 8;
+  margin: 50px;
+  background-color: black;
+  padding: 10px;
+}
+
+p, ul, ol {
+  grid-column: 4 / span 5;
+  margin: 50px;
+  background-color: white;
+  color: black;
+  padding: 10px;
+}
+
+li {
+  padding: 10px;
+  margin: 15px;
+  margin-left: 25px;
+}
+
+ul, ol {
+  grid-column: 6 / span 5;
+
 }
 
 audio{

@@ -193,18 +193,21 @@ tick()
 const center = document.getElementById("center")
 const button = document.getElementById("enter")
 const canvas = document.querySelector('canvas.webgl')
-const main = document.querySelector('main')
+const text = document.getElementById('text-grid')
 
 button.addEventListener('click', () => {
-  document.querySelector('audio').currentTime = 0;
+  document.querySelector('audio').currentTime = 6;
   document.querySelector('audio').play()
   center.classList.add('animate__fadeOutDown')
   // console.log(canvas);
   setTimeout(() => {
+    text.classList.add('animate__fadeIn')
+    text.style.visibility = 'visible'
+  }, 10000);
+  setTimeout(() => {
     center.style.display = 'none'
-    main.classList.add('animate__fadeIn')
     canvas.classList.add('animate__fadeIn')
     // document.querySelector('main').style.display = grid
     runProgram()
-  }, 5000);
+  }, 2000);
 })
