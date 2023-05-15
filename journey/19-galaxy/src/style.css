@@ -25,13 +25,26 @@ body
     outline: none;
 }
 
+main {
+  position: absolute;
+  width: 100vw;
+  color: white;
+  padding: 120px;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  font-family: Arial, Helvetica, sans-serif;
+  opacity: 80%;
+}
+
 audio{
   visibility: hidden;
 }
 
 #center{
   animation-duration: 4s;
-  display: block;
+  /* display: block; */
+  top: 0;
+  left: 0;
   margin: 40vh auto;
   display: flex;
   flex-direction: column;

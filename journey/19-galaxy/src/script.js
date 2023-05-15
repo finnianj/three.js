@@ -193,6 +193,7 @@ tick()
 const center = document.getElementById("center")
 const button = document.getElementById("enter")
 const canvas = document.querySelector('canvas.webgl')
+const main = document.querySelector('main')
 
 button.addEventListener('click', () => {
   document.querySelector('audio').currentTime = 0;
@@ -200,7 +201,10 @@ button.addEventListener('click', () => {
   center.classList.add('animate__fadeOutDown')
   // console.log(canvas);
   setTimeout(() => {
+    center.style.display = 'none'
+    main.classList.add('animate__fadeIn')
     canvas.classList.add('animate__fadeIn')
+    // document.querySelector('main').style.display = grid
     runProgram()
   }, 5000);
 })
