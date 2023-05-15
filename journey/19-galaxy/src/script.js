@@ -205,16 +205,16 @@ button.addEventListener('click', () => {
     center.style.display = 'none'
     canvas.classList.add('animate__fadeIn')
     // document.querySelector('main').style.display = grid
+    welcome.classList.add('animate__zoomIn')
+    welcome.style.visibility = 'visible'
     runProgram()
   }, 2000);
 
-  setTimeout(() => {
-    welcome.classList.add('animate__zoomIn')
-    welcome.style.visibility = 'visible'
-  }, 6000);
+
 
   setTimeout(() => {
     text.classList.add('animate__fadeIn')
     text.style.visibility = 'visible'
+
   }, 10000);
 })

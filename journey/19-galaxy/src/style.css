@@ -42,7 +42,7 @@ body
 
 #welcome{
   visibility: hidden;
-  animation-duration: 10s;
+  animation-duration: 8s;
   grid-column: 2 / span 6;
   font-size: 100px;
   color: white;
