@@ -3,8 +3,6 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
 
 const runProgram = () => {
-  document.querySelector('audio').currentTime = 0;
-  document.querySelector('audio').play()
 
 /**
  * Base
@@ -178,8 +176,9 @@ const tick = () =>
     // Update controls
     controls.update()
 
-    camera.position.x = Math.cos(elapsedTime * 0.5)
-    camera.position.z = Math.sin(elapsedTime * 0.05) * parameters.radius
+    camera.position.x = Math.cos(elapsedTime * 0.1)
+    camera.position.y = Math.cos(elapsedTime * 0.1) * 0.5
+    camera.position.z = Math.sin(elapsedTime * 0.01) * parameters.radius
 
     // Render
     renderer.render(scene, camera)
@@ -191,5 +190,17 @@ const tick = () =>
 tick()
 
 }
+const center = document.getElementById("center")
 const button = document.getElementById("enter")
-button.addEventListener('click', runProgram)
+const canvas = document.querySelector('canvas.webgl')
+
+button.addEventListener('click', () => {
+  document.querySelector('audio').currentTime = 0;
+  document.querySelector('audio').play()
+  center.classList.add('animate__fadeOutDown')
+  // console.log(canvas);
+  setTimeout(() => {
+    canvas.classList.add('animate__fadeIn')
+    runProgram()
+  }, 5000);
+})
