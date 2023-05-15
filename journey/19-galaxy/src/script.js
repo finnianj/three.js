@@ -177,6 +177,7 @@ const tick = () =>
     controls.update()
 
     camera.position.x = Math.cos(elapsedTime * 0.1)
+    camera.position.y = Math.cos(elapsedTime * 0.1) * 0.5
     camera.position.z = Math.sin(elapsedTime * 0.01) * parameters.radius
 
     // Render
