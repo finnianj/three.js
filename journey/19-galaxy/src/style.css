@@ -34,10 +34,14 @@ audio{
   display: block;
   margin: 40vh auto;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  color: #ffffff9e;
 }
 
 .glow-on-hover {
+  margin: 10px;
   font-family: 'Roboto Mono', monospace;
   width: 270px;
   height: 80px;

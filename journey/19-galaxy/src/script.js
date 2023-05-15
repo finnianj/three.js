@@ -189,13 +189,14 @@ const tick = () =>
 tick()
 
 }
+const center = document.getElementById("center")
 const button = document.getElementById("enter")
 const canvas = document.querySelector('canvas.webgl')
 
 button.addEventListener('click', () => {
   document.querySelector('audio').currentTime = 0;
   document.querySelector('audio').play()
-  button.classList.add('animate__fadeOutDown')
+  center.classList.add('animate__fadeOutDown')
   // console.log(canvas);
   setTimeout(() => {
     canvas.classList.add('animate__fadeIn')
