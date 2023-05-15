@@ -12,7 +12,6 @@ body
 {
   font-family: 'Roboto Mono', monospace;
   width: 100%;
-  overflow: hidden;
   background-color: black;
 }
 
@@ -28,7 +27,7 @@ body
 #text-grid{
   animation-duration: 5s;
   position: absolute;
-  top: 0;
+  top: 40;
   left: 0;
   width: 100vw;
   color: white;
@@ -36,14 +35,18 @@ body
   display: grid;
   visibility: hidden;
   grid-template-columns: repeat(12, 1fr);
-  font-family: Arial, Helvetica, sans-serif;
   opacity: 80%;
+  overflow: scroll;
 }
 
 
-h1 {
+#welcome{
+  visibility: hidden;
+  animation-duration: 10s;
   grid-column: 2 / span 6;
   font-size: 100px;
+  color: white;
+  margin: 10vw;
 }
 
 h2, h3 {

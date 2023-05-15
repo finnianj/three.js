@@ -99,15 +99,15 @@ const generateGalaxy = () => {
 
 generateGalaxy()
 
-gui.add(parameters, 'count').min(100).max(1000000).step(100).name('Star count').onFinishChange(generateGalaxy)
-gui.add(parameters, 'size').min(0.001).max(0.1).step(0.001).name('Star size').onFinishChange(generateGalaxy)
-gui.add(parameters, 'radius').min(0.001).max(20).step(0.001).name('Galaxy Radius').onFinishChange(generateGalaxy)
-gui.add(parameters, 'branches').min(2).max(20).step(1).name('Galaxy Branches').onFinishChange(generateGalaxy)
-gui.add(parameters, 'spin').min(-5).max(5).step(0.1).name('Branch Spin').onFinishChange(generateGalaxy)
-// gui.add(parameters, 'randomness').min(0).max(2).step(0.01).name('Randomness').onFinishChange(generateGalaxy)
-gui.add(parameters, 'randomnessPower').min(1).max(10).step(0.01).name('Uniformity').onFinishChange(generateGalaxy)
-gui.addColor(parameters, 'insideColor').onFinishChange(generateGalaxy)
-gui.addColor(parameters, 'outsideColor').onFinishChange(generateGalaxy)
+// gui.add(parameters, 'count').min(100).max(1000000).step(100).name('Star count').onFinishChange(generateGalaxy)
+// gui.add(parameters, 'size').min(0.001).max(0.1).step(0.001).name('Star size').onFinishChange(generateGalaxy)
+// gui.add(parameters, 'radius').min(0.001).max(20).step(0.001).name('Galaxy Radius').onFinishChange(generateGalaxy)
+// gui.add(parameters, 'branches').min(2).max(20).step(1).name('Galaxy Branches').onFinishChange(generateGalaxy)
+// gui.add(parameters, 'spin').min(-5).max(5).step(0.1).name('Branch Spin').onFinishChange(generateGalaxy)
+// // gui.add(parameters, 'randomness').min(0).max(2).step(0.01).name('Randomness').onFinishChange(generateGalaxy)
+// gui.add(parameters, 'randomnessPower').min(1).max(10).step(0.01).name('Uniformity').onFinishChange(generateGalaxy)
+// gui.addColor(parameters, 'insideColor').onFinishChange(generateGalaxy)
+// gui.addColor(parameters, 'outsideColor').onFinishChange(generateGalaxy)
 
 // /**
 //  * Test cube
@@ -152,8 +152,8 @@ camera.position.z = 0
 scene.add(camera)
 
 // Controls
-const controls = new OrbitControls(camera, canvas)
-controls.enableDamping = true
+// const controls = new OrbitControls(camera, canvas)
+// controls.enableDamping = true
 
 /**
  * Renderer
@@ -174,11 +174,11 @@ const tick = () =>
     const elapsedTime = clock.getElapsedTime()
 
     // Update controls
-    controls.update()
+    // controls.update()
 
     camera.position.x = Math.cos(elapsedTime * 0.1) - 1
     camera.position.y = Math.cos(elapsedTime * 0.1) * 0.5
-    // camera.position.z = Math.sin(elapsedTime * 0.01) * parameters.radius
+    camera.position.z = Math.sin(elapsedTime * 0.01) * parameters.radius
 
     // Render
     renderer.render(scene, camera)
@@ -194,20 +194,27 @@ const center = document.getElementById("center")
 const button = document.getElementById("enter")
 const canvas = document.querySelector('canvas.webgl')
 const text = document.getElementById('text-grid')
+const welcome = document.getElementById('welcome')
 
 button.addEventListener('click', () => {
   document.querySelector('audio').currentTime = 6;
   document.querySelector('audio').play()
   center.classList.add('animate__fadeOutDown')
-  // console.log(canvas);
-  setTimeout(() => {
-    text.classList.add('animate__fadeIn')
-    text.style.visibility = 'visible'
-  }, 10000);
+
   setTimeout(() => {
     center.style.display = 'none'
     canvas.classList.add('animate__fadeIn')
     // document.querySelector('main').style.display = grid
     runProgram()
   }, 2000);
+
+  setTimeout(() => {
+    welcome.classList.add('animate__zoomIn')
+    welcome.style.visibility = 'visible'
+  }, 6000);
+
+  setTimeout(() => {
+    text.classList.add('animate__fadeIn')
+    text.style.visibility = 'visible'
+  }, 10000);
 })
