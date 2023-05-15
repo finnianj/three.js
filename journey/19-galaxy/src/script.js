@@ -146,9 +146,9 @@ window.addEventListener('resize', () =>
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.x = 3
-camera.position.y = 0.5
-camera.position.z = parameters.radius
+camera.position.x = 0
+camera.position.y = 0
+camera.position.z = 0
 scene.add(camera)
 
 // Controls
@@ -176,9 +176,9 @@ const tick = () =>
     // Update controls
     controls.update()
 
-    camera.position.x = Math.cos(elapsedTime * 0.1)
+    camera.position.x = Math.cos(elapsedTime * 0.1) - 1
     camera.position.y = Math.cos(elapsedTime * 0.1) * 0.5
-    camera.position.z = Math.sin(elapsedTime * 0.01) * parameters.radius
+    // camera.position.z = Math.sin(elapsedTime * 0.01) * parameters.radius
 
     // Render
     renderer.render(scene, camera)
