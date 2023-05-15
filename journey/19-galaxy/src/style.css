@@ -17,7 +17,7 @@ body
 
 .webgl
 {
-  animation-duration: 15s;
+  animation-duration: 25s;
   position: fixed;
   top: 0;
   left: 0;
@@ -42,11 +42,15 @@ body
 
 #welcome{
   visibility: hidden;
-  animation-duration: 8s;
+  animation-duration: 15s;
   grid-column: 2 / span 6;
   font-size: 100px;
   color: white;
   margin: 10vw;
+  background-color: black;
+  padding: 10px;
+  width: fit-content;
+
 }
 
 h2, h3 {

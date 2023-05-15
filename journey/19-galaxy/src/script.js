@@ -216,5 +216,5 @@ button.addEventListener('click', () => {
     text.classList.add('animate__fadeIn')
     text.style.visibility = 'visible'
 
-  }, 10000);
+  }, 11000);
 })
