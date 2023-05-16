@@ -147,8 +147,8 @@ const runProgram = () => {
   // Base camera
   const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
   camera.position.x = 0
-  camera.position.y = 10
-  camera.position.z = 0
+  camera.position.y = 1
+  camera.position.z = 1
   scene.add(camera)
 
   // Controls
@@ -177,9 +177,9 @@ const runProgram = () => {
       // Update controls
       controls.update()
 
-      camera.position.x = Math.cos(elapsedTime)
-      // camera.position.y = Math.cos(elapsedTime * 0.1) * 0.5
-      // camera.position.z = Math.sin(elapsedTime * 0.03) * parameters.radius
+      camera.position.x = Math.cos(elapsedTime * 0.1) * parameters.radius
+      camera.position.y = Math.cos(elapsedTime * 0.3) * 0.7
+      camera.position.z = Math.sin(elapsedTime * 0.3)
 
       // Render
       renderer.render(scene, camera)
