@@ -4,190 +4,191 @@ import * as dat from 'lil-gui'
 
 const runProgram = () => {
 
-/**
- * Base
- */
-// Debug
-const gui = new dat.GUI()
+  /**
+   * Base
+   */
+  // Debug
+  const gui = new dat.GUI()
 
-// Canvas
-const canvas = document.querySelector('canvas.webgl')
+  // Canvas
+  const canvas = document.querySelector('canvas.webgl')
 
-// Scene
-const scene = new THREE.Scene()
+  // Scene
+  const scene = new THREE.Scene()
 
-// Galaxy
-const parameters = {
-  count: 1000000,
-  size: 0.01,
-  radius: 10,
-  branches: 3,
-  spin: 1,
-  randomnessPower: 3,
-  insideColor: '#ff6030',
-  outsideColor: '#1b3984'
-}
-
-let geometry = null;
-let material = null;
-let points = null;
-
-const generateGalaxy = () => {
-  // Destroy old galaxy
-  if (points !== null) {
-    geometry.dispose()
-    material.dispose()
-    scene.remove(points)
+  // Galaxy
+  const parameters = {
+    count: 1000000,
+    size: 0.01,
+    radius: 10,
+    branches: 3,
+    spin: 1,
+    randomnessPower: 3,
+    insideColor: '#ff6030',
+    outsideColor: '#1b3984'
   }
-  console.log('generate galaxy');
 
-  const vertices = new Float32Array(parameters.count * 3)
+  let geometry = null;
+  let material = null;
+  let points = null;
 
-  const colors = new Float32Array(parameters.count * 3)
-  const innerColor = new THREE.Color(parameters.insideColor)
-  const outerColor = new THREE.Color(parameters.outsideColor)
+  const generateGalaxy = () => {
+    // Destroy old galaxy
+    if (points !== null) {
+      geometry.dispose()
+      material.dispose()
+      scene.remove(points)
+    }
+    console.log('generate galaxy');
 
-  geometry = new THREE.BufferGeometry()
-  material = new THREE.PointsMaterial({
-    size: parameters.size,
-    sizeAttenuation: true,
-    depthWrite: false,
-    blending: THREE.AdditiveBlending,
-    vertexColors: true
+    const vertices = new Float32Array(parameters.count * 3)
+
+    const colors = new Float32Array(parameters.count * 3)
+    const innerColor = new THREE.Color(parameters.insideColor)
+    const outerColor = new THREE.Color(parameters.outsideColor)
+
+    geometry = new THREE.BufferGeometry()
+    material = new THREE.PointsMaterial({
+      size: parameters.size,
+      sizeAttenuation: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      vertexColors: true
+    })
+    points = new THREE.Points(geometry, material)
+
+    for (let i = 0; i < parameters.count; i++) {
+      const i3 = i * 3
+      const radius = Math.random() * parameters.radius
+      const spinAngle = radius * parameters.spin
+      // The angles of a circle are measured in radians
+      // 2piRadians will always equal a full circle in radians (see wikipedia for radians)
+      // The circle is divided into the number of branches. For each i value, you will get a radian.
+      // i.e if branches is 3, then you will get radians equalling 1/3, 1/6 and one whole circle
+      const radian = (i % parameters.branches) / parameters.branches * Math.PI * 2
+
+      const randomX = Math.pow(Math.random(), parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : -1)
+      const randomY = Math.pow(Math.random(), parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : -1)
+      const randomZ = Math.pow(Math.random(), parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : -1)
+
+      // When you use sin and cos, you get a position on a circle, whose default radius is 1
+      // We need to increase the radius
+      vertices[i3 + 0] = Math.cos(radian + spinAngle) * radius + randomX
+      vertices[i3 + 1] = randomY
+      vertices[i3 + 2] = Math.sin(radian + spinAngle) * radius + randomZ
+
+      // Color
+      const mixedColor = innerColor.clone()
+      mixedColor.lerp(outerColor, radius / parameters.radius)
+      colors[i3 + 0] = mixedColor.r
+      colors[i3 + 1] = mixedColor.g
+      colors[i3 + 2] = mixedColor.b
+    }
+
+    geometry.setAttribute(
+      'position',
+      new THREE.BufferAttribute(vertices, 3)
+    )
+    geometry.setAttribute(
+      'color',
+      new THREE.BufferAttribute(colors, 3)
+    )
+
+      scene.add(points)
+  }
+
+  generateGalaxy()
+
+  gui.add(parameters, 'count').min(100).max(1000000).step(100).name('Star count').onFinishChange(generateGalaxy)
+  gui.add(parameters, 'size').min(0.001).max(0.1).step(0.001).name('Star size').onFinishChange(generateGalaxy)
+  gui.add(parameters, 'radius').min(0.001).max(20).step(0.001).name('Galaxy Radius').onFinishChange(generateGalaxy)
+  gui.add(parameters, 'branches').min(2).max(20).step(1).name('Galaxy Branches').onFinishChange(generateGalaxy)
+  gui.add(parameters, 'spin').min(-5).max(5).step(0.1).name('Branch Spin').onFinishChange(generateGalaxy)
+  // gui.add(parameters, 'randomness').min(0).max(2).step(0.01).name('Randomness').onFinishChange(generateGalaxy)
+  gui.add(parameters, 'randomnessPower').min(1).max(10).step(0.01).name('Uniformity').onFinishChange(generateGalaxy)
+  gui.addColor(parameters, 'insideColor').onFinishChange(generateGalaxy)
+  gui.addColor(parameters, 'outsideColor').onFinishChange(generateGalaxy)
+
+  // /**
+  //  * Test cube
+  //  */
+  // const cube = new THREE.Mesh(
+  //     new THREE.BoxGeometry(1, 1, 1),
+  //     new THREE.MeshBasicMaterial()
+  // )
+  // scene.add(cube)
+
+  /**
+   * Sizes
+   */
+  const sizes = {
+      width: window.innerWidth,
+      height: window.innerHeight
+  }
+
+  window.addEventListener('resize', () =>
+  {
+      // Update sizes
+      sizes.width = window.innerWidth
+      sizes.height = window.innerHeight
+
+      // Update camera
+      camera.aspect = sizes.width / sizes.height
+      camera.updateProjectionMatrix()
+
+      // Update renderer
+      renderer.setSize(sizes.width, sizes.height)
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
   })
-  points = new THREE.Points(geometry, material)
 
-  for (let i = 0; i < parameters.count; i++) {
-    const i3 = i * 3
-    const radius = Math.random() * parameters.radius
-    const spinAngle = radius * parameters.spin
-    // The angles of a circle are measured in radians
-    // 2piRadians will always equal a full circle in radians (see wikipedia for radians)
-    // The circle is divided into the number of branches. For each i value, you will get a radian.
-    // i.e if branches is 3, then you will get radians equalling 1/3, 1/6 and one whole circle
-    const radian = (i % parameters.branches) / parameters.branches * Math.PI * 2
+  /**
+   * Camera
+   */
+  // Base camera
+  const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
+  camera.position.x = 0
+  camera.position.y = 10
+  camera.position.z = 0
+  scene.add(camera)
 
-    const randomX = Math.pow(Math.random(), parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : -1)
-    const randomY = Math.pow(Math.random(), parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : -1)
-    const randomZ = Math.pow(Math.random(), parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : -1)
+  // Controls
+  const controls = new OrbitControls(camera, canvas)
+  controls.enableDamping = true
+  console.log(controls);
 
-    // When you use sin and cos, you get a position on a circle, whose default radius is 1
-    // We need to increase the radius
-    vertices[i3 + 0] = Math.cos(radian + spinAngle) * radius + randomX
-    vertices[i3 + 1] = randomY
-    vertices[i3 + 2] = Math.sin(radian + spinAngle) * radius + randomZ
+  /**
+   * Renderer
+   */
+  const renderer = new THREE.WebGLRenderer({
+      canvas: canvas
+  })
+  renderer.setSize(sizes.width, sizes.height)
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
-    // Color
-    const mixedColor = innerColor.clone()
-    mixedColor.lerp(outerColor, radius / parameters.radius)
-    colors[i3 + 0] = mixedColor.r
-    colors[i3 + 1] = mixedColor.g
-    colors[i3 + 2] = mixedColor.b
+  /**
+   * Animate
+   */
+  const clock = new THREE.Clock()
+
+  const tick = () =>
+  {
+      const elapsedTime = clock.getElapsedTime()
+
+      // Update controls
+      controls.update()
+
+      // camera.position.x = Math.cos(elapsedTime * 0.1) - 1
+      // camera.position.y = Math.cos(elapsedTime * 0.1) * 0.5
+      // camera.position.z = Math.sin(elapsedTime * 0.01) * parameters.radius
+
+      // Render
+      renderer.render(scene, camera)
+
+      // Call tick again on the next frame
+      window.requestAnimationFrame(tick)
   }
 
-  geometry.setAttribute(
-    'position',
-    new THREE.BufferAttribute(vertices, 3)
-  )
-  geometry.setAttribute(
-    'color',
-    new THREE.BufferAttribute(colors, 3)
-  )
-
-    scene.add(points)
-}
-
-generateGalaxy()
-
-// gui.add(parameters, 'count').min(100).max(1000000).step(100).name('Star count').onFinishChange(generateGalaxy)
-// gui.add(parameters, 'size').min(0.001).max(0.1).step(0.001).name('Star size').onFinishChange(generateGalaxy)
-// gui.add(parameters, 'radius').min(0.001).max(20).step(0.001).name('Galaxy Radius').onFinishChange(generateGalaxy)
-// gui.add(parameters, 'branches').min(2).max(20).step(1).name('Galaxy Branches').onFinishChange(generateGalaxy)
-// gui.add(parameters, 'spin').min(-5).max(5).step(0.1).name('Branch Spin').onFinishChange(generateGalaxy)
-// // gui.add(parameters, 'randomness').min(0).max(2).step(0.01).name('Randomness').onFinishChange(generateGalaxy)
-// gui.add(parameters, 'randomnessPower').min(1).max(10).step(0.01).name('Uniformity').onFinishChange(generateGalaxy)
-// gui.addColor(parameters, 'insideColor').onFinishChange(generateGalaxy)
-// gui.addColor(parameters, 'outsideColor').onFinishChange(generateGalaxy)
-
-// /**
-//  * Test cube
-//  */
-// const cube = new THREE.Mesh(
-//     new THREE.BoxGeometry(1, 1, 1),
-//     new THREE.MeshBasicMaterial()
-// )
-// scene.add(cube)
-
-/**
- * Sizes
- */
-const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight
-}
-
-window.addEventListener('resize', () =>
-{
-    // Update sizes
-    sizes.width = window.innerWidth
-    sizes.height = window.innerHeight
-
-    // Update camera
-    camera.aspect = sizes.width / sizes.height
-    camera.updateProjectionMatrix()
-
-    // Update renderer
-    renderer.setSize(sizes.width, sizes.height)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-})
-
-/**
- * Camera
- */
-// Base camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.x = 0
-camera.position.y = 0
-camera.position.z = 0
-scene.add(camera)
-
-// Controls
-// const controls = new OrbitControls(camera, canvas)
-// controls.enableDamping = true
-
-/**
- * Renderer
- */
-const renderer = new THREE.WebGLRenderer({
-    canvas: canvas
-})
-renderer.setSize(sizes.width, sizes.height)
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-
-/**
- * Animate
- */
-const clock = new THREE.Clock()
-
-const tick = () =>
-{
-    const elapsedTime = clock.getElapsedTime()
-
-    // Update controls
-    // controls.update()
-
-    camera.position.x = Math.cos(elapsedTime * 0.1) - 1
-    camera.position.y = Math.cos(elapsedTime * 0.1) * 0.5
-    camera.position.z = Math.sin(elapsedTime * 0.01) * parameters.radius
-
-    // Render
-    renderer.render(scene, camera)
-
-    // Call tick again on the next frame
-    window.requestAnimationFrame(tick)
-}
-
-tick()
+  tick()
 
 }
 const center = document.getElementById("center")
