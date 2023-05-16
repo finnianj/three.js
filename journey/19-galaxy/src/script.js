@@ -177,9 +177,9 @@ const runProgram = () => {
       // Update controls
       controls.update()
 
-      // camera.position.x = Math.cos(elapsedTime * 0.1) - 1
+      camera.position.x = Math.cos(elapsedTime)
       // camera.position.y = Math.cos(elapsedTime * 0.1) * 0.5
-      // camera.position.z = Math.sin(elapsedTime * 0.01) * parameters.radius
+      // camera.position.z = Math.sin(elapsedTime * 0.03) * parameters.radius
 
       // Render
       renderer.render(scene, camera)
@@ -197,25 +197,28 @@ const canvas = document.querySelector('canvas.webgl')
 const text = document.getElementById('text-grid')
 const welcome = document.getElementById('welcome')
 
-button.addEventListener('click', () => {
-  document.querySelector('audio').currentTime = 6;
-  document.querySelector('audio').play()
-  center.classList.add('animate__fadeOutDown')
+// button.addEventListener('click', () => {
+//   document.querySelector('audio').currentTime = 6;
+//   document.querySelector('audio').play()
+//   center.classList.add('animate__fadeOutDown')
 
-  setTimeout(() => {
-    center.style.display = 'none'
-    canvas.classList.add('animate__fadeIn')
-    // document.querySelector('main').style.display = grid
-    welcome.classList.add('animate__zoomIn')
-    welcome.style.visibility = 'visible'
-    runProgram()
-  }, 2000);
+//   setTimeout(() => {
+//     center.style.display = 'none'
+//     canvas.classList.add('animate__fadeIn')
+//     // document.querySelector('main').style.display = grid
+//     welcome.classList.add('animate__zoomIn')
+//     welcome.style.visibility = 'visible'
+//     runProgram()
+//   }, 2000);
 
 
 
-  setTimeout(() => {
-    text.classList.add('animate__fadeIn')
-    text.style.visibility = 'visible'
+//   setTimeout(() => {
+//     text.classList.add('animate__fadeIn')
+//     text.style.visibility = 'visible'
 
-  }, 11000);
-})
+//   }, 11000);
+// })
+
+center.style.display = 'none'
+runProgram()
