@@ -50,6 +50,9 @@ gltfLoader.setDRACOLoader(dracoLoader)
 gltfLoader.load('/models/Fox/glTF/Fox.gltf',
   (gltf) => {
     console.log('success');
+    console.log(gltf);
+    
+    const mixer = new THREE.AnimationMixer(gltf.scene)
     gltf.scene.scale.set(0.025, 0.025, 0.025)
     const fox = gltf.scene
     scene.add(fox)
