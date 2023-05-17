@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { GLTFLoader, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
 /**
  * Base
@@ -14,6 +14,10 @@ const canvas = document.querySelector('canvas.webgl')
 
 // Scene
 const scene = new THREE.Scene()
+
+// GLTF
+
+const gltfLoader = new GLTFLoader()
 
 /**
  * Floor
