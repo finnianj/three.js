@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
-import { GLTFLoader, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
 /**
  * Base
@@ -17,7 +17,7 @@ const scene = new THREE.Scene()
 
 // GLTF
 const gltfLoader = new GLTFLoader()
-gltfLoader.load('/models/Duck/glTF')
+gltfLoader.load('/models/Duck/glTF/Duck.gltf')
 
 /**
  * Floor
