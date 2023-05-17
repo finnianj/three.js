@@ -49,6 +49,7 @@ gltfLoader.setDRACOLoader(dracoLoader)
 // )
 
 let mixer = null
+
 gltfLoader.load('/models/Fox/glTF/Fox.gltf',
   (gltf) => {
     console.log('success');
@@ -166,7 +167,9 @@ const tick = () =>
     controls.update()
 
     // Update mixer
-    mixer.update(deltaTime)
+    if (mixer != null) {
+      mixer.update(deltaTime)
+    }
 
     // Render
     renderer.render(scene, camera)
