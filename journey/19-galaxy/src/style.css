@@ -12,17 +12,71 @@ body
 {
   font-family: 'Roboto Mono', monospace;
   width: 100%;
-  overflow: hidden;
   background-color: black;
 }
 
 .webgl
 {
-    animation-duration: 5s;
-    position: fixed;
-    top: 0;
-    left: 0;
-    outline: none;
+  animation-duration: 25s;
+  position: fixed;
+  top: 0;
+  left: 0;
+  outline: none;
+}
+
+#text-grid{
+  animation-duration: 5s;
+  position: absolute;
+  top: 40;
+  left: 0;
+  width: 100vw;
+  color: white;
+  padding: 120px;
+  display: grid;
+  visibility: hidden;
+  grid-template-columns: repeat(12, 1fr);
+  opacity: 80%;
+  overflow: scroll;
+}
+
+
+#welcome{
+  visibility: hidden;
+  animation-duration: 15s;
+  grid-column: 2 / span 6;
+  font-size: 100px;
+  color: white;
+  margin: 10vw;
+  background-color: black;
+  padding: 10px;
+  width: fit-content;
+
+}
+
+h2, h3 {
+  grid-column: 2 / 8;
+  margin: 50px;
+  background-color: black;
+  padding: 10px;
+}
+
+p, ul, ol {
+  grid-column: 4 / span 5;
+  margin: 50px;
+  background-color: white;
+  color: black;
+  padding: 10px;
+}
+
+li {
+  padding: 10px;
+  margin: 15px;
+  margin-left: 25px;
+}
+
+ul, ol {
+  grid-column: 6 / span 5;
+
 }
 
 audio{
@@ -31,7 +85,9 @@ audio{
 
 #center{
   animation-duration: 4s;
-  display: block;
+  /* display: block; */
+  top: 0;
+  left: 0;
   margin: 40vh auto;
   display: flex;
   flex-direction: column;
