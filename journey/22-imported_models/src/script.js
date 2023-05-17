@@ -17,7 +17,17 @@ const scene = new THREE.Scene()
 
 // GLTF
 const gltfLoader = new GLTFLoader()
-gltfLoader.load('/models/Duck/glTF/Duck.gltf')
+gltfLoader.load('/models/Duck/glTF/Duck.gltf',
+  () => {
+    console.log('success');
+  },
+  () => {
+    console.log('progress');
+  },
+  () => {
+    console.log('error');
+  }
+)
 
 /**
  * Floor
