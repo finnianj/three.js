@@ -3,6 +3,8 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
+const objectsToAnimate = []
+
 /**
  * Base
  */
@@ -20,7 +22,9 @@ const gltfLoader = new GLTFLoader()
 gltfLoader.load('/models/Duck/glTF-Binary/Duck.glb',
   (gltf) => {
     console.log('success');
-    scene.add(gltf.scene.children[0])
+    const duck = gltf.scene.children[0]
+    scene.add(duck)
+    objectsToAnimate.push(duck)
   },
   () => {
     console.log('progress');
@@ -120,6 +124,10 @@ const tick = () =>
     const elapsedTime = clock.getElapsedTime()
     const deltaTime = elapsedTime - previousTime
     previousTime = elapsedTime
+
+    objectsToAnimate.forEach((item) => {
+      item.rotation.x = Math.sin(elapsedTime) / 4
+    })
 
     // Update controls
     controls.update()
