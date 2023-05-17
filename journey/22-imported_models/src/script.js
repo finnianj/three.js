@@ -19,20 +19,22 @@ const scene = new THREE.Scene()
 
 // GLTF
 const gltfLoader = new GLTFLoader()
-// gltfLoader.load('/models/Duck/glTF-Binary/Duck.glb',
-//   (gltf) => {
-//     console.log('success');
-//     const duck = gltf.scene.children[0]
-//     scene.add(duck)
-//     objectsToAnimate.push(duck)
-//   }
-// )
+gltfLoader.load('/models/Duck/glTF-Binary/Duck.glb',
+  (gltf) => {
+    console.log('success');
+    const duck = gltf.scene.children[0]
+    scene.add(duck)
+    objectsToAnimate.push(duck)
+  }
+)
 gltfLoader.load('/models/FlightHelmet/glTF/FlightHelmet.gltf',
   (gltf) => {
     console.log('success');
     const children = [...gltf.scene.children]
     for (const item of children) {
       console.log(item);
+      item.position.z = 2
+      item.rotation.y = Math.PI * 0.5
       scene.add(item)
       objectsToAnimate.push(item)
     }
