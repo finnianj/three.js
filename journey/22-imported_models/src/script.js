@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 
 const objectsToAnimate = []
 
@@ -26,14 +26,14 @@ dracoLoader.setDecoderPath('/draco/')
 // GLTF
 const gltfLoader = new GLTFLoader()
 gltfLoader.setDRACOLoader(dracoLoader)
-gltfLoader.load('/models/Duck/glTF/Duck.gltf',
-  (gltf) => {
-    console.log('success');
-    const duck = gltf.scene.children[0]
-    scene.add(duck)
-    objectsToAnimate.push(duck)
-  }
-)
+// gltfLoader.load('/models/Duck/glTF/Duck.gltf',
+//   (gltf) => {
+//     console.log('success');
+//     const duck = gltf.scene.children[0]
+//     scene.add(duck)
+//     objectsToAnimate.push(duck)
+//   }
+// )
 // gltfLoader.load('/models/FlightHelmet/glTF/FlightHelmet.gltf',
 //   (gltf) => {
 //     console.log('success');
@@ -47,6 +47,15 @@ gltfLoader.load('/models/Duck/glTF/Duck.gltf',
 //     }
 //   }
 // )
+gltfLoader.load('/models/Fox/glTF/Fox.gltf',
+  (gltf) => {
+    console.log('success');
+    gltf.scene.scale.set(0.025, 0.025, 0.025)
+    const fox = gltf.scene
+    scene.add(fox)
+    objectsToAnimate.push(fox)
+  }
+)
 
 /**
  * Floor
@@ -139,9 +148,9 @@ const tick = () =>
     const deltaTime = elapsedTime - previousTime
     previousTime = elapsedTime
 
-    objectsToAnimate.forEach((item) => {
-      item.rotation.x = Math.sin(elapsedTime) / 4
-    })
+    // objectsToAnimate.forEach((item) => {
+    //   item.rotation.x = Math.sin(elapsedTime) / 4
+    // })
 
     // Update controls
     controls.update()
