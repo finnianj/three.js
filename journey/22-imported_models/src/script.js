@@ -47,13 +47,20 @@ gltfLoader.setDRACOLoader(dracoLoader)
 //     }
 //   }
 // )
+
+let mixer = null
 gltfLoader.load('/models/Fox/glTF/Fox.gltf',
   (gltf) => {
     console.log('success');
     console.log(gltf);
-    
-    const mixer = new THREE.AnimationMixer(gltf.scene)
+
+    mixer = new THREE.AnimationMixer(gltf.scene)
+    const action = mixer.clipAction(gltf.animations[0])
     gltf.scene.scale.set(0.025, 0.025, 0.025)
+
+    console.log(action);
+    action.play()
+
     const fox = gltf.scene
     scene.add(fox)
     objectsToAnimate.push(fox)
@@ -157,6 +164,9 @@ const tick = () =>
 
     // Update controls
     controls.update()
+
+    // Update mixer
+    mixer.update(deltaTime)
 
     // Render
     renderer.render(scene, camera)
