@@ -110,6 +110,8 @@ const tick = () =>
     raycaster.set(rayOrigin, rayDirection)
 
     const objects = [object1, object2, object3]
+    const intersects = raycaster.intersectObjects(objects)
+    console.log(intersects.length);
 
     // Move objects
     object1.position.y = Math.sin(elapsedTime * 0.5) * 1.5
