@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
 /**
  * Base
@@ -64,6 +65,19 @@ window.addEventListener('mousemove', (e) => {
   mouse.y = - (e.clientY / sizes.height) * 2 + 1
 })
 
+// window.addEventListener('click', () => {
+//   if (currentIntersect) {
+//     console.log('sphere click');
+//     if (currentIntersect.object == object1) {
+//       console.log('clicked on object 1');
+//     } else if (currentIntersect.object == object2) {
+//       console.log('clicked on object 2');
+//     } else {
+//       console.log('clicked on object 3');
+//     }
+//   }
+// })
+
 window.addEventListener('resize', () =>
 {
     // Update sizes
@@ -100,10 +114,29 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
+// GLTF
+let model = null
+const loader = new GLTFLoader()
+loader.load('./models/Duck/glTF-Binary/Duck.glb', (gltf) => {
+  gltf.scene.position.y = - 1.2
+  model = gltf.scene
+  scene.add(model)
+})
+
+// Lights
+const ambientLight = new THREE.AmbientLight('#ffffff', 0.3)
+scene.add(ambientLight)
+const directionalLight = new THREE.DirectionalLight('#ffffff', 0.7)
+directionalLight.position.set(1, 2, 3)
+scene.add(directionalLight)
+
+
 /**
  * Animate
  */
 const clock = new THREE.Clock()
+
+let currentIntersect = null
 
 const tick = () =>
 {
@@ -120,17 +153,27 @@ const tick = () =>
 
     raycaster.setFromCamera(mouse, camera)
 
-    const objects = [object1, object2, object3]
-    const intersects = raycaster.intersectObjects(objects)
+    // const objects = [object1, object2, object3]
+
+    let currentIntersect = null
     // console.log(intersects.length);
 
-    for(const object of objects) {
-      object.material.color.set('#ff0000')
+    // for(const object of objects) {
+      //   object.material.color.set('#ff0000')
+      // }
+      // for(const intersect of intersects) {
+        //   intersect.object.material.color.set('#0000ff')
+        // }
+    if (model) {
+      const intersects = raycaster.intersectObject(model)
+
+      if (intersects.length) {
+        model.scale.set(1.2, 1.2, 1.2)
+      } else {
+        model.scale.set(1, 1, 1)
+      }
     }
-    for(const intersect of intersects) {
-      intersect.object.material.color.set('#0000ff')
-    }
-    
+
     // Move objects
     object1.position.y = Math.sin(elapsedTime * 0.5) * 1.5
     object2.position.y = Math.sin(elapsedTime * 0.7) * 1.5
