@@ -103,6 +103,14 @@ const tick = () =>
     // Update controls
     controls.update()
 
+    // Cast a ray
+    const rayOrigin = new THREE.Vector3(-3, 0, 0)
+    const rayDirection = new THREE.Vector3(1, 0, 0)
+    rayDirection.normalize()
+    raycaster.set(rayOrigin, rayDirection)
+
+    const objects = [object1, object2, object3]
+
     // Move objects
     object1.position.y = Math.sin(elapsedTime * 0.5) * 1.5
     object2.position.y = Math.sin(elapsedTime * 0.7) * 1.5
