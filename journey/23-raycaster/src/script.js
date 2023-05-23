@@ -64,6 +64,12 @@ window.addEventListener('mousemove', (e) => {
   mouse.y = - (e.clientY / sizes.height) * 2 + 1
 })
 
+window.addEventListener('click', () => {
+  if (currentIntersect) {
+    console.log('sphere click');
+  }
+})
+
 window.addEventListener('resize', () =>
 {
     // Update sizes
