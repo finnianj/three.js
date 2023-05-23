@@ -39,6 +39,9 @@ scene.add(object1, object2, object3)
 // Raycaster
 
 const raycaster = new THREE.Raycaster()
+const rayOrigin = new THREE.Vector3(-3, 0, 0)
+const rayDirection = new THREE.Vector3(10, 0, 0)
+raycaster.set(rayOrigin, rayDirection)
 
 /**
  * Sizes
