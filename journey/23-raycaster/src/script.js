@@ -55,6 +55,15 @@ const sizes = {
     height: window.innerHeight
 }
 
+// Mouse
+
+const mouse = new THREE.Vector2()
+
+window.addEventListener('mousemove', (e) => {
+  mouse.x = e.clientX
+  mouse.y = e.clientX
+})
+
 window.addEventListener('resize', () =>
 {
     // Update sizes
@@ -103,22 +112,22 @@ const tick = () =>
     // Update controls
     controls.update()
 
-    // Cast a ray
-    const rayOrigin = new THREE.Vector3(-3, 0, 0)
-    const rayDirection = new THREE.Vector3(1, 0, 0)
-    rayDirection.normalize()
-    raycaster.set(rayOrigin, rayDirection)
+    // // Cast a ray
+    // const rayOrigin = new THREE.Vector3(-3, 0, 0)
+    // const rayDirection = new THREE.Vector3(1, 0, 0)
+    // rayDirection.normalize()
+    // raycaster.set(rayOrigin, rayDirection)
 
-    const objects = [object1, object2, object3]
-    const intersects = raycaster.intersectObjects(objects)
-    // console.log(intersects.length);
+    // const objects = [object1, object2, object3]
+    // const intersects = raycaster.intersectObjects(objects)
+    // // console.log(intersects.length);
 
-    for(const object of objects) {
-      object.material.color.set('#ff0000')
-    }
-    for(const intersect of intersects) {
-      intersect.object.material.color.set('#0000ff')
-    }
+    // for(const object of objects) {
+    //   object.material.color.set('#ff0000')
+    // }
+    // for(const intersect of intersects) {
+    //   intersect.object.material.color.set('#0000ff')
+    // }
 
     // Move objects
     object1.position.y = Math.sin(elapsedTime * 0.5) * 1.5
