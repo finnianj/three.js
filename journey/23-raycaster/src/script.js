@@ -62,7 +62,6 @@ const mouse = new THREE.Vector2()
 window.addEventListener('mousemove', (e) => {
   mouse.x = e.clientX / sizes.width * 2 - 1
   mouse.y = - (e.clientY / sizes.height) * 2 + 1
-  console.log(mouse);
 })
 
 window.addEventListener('resize', () =>
@@ -119,17 +118,19 @@ const tick = () =>
     // rayDirection.normalize()
     // raycaster.set(rayOrigin, rayDirection)
 
-    // const objects = [object1, object2, object3]
-    // const intersects = raycaster.intersectObjects(objects)
-    // // console.log(intersects.length);
+    raycaster.setFromCamera(mouse, camera)
 
-    // for(const object of objects) {
-    //   object.material.color.set('#ff0000')
-    // }
-    // for(const intersect of intersects) {
-    //   intersect.object.material.color.set('#0000ff')
-    // }
+    const objects = [object1, object2, object3]
+    const intersects = raycaster.intersectObjects(objects)
+    // console.log(intersects.length);
 
+    for(const object of objects) {
+      object.material.color.set('#ff0000')
+    }
+    for(const intersect of intersects) {
+      intersect.object.material.color.set('#0000ff')
+    }
+    
     // Move objects
     object1.position.y = Math.sin(elapsedTime * 0.5) * 1.5
     object2.position.y = Math.sin(elapsedTime * 0.7) * 1.5
