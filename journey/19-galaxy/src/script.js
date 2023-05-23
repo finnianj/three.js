@@ -197,28 +197,28 @@ const canvas = document.querySelector('canvas.webgl')
 const text = document.getElementById('text-grid')
 const welcome = document.getElementById('welcome')
 
-// button.addEventListener('click', () => {
-//   document.querySelector('audio').currentTime = 6;
-//   document.querySelector('audio').play()
-//   center.classList.add('animate__fadeOutDown')
+button.addEventListener('click', () => {
+  document.querySelector('audio').currentTime = 6;
+  document.querySelector('audio').play()
+  center.classList.add('animate__fadeOutDown')
 
-//   setTimeout(() => {
-//     center.style.display = 'none'
-//     canvas.classList.add('animate__fadeIn')
-//     // document.querySelector('main').style.display = grid
-//     welcome.classList.add('animate__zoomIn')
-//     welcome.style.visibility = 'visible'
-//     runProgram()
-//   }, 2000);
+  setTimeout(() => {
+    center.style.display = 'none'
+    canvas.classList.add('animate__fadeIn')
+    // document.querySelector('main').style.display = grid
+    welcome.classList.add('animate__zoomIn')
+    welcome.style.visibility = 'visible'
+    runProgram()
+  }, 2000);
 
 
 
-//   setTimeout(() => {
-//     text.classList.add('animate__fadeIn')
-//     text.style.visibility = 'visible'
+  setTimeout(() => {
+    text.classList.add('animate__fadeIn')
+    text.style.visibility = 'visible'
 
-//   }, 11000);
-// })
+  }, 11000);
+})
 
-center.style.display = 'none'
-runProgram()
+// center.style.display = 'none'
+// runProgram()
