@@ -117,6 +117,7 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 // GLTF
 const loader = new GLTFLoader()
 loader.load('./models/Duck/glTF-Binary/Duck.glb', (gltf) => {
+  gltf.scene.position.y = - 1.2
   scene.add(gltf.scene)
 })
 
