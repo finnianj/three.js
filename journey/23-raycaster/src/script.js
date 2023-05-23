@@ -115,10 +115,12 @@ renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 // GLTF
+let model = null
 const loader = new GLTFLoader()
 loader.load('./models/Duck/glTF-Binary/Duck.glb', (gltf) => {
   gltf.scene.position.y = - 1.2
-  scene.add(gltf.scene)
+  model = gltf.scene
+  scene.add(model)
 })
 
 // Lights
@@ -151,27 +153,25 @@ const tick = () =>
 
     raycaster.setFromCamera(mouse, camera)
 
-    const objects = [object1, object2, object3]
-    const intersects = raycaster.intersectObjects(objects)
+    // const objects = [object1, object2, object3]
+
+    let currentIntersect = null
     // console.log(intersects.length);
 
     // for(const object of objects) {
-    //   object.material.color.set('#ff0000')
-    // }
-    // for(const intersect of intersects) {
-    //   intersect.object.material.color.set('#0000ff')
-    // }
+      //   object.material.color.set('#ff0000')
+      // }
+      // for(const intersect of intersects) {
+        //   intersect.object.material.color.set('#0000ff')
+        // }
+    if (model) {
+      const intersects = raycaster.intersectObject(model)
 
-    if (intersects.length) {
-      if (currentIntersect == null) {
-        console.log('mouse enter');
+      if (intersects.length) {
+        model.scale.set(1.2, 1.2, 1.2)
+      } else {
+        model.scale.set(1, 1, 1)
       }
-      currentIntersect = intersects[0]
-    } else {
-      if (currentIntersect) {
-        console.log('mouse leave');
-      }
-      currentIntersect = null
     }
 
     // Move objects
