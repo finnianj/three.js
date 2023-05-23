@@ -139,6 +139,9 @@ const tick = () =>
       }
       currentIntersect = intersects[0]
     } else {
+      if (currentIntersect) {
+        console.log('mouse leave');
+      }
       currentIntersect = null
     }
 
