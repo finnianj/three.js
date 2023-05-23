@@ -111,7 +111,11 @@ const tick = () =>
 
     const objects = [object1, object2, object3]
     const intersects = raycaster.intersectObjects(objects)
-    console.log(intersects.length);
+    // console.log(intersects.length);
+
+    for(const intersect of intersects) {
+      intersect.object.material.color.set('#0000ff')
+    }
 
     // Move objects
     object1.position.y = Math.sin(elapsedTime * 0.5) * 1.5
