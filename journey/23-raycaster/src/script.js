@@ -44,6 +44,9 @@ const rayDirection = new THREE.Vector3(10, 0, 0)
 rayDirection.normalize()
 raycaster.set(rayOrigin, rayDirection)
 
+const intersect1 = raycaster.intersectObject(object1)
+const intersectMany = raycaster.intersectObjects([object1, object2, object3])
+
 /**
  * Sizes
  */
