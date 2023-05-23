@@ -116,10 +116,16 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 // GLTF
 const loader = new GLTFLoader()
-loader.load('./models/Duck/glTF-Binary/Duck.glb', () => {
-  console.log('loaded');
+loader.load('./models/Duck/glTF-Binary/Duck.glb', (gltf) => {
+  scene.add(gltf.scene)
 })
-const duck = new THREE.
+
+// Lights
+const ambientLight = new THREE.AmbientLight('#ffffff', 0.3)
+scene.add(ambientLight)
+const directionalLight = new THREE.DirectionalLight('#ffffff', 0.7)
+directionalLight.position.set(1, 2, 3)
+scene.add(directionalLight)
 
 
 /**
