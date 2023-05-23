@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
 /**
  * Base
@@ -64,18 +65,18 @@ window.addEventListener('mousemove', (e) => {
   mouse.y = - (e.clientY / sizes.height) * 2 + 1
 })
 
-window.addEventListener('click', () => {
-  if (currentIntersect) {
-    console.log('sphere click');
-    if (currentIntersect.object == object1) {
-      console.log('clicked on object 1');
-    } else if (currentIntersect.object == object2) {
-      console.log('clicked on object 2');
-    } else {
-      console.log('clicked on object 3');
-    }
-  }
-})
+// window.addEventListener('click', () => {
+//   if (currentIntersect) {
+//     console.log('sphere click');
+//     if (currentIntersect.object == object1) {
+//       console.log('clicked on object 1');
+//     } else if (currentIntersect.object == object2) {
+//       console.log('clicked on object 2');
+//     } else {
+//       console.log('clicked on object 3');
+//     }
+//   }
+// })
 
 window.addEventListener('resize', () =>
 {
