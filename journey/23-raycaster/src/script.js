@@ -60,8 +60,8 @@ const sizes = {
 const mouse = new THREE.Vector2()
 
 window.addEventListener('mousemove', (e) => {
-  mouse.x = e.clientX
-  mouse.y = e.clientX
+  mouse.x = e.clientX / sizes.width
+  mouse.y = e.clientX / sizes.height
 })
 
 window.addEventListener('resize', () =>
