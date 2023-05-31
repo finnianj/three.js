@@ -126,6 +126,7 @@ const renderer = new THREE.WebGLRenderer({
     canvas: canvas
 })
 renderer.physicallyCorrectLights = true;
+renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
