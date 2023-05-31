@@ -27,8 +27,15 @@ gltfLoader.setDRACOLoader(dracoLoader)
 
 let mixer = null
 
+// gltfLoader.load(
+//     '/models/hamburger.glb',
+//     (gltf) =>
+//     {
+//         scene.add(gltf.scene)
+//     }
+// )
 gltfLoader.load(
-    '/models/hamburger.glb',
+    '/models/lantern/lantern/Lantern.gltf',
     (gltf) =>
     {
         scene.add(gltf.scene)
@@ -56,7 +63,7 @@ scene.add(floor)
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.8)
 scene.add(ambientLight)
 
-const directionalLight = new THREE.DirectionalLight(0xffffff, 2)
+const directionalLight = new THREE.DirectionalLight(0xff0000, 4)
 directionalLight.castShadow = true
 directionalLight.shadow.mapSize.set(1024, 1024)
 directionalLight.shadow.camera.far = 15
@@ -64,8 +71,11 @@ directionalLight.shadow.camera.left = - 7
 directionalLight.shadow.camera.top = 7
 directionalLight.shadow.camera.right = 7
 directionalLight.shadow.camera.bottom = - 7
-directionalLight.position.set(5, 5, 5)
+directionalLight.position.set(10, 16, 0)
 scene.add(directionalLight)
+
+const lightHelper = new THREE.DirectionalLightHelper(directionalLight)
+scene.add(lightHelper)
 
 /**
  * Sizes
