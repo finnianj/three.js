@@ -78,6 +78,7 @@ const environmentMap = cubeTextureLoader.load([
   '/textures/environmentMaps/0/pz.jpg',
   '/textures/environmentMaps/0/nz.jpg',
 ])
+environmentMap.encoding = THREE.sRGBEncoding;
 scene.background = environmentMap
 scene.environment = environmentMap
 debugObject.envMapIntensity = 1
@@ -127,8 +128,16 @@ const renderer = new THREE.WebGLRenderer({
 })
 renderer.physicallyCorrectLights = true;
 renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+gui.add(renderer, 'toneMapping', {
+  No: THREE.NoToneMapping,
+  Linear: THREE.LinearToneMapping,
+  Reinhard: THREE.ReinhardToneMapping,
+  Cineon: THREE.CineonToneMapping,
+  ACESFilmic: THREE.ACESFilmicToneMapping
+})
 
 /**
  * Animate
