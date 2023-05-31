@@ -34,7 +34,9 @@ scene.add(directionalLight)
  * GUI
  */
 gui.add(directionalLight, 'intensity').min(0).max(10).step(0.001).name('Light intensity')
-
+gui.add(directionalLight.position, 'x').min(-5).max(5).step(0.001).name('Light X')
+gui.add(directionalLight.position, 'y').min(-5).max(5).step(0.001).name('Light Y')
+gui.add(directionalLight.position, 'z').min(-5).max(5).step(0.001).name('Light Z')
 
 
 /**
