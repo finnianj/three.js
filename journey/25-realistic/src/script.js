@@ -37,7 +37,7 @@ directionalLight.shadow.mapSize.set(1024, 1024)
 scene.add(directionalLight)
 
 const directionalLightCameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera)
-scene.add(directionalLightCameraHelper)
+// scene.add(directionalLightCameraHelper)
 
 /**
  * GUI
@@ -56,6 +56,8 @@ const updateAllMaterials = () => {
     if (child instanceof THREE.Mesh && child.material instanceof THREE.MeshStandardMaterial) {
       // child.material.envMap = environmentMap
       child.material.envMapIntensity = debugObject.envMapIntensity
+      child.castShadow = true
+      child.receiveShadow = true
       console.log(child);
     }
   })
@@ -77,12 +79,12 @@ loader.load('/models/FlightHelmet/glTF/FlightHelmet.gltf', (gltf) => {
 })
 const cubeTextureLoader = new THREE.CubeTextureLoader()
 const environmentMap = cubeTextureLoader.load([
-  '/textures/environmentMaps/0/px.jpg',
-  '/textures/environmentMaps/0/nx.jpg',
-  '/textures/environmentMaps/0/py.jpg',
-  '/textures/environmentMaps/0/ny.jpg',
-  '/textures/environmentMaps/0/pz.jpg',
-  '/textures/environmentMaps/0/nz.jpg',
+  '/textures/environmentMaps/1/px.jpg',
+  '/textures/environmentMaps/1/nx.jpg',
+  '/textures/environmentMaps/1/py.jpg',
+  '/textures/environmentMaps/1/ny.jpg',
+  '/textures/environmentMaps/1/pz.jpg',
+  '/textures/environmentMaps/1/nz.jpg',
 ])
 environmentMap.encoding = THREE.sRGBEncoding;
 scene.background = environmentMap
