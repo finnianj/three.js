@@ -47,6 +47,9 @@ const loader = new GLTFLoader()
 loader.load('/models/FlightHelmet/glTF/FlightHelmet.gltf', (gltf) => {
   console.log('success');
   console.log(gltf);
+  gltf.scene.scale.set(10, 10, 10)
+  gltf.scene.position.set(0, -4, 0)
+  gltf.scene.rotation.y = Math.PI * 0.5
   scene.add(gltf.scene)
 })
 
