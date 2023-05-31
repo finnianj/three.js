@@ -40,6 +40,16 @@ gui.add(directionalLight.position, 'x').min(-5).max(5).step(0.001).name('Light X
 gui.add(directionalLight.position, 'y').min(-5).max(5).step(0.001).name('Light Y')
 gui.add(directionalLight.position, 'z').min(-5).max(5).step(0.001).name('Light Z')
 
+
+/**
+ * Update Materials
+ */
+const updateAllMaterials = () => {
+  scene.traverse((child) => {
+    console.log(child);
+  })
+}
+
 /**
  * Loaders
  */
