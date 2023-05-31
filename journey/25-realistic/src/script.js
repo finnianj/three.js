@@ -31,6 +31,13 @@ directionalLight.position.set(0.25, 3, -2.25)
 scene.add(directionalLight)
 
 /**
+ * GUI
+ */
+gui.add(directionalLight, 'intensity').min(0).max(10).step(0.001).name('Light intensity')
+
+
+
+/**
  * Sizes
  */
 const sizes = {
