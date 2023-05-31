@@ -9,6 +9,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
  */
 // Debug
 const gui = new dat.GUI()
+const debugObject = {}
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
@@ -47,6 +48,8 @@ gui.add(directionalLight.position, 'z').min(-5).max(5).step(0.001).name('Light Z
 const updateAllMaterials = () => {
   scene.traverse((child) => {
     if (child instanceof THREE.Mesh && child.material instanceof THREE.MeshStandardMaterial) {
+      child.material.envMap = environmentMap
+      child.material.envMapIntensity = debugObject.envMapIntensity
       console.log(child);
     }
   })
@@ -76,6 +79,9 @@ const environmentMap = cubeTextureLoader.load([
   '/textures/environmentMaps/0/nz.jpg',
 ])
 scene.background = environmentMap
+debugObject.envMapIntensity = 1
+gui.add(debugObject, 'envMapIntensity').min(0).max(10).step(0.001).name('Environment Map Intensity').onChange(updateAllMaterials)
+
 
 /**
  * Sizes
