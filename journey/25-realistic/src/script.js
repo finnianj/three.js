@@ -46,7 +46,9 @@ gui.add(directionalLight.position, 'z').min(-5).max(5).step(0.001).name('Light Z
  */
 const updateAllMaterials = () => {
   scene.traverse((child) => {
-    console.log(child);
+    if (child instanceof THREE.Mesh && child.material instanceof THREE.MeshStandardMaterial) {
+      console.log(child);
+    }
   })
 }
 
@@ -62,6 +64,7 @@ loader.load('/models/FlightHelmet/glTF/FlightHelmet.gltf', (gltf) => {
   gltf.scene.rotation.y = Math.PI * 0.5
   scene.add(gltf.scene)
   gui.add(gltf.scene.rotation, 'y').min(- Math.PI).max(Math.PI).step(0.001).name('Model rotation Y')
+  updateAllMaterials()
 })
 const cubeTextureLoader = new THREE.CubeTextureLoader()
 const environmentMap = cubeTextureLoader.load([
