@@ -31,7 +31,6 @@ body
   left: 0;
   width: 100vw;
   color: white;
-  padding: 120px;
   display: grid;
   visibility: hidden;
   grid-template-columns: repeat(12, 1fr);
@@ -44,7 +43,7 @@ body
   visibility: hidden;
   animation-duration: 15s;
   grid-column: 2 / span 6;
-  font-size: 100px;
+  font-size: 10vw;
   color: white;
   margin: 10vw;
   background-color: black;

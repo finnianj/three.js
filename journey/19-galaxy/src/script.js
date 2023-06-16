@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
 
 const runProgram = () => {
@@ -9,7 +9,8 @@ const runProgram = () => {
    */
   // Debug
   const gui = new dat.GUI()
-
+  gui.close()
+  
   // Canvas
   const canvas = document.querySelector('canvas.webgl')
 
@@ -109,14 +110,6 @@ const runProgram = () => {
   gui.addColor(parameters, 'insideColor').onFinishChange(generateGalaxy)
   gui.addColor(parameters, 'outsideColor').onFinishChange(generateGalaxy)
 
-  // /**
-  //  * Test cube
-  //  */
-  // const cube = new THREE.Mesh(
-  //     new THREE.BoxGeometry(1, 1, 1),
-  //     new THREE.MeshBasicMaterial()
-  // )
-  // scene.add(cube)
 
   /**
    * Sizes
@@ -149,12 +142,13 @@ const runProgram = () => {
   camera.position.x = 0
   camera.position.y = 1
   camera.position.z = 1
+  camera.lookAt(0, 0, 0)
   scene.add(camera)
 
   // Controls
-  const controls = new OrbitControls(camera, canvas)
-  controls.enableDamping = true
-  console.log(controls);
+  // const controls = new OrbitControls(camera, canvas)
+  // controls.enableDamping = true
+  // console.log(controls);
 
   /**
    * Renderer
@@ -175,11 +169,12 @@ const runProgram = () => {
       const elapsedTime = clock.getElapsedTime()
 
       // Update controls
-      controls.update()
+      // controls.update()
+      camera.lookAt(0, 0, 0)
 
-      camera.position.x = Math.cos(elapsedTime * 0.1) * parameters.radius
-      camera.position.y = Math.cos(elapsedTime * 0.3) * 0.7
-      camera.position.z = Math.sin(elapsedTime * 0.3)
+      camera.position.x = Math.cos(elapsedTime * 0.03) * parameters.radius
+      camera.position.y = Math.cos(elapsedTime * 0.09) * 0.7
+      camera.position.z = Math.sin(elapsedTime * 0.09)
 
       // Render
       renderer.render(scene, camera)
