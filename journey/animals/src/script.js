@@ -2,7 +2,6 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 
 const objectsToAnimate = []
 
@@ -18,14 +17,8 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 
-// Draco loader
-const dracoLoader = new DRACOLoader()
-dracoLoader.setDecoderPath('/draco/')
-
-
 // GLTF
 const gltfLoader = new GLTFLoader()
-gltfLoader.setDRACOLoader(dracoLoader)
 // gltfLoader.load('/models/Duck/glTF/Duck.gltf',
 //   (gltf) => {
 //     console.log('success');
@@ -54,7 +47,7 @@ let params = {
   number: 5
 }
 
-gltfLoader.load('/models/animals/sparrow.glb',
+gltfLoader.load('/models/Omabuarts/models/sparrow.glb',
   (gltf) => {
     console.log('success');
     console.log(gltf.scene);
@@ -62,7 +55,7 @@ gltfLoader.load('/models/animals/sparrow.glb',
     // const fox = gltf.scene
     scene.add(gltf.scene)
     // objectsToAnimate.push(fox)
-    gltfLoader.load('/models/animals/sparrow_animations.glb',
+    gltfLoader.load('/models/Omabuarts/sparrow_animations.glb',
     (anim) => {
         console.log(anim);
         console.log('success');
@@ -85,25 +78,6 @@ const playAction = () => {
 
 gui.add(params, 'number').min(0).max(17).step(1).onFinishChange(playAction)
 
-
-
-    // gltfLoader.load('/models/Fox/glTF/Fox.gltf',
-//   (gltf) => {
-//     console.log('success');
-//     console.log(gltf);
-
-//     mixer = new THREE.AnimationMixer(gltf.scene)
-//     const action = mixer.clipAction(gltf.animations[1])
-//     gltf.scene.scale.set(0.025, 0.025, 0.025)
-
-//     console.log(action);
-//     action.play()
-
-//     const fox = gltf.scene
-//     scene.add(fox)
-//     objectsToAnimate.push(fox)
-//   }
-// )
 
 /**
  * Floor
