@@ -45,7 +45,9 @@ let mixer = null
 
 let params = {
   number: 0,
-  previousClip: null
+  previousClip: null,
+  duration: 1,
+  loop: false
 }
 
 gltfLoader.load('/models/Omabuarts/models/sparrow.glb',
@@ -83,6 +85,7 @@ const playAction = () => {
 
   if (params.number != 0) {
     const action = params.mixer.clipAction(params.animations[params.number - 1])
+    action.setLoop(THREE.LoopRepeat, 2)
     console.log('New clip animation assigned to mixer.');
     console.log(params.mixer);
     action.play()
