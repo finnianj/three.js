@@ -20,7 +20,7 @@ scene.background = new THREE.Color('#3dc4d6')
 
 // Fog
 const fog = new THREE.Fog('#3dc4d6', 1, 10)
-// scene.fog = fog
+scene.fog = fog
 
 // GLTF
 const gltfLoader = new GLTFLoader()
@@ -53,14 +53,18 @@ let params = {
   previousClip: null,
   duration: 0.5,
   loop: 0,
-  color: '#3dc4d6'
+  color: '#3dc4d6',
+  background: '#3dc4d6'
 }
 
 gltfLoader.load('/models/Omabuarts/models/sparrow.glb',
   (gltf) => {
     console.log('Model successfully loaded');
     console.log(gltf.scene);
+
+    // Cast shadow?
     gltf.scene.children[0].children[0].castShadow = true;
+
     scene.add(gltf.scene)
     // objectsToAnimate.push(fox)
     mixer = new THREE.AnimationMixer(gltf.scene)
@@ -112,7 +116,7 @@ const playAction = () => {
  * Floor
  */
 const floor = new THREE.Mesh(
-    new THREE.PlaneGeometry(100, 100),
+    new THREE.PlaneGeometry(500, 500),
     new THREE.MeshStandardMaterial({
         color: params.color,
         metalness: 0,
@@ -122,14 +126,20 @@ const floor = new THREE.Mesh(
 floor.rotation.x = - Math.PI * 0.5
 scene.add(floor)
 
-const updateBackground = () => {
-  console.log(scene);
+const updateFloor = () => {
   const newColor = new THREE.Color(params.color)
   floor.material.color = newColor
+}
+const updateBackground = () => {
+  const newColor = new THREE.Color(params.background)
   scene.background = newColor;
+  // Fog
+  const fog = new THREE.Fog(params.background, 1, 10)
+  scene.fog = fog
 }
 
-gui.addColor(params, 'color').onFinishChange(updateBackground)
+gui.addColor(params, 'color').onFinishChange(updateFloor)
+gui.addColor(params, 'background').onFinishChange(updateBackground)
 
 
 /**
@@ -151,7 +161,7 @@ scene.add(dhelper)
 
 const pointLight = new THREE.PointLight('#ffffff', 8, 3)
 pointLight.position.y = 2
-scene.add(pointLight)
+// scene.add(pointLight)
 
 /**
  * Sizes
