@@ -50,7 +50,7 @@ let mixer = null
 
 let params = {
   number: 0,
-  previousClip: null,
+  previousClip: 0,
   duration: 0.5,
   loop: 0,
   color: '#3dc4d6',
@@ -111,20 +111,28 @@ const playAction = () => {
   }
 }
 
+const walk = () => {
+
+}
+
 const doOnceThenWalk = (newAction) => {
-  if (params.number != 0) {
+
+  if (params.previousClip != 0) {
     params.mixer.stopAllAction()
+    console.log(params.previousClip);
+    console.log('uncaching: ');
+    console.log(params.animations[params.previousClip]);
     params.mixer.uncacheClip(params.animations[params.previousClip])
   }
 
 
-  // const action = params.mixer.clipAction(action)
-  // action.setLoop(THREE.LoopRepeat, 1)
-  // action.setDuration(0.5)
-  // console.log(params.mixer);
-  // action.play()
+  const action = params.mixer.clipAction(newAction)
+  // params.number = (params.animations.indexOf(newAction) + 1)
+  action.setLoop(THREE.LoopRepeat, 1)
+  action.setDuration(0.5)
+  action.play()
 
-  params.previousClip = 18
+  params.previousClip = 18 - 1
 }
 
 
@@ -278,12 +286,9 @@ const actions = {
   3: "Jump"
 }
 
-const triggerAction = (actionToDo) => {
-  const action = params.animations.find((a) => a.name == actionToDo)
-  params.number = (params.animations.indexOf(action) + 1)
-  console.log("Current action no.: " + params.number);
-  console.log("Previous action no.: " + params.previousClip);
-  doOnceThenWalk(action)
+const triggerAction = (actionName) => {
+  const newAction = params.animations.find((a) => a.name == actionName)
+  doOnceThenWalk(newAction)
 }
 
 const messageContainer = document.getElementById('text')
@@ -308,8 +313,8 @@ document.getElementById('next').addEventListener('click', () => {
   //   // messageContainer.classList.remove('animate__fadeOut')
   //   messageContainer.classList.add('animate__fadeIn')
   // }, 0);
-  const actionToDo = actions[params.messageNumber]
-  if (actionToDo) triggerAction(actionToDo)
+  const actionName = actions[params.messageNumber]
+  if (actionName) triggerAction(actionName)
   var typed = new Typed(messageContainer, {
     strings: [messages[params.messageNumber]],
     typeSpeed: 50,
