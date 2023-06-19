@@ -16,7 +16,7 @@ const canvas = document.querySelector('canvas.webgl')
 
 // Scene
 const scene = new THREE.Scene()
-
+scene.background = new THREE.Color('#3dc4d6')
 
 // GLTF
 const gltfLoader = new GLTFLoader()
@@ -49,7 +49,7 @@ let params = {
   previousClip: null,
   duration: 0.5,
   loop: 0,
-  color: ''
+  color: '#3dc4d6'
 }
 
 gltfLoader.load('/models/Omabuarts/models/sparrow.glb',
@@ -109,7 +109,7 @@ const playAction = () => {
 const floor = new THREE.Mesh(
     new THREE.PlaneGeometry(10, 10),
     new THREE.MeshStandardMaterial({
-        color: '#444444',
+        color: params.color,
         metalness: 0,
         roughness: 0.5
     })
