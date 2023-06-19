@@ -267,7 +267,18 @@ params.message = 0
 
 document.getElementById('next').addEventListener('click', () => {
   params.message += 1;
-  messageContainer.innerText = messages[params.message]
+   messageContainer.innerText = ""
+  // // messageContainer.classList.add('animate__fadeOut')
+  // setTimeout(() => {
+  //   messageContainer.innerText = messages[params.message]
+  //   // messageContainer.classList.remove('animate__fadeOut')
+  //   messageContainer.classList.add('animate__fadeIn')
+  // }, 0);
+
+  var typed = new Typed(messageContainer, {
+    strings: [messages[params.message]],
+    typeSpeed: 50,
+  });
 })
 document.getElementById('previous').addEventListener('click', () => {
   params.message -= 1;
