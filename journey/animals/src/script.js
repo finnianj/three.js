@@ -44,7 +44,8 @@ const gltfLoader = new GLTFLoader()
 let mixer = null
 
 let params = {
-  number: 5
+  number: 5,
+  previousClip: null
 }
 
 gltfLoader.load('/models/Omabuarts/models/sparrow.glb',
@@ -67,14 +68,18 @@ gltfLoader.load('/models/Omabuarts/models/sparrow.glb',
 )
 
 const playAction = () => {
-  console.log('New action');
-  params.mixer.stopAllAction()
-  params.mixer._actions = []
-  params.mixer._actionsByClip = {}
-  // if (params.mixer.actions) params.mixer.uncacheAction(params.mixer.actions[0])
+  if (params.previousClip != null) {
+    console.log('New action');
+    params.mixer.stopAllAction()
+    console.log(params.animations[params.previousClip]);
+    params.mixer.uncacheClip(params.animations[params.previousClip])
+  }
+
+  
   const action = params.mixer.clipAction(params.animations[params.number])
   console.log(params.mixer);
   action.play()
+  params.previousClip = params.number
 }
 
 gui.add(params, 'number').min(0).max(17).step(1).onFinishChange(playAction)
