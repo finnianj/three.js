@@ -157,7 +157,7 @@ directionalLight.position.set(5, 5, 5)
 scene.add(directionalLight)
 
 const dhelper = new THREE.DirectionalLightHelper(directionalLight)
-scene.add(dhelper)
+// scene.add(dhelper)
 
 const pointLight = new THREE.PointLight('#ffffff', 8, 3)
 pointLight.position.y = 2
@@ -255,5 +255,24 @@ const tick = () =>
     // Call tick again on the next frame
     window.requestAnimationFrame(tick)
 }
+
+const messageContainer = document.getElementById('text')
+const messages = [
+  "Hello there",
+  "Nice to meet you",
+  "My name is Balthazar"
+]
+
+params.message = 0
+
+document.getElementById('next').addEventListener('click', () => {
+  params.message += 1;
+  messageContainer.innerText = messages[params.message]
+})
+document.getElementById('previous').addEventListener('click', () => {
+  params.message -= 1;
+  messageContainer.innerText = messages[params.message]
+})
+
 
 tick()
