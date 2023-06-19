@@ -53,8 +53,8 @@ let params = {
   previousClip: 0,
   duration: 0.5,
   loop: 0,
-  color: '#3dc4d6',
-  background: '#3dc4d6',
+  color: '#ff9d2e',
+  background: '#ff9d2e',
   catalogue: {
     "None": 0
   }
@@ -115,14 +115,13 @@ const playAction = () => {
 const walk = () => {
   const action = params.mixer.clipAction(params.animations[17])
   action.play()
-  params.previousClip = 17
 }
 
 const doOnceThenWalk = (newAction) => {
 
   const action = params.mixer.clipAction(newAction)
-  action.setLoop(THREE.LoopRepeat, 1)
-  action.setDuration(3)
+  action.setLoop(THREE.LoopRepeat, 2)
+  action.setDuration(1)
 
   console.log(params.mixer);
   // params.number = (params.animations.indexOf(newAction) + 1)
@@ -136,8 +135,6 @@ const doOnceThenWalk = (newAction) => {
     params.mixer._actions[0].play()
     console.log(params.mixer);
   } )
-
-  // params.previousClip = 18 - 1
 }
 
 
@@ -287,7 +284,8 @@ const tick = () =>
 }
 
 const actions = {
-  3: "Jump"
+  3: "Jump",
+  5: "Spin"
 }
 
 const triggerAction = (actionName) => {
@@ -308,26 +306,30 @@ const messages = [
 
 params.messageNumber = 0
 
+const update = () => {
+  messageContainer.innerText = ""
+  const actionName = actions[params.messageNumber]
+  console.log(actionName);
+  if (actionName) triggerAction(actionName)
+  var typed = new Typed(messageContainer, {
+    strings: [messages[params.messageNumber]],
+    typeSpeed: 50,
+  });
+}
+
 document.getElementById('next').addEventListener('click', () => {
   params.messageNumber += 1;
-  messageContainer.innerText = ""
+  update()
   // // messageContainer.classList.add('animate__fadeOut')
   // setTimeout(() => {
   //   messageContainer.innerText = messages[params.message]
   //   // messageContainer.classList.remove('animate__fadeOut')
   //   messageContainer.classList.add('animate__fadeIn')
   // }, 0);
-  const actionName = actions[params.messageNumber]
-  if (actionName) triggerAction(actionName)
-  var typed = new Typed(messageContainer, {
-    strings: [messages[params.messageNumber]],
-    typeSpeed: 50,
-  });
 })
 document.getElementById('previous').addEventListener('click', () => {
   params.messageNumber -= 1;
-  triggerAction()
-  messageContainer.innerText = messages[params.messageNumber]
+  update()
 })
 
 
