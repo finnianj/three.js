@@ -34,6 +34,15 @@ body
   color: white;
 }
 
+/* #speech-bubble{
+  position: fixed;
+  width: 34vw;
+  height: 30vw;
+  background-image: url("bubble.png");
+  background-size: cover;
+} */
+
+
 #next{
   position: fixed;
   top: 80vh;

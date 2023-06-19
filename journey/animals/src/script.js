@@ -54,7 +54,8 @@ let params = {
   duration: 0.5,
   loop: 0,
   color: '#3dc4d6',
-  background: '#3dc4d6'
+  background: '#3dc4d6',
+  catalogue: {}
 }
 
 gltfLoader.load('/models/Omabuarts/models/sparrow.glb',
@@ -75,12 +76,10 @@ gltfLoader.load('/models/Omabuarts/models/sparrow.glb',
         console.log(anim);
         console.log('Successfully loaded animation folder');
         params.animations = anim.animations;
-        let catalogue = { None: 0 }
         for (let i = 0; i < anim.animations.length; i++) {
-          catalogue[anim.animations[i].name] = i + 1;
+          params.catalogue[anim.animations[i].name] = i + 1;
         }
-        console.log(catalogue);
-        gui.add(params, 'number', catalogue).name('Animation').onFinishChange(playAction)
+        gui.add(params, 'number', params.catalogue).name('Animation').onFinishChange(playAction)
         gui.add(params, 'duration').min(0.3).max(2).step(0.1).onFinishChange(playAction)
         gui.add(params, 'loop').min(0).max(10).step(1).name('No. of Loops. (0 = inifinite)').onFinishChange(playAction)
       }
@@ -108,6 +107,20 @@ const playAction = () => {
     // Changing the value of params.previousClip so that it will delete the current animation on the next change
     params.previousClip = params.number - 1
   }
+}
+const doOnceThenWalk = (newAction) => {
+  params.mixer.stopAllAction()
+  params.mixer.uncacheClip(params.animations[params.previousClip])
+
+
+  const action = params.mixer.clipAction(action)
+  action.setLoop(THREE.LoopRepeat, 1)
+  action.setDuration(0.5)
+  console.log(params.mixer);
+  action.play()
+  // Changing the value of params.previousClip so that it will delete the current animation on the next change
+  params.previousClip = params.number - 1
+
 }
 
 
@@ -256,33 +269,54 @@ const tick = () =>
     window.requestAnimationFrame(tick)
 }
 
+const actions = {
+  0: "",
+  1: "",
+  2: "",
+  3: "Jump",
+  4: "",
+  5: ""
+}
+
+const triggerAction = () => {
+  console.log(actions[params.message]);
+  console.log(params.catalogue);
+  // params.number = actions[params.message]
+  // doOnce()
+}
+
 const messageContainer = document.getElementById('text')
 const messages = [
   "Hello there",
   "Nice to meet you",
-  "My name is Balthazar"
+  "What is your name?",
+  "That's a nice name.",
+  "I do not have a name..",
+  "I am merely a construct of Finn's consciousness",
+  "Do I exist? Who can say"
 ]
 
-params.message = 0
+params.messageNumber = 0
 
 document.getElementById('next').addEventListener('click', () => {
-  params.message += 1;
-   messageContainer.innerText = ""
+  params.messageNumber += 1;
+  messageContainer.innerText = ""
   // // messageContainer.classList.add('animate__fadeOut')
   // setTimeout(() => {
   //   messageContainer.innerText = messages[params.message]
   //   // messageContainer.classList.remove('animate__fadeOut')
   //   messageContainer.classList.add('animate__fadeIn')
   // }, 0);
-
+  if (actions[params.messageNumber]) triggerAction()
   var typed = new Typed(messageContainer, {
-    strings: [messages[params.message]],
+    strings: [messages[params.messageNumber]],
     typeSpeed: 50,
   });
 })
 document.getElementById('previous').addEventListener('click', () => {
-  params.message -= 1;
-  messageContainer.innerText = messages[params.message]
+  params.messageNumber -= 1;
+  triggerAction()
+  messageContainer.innerText = messages[params.messageNumber]
 })
 
 
