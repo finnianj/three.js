@@ -62,25 +62,32 @@ gltfLoader.load('/models/Omabuarts/models/sparrow.glb',
         console.log(anim);
         console.log('Successfully loaded animation folder');
         params.animations = anim.animations;
-        gui.add(params, 'number').min(0).max(params.animations.length - 1).step(1).onFinishChange(playAction)
+        let catalogue = { None: 0 }
+        for (let i = 0; i < anim.animations.length; i++) {
+          catalogue[anim.animations[i].name] = i + 1;
+        }
+        console.log(catalogue);
+        gui.add(params, 'number', catalogue).onFinishChange(playAction)
+        // gui.add(params, 'number').min(0).max(params.animations.length - 1).step(1).onFinishChange(playAction)
       }
       )
   }
 )
 
 const playAction = () => {
+  console.log(params.number);
   if (params.previousClip != null) {
     console.log('Uncaching previous clip from mixer...');
     params.mixer.stopAllAction()
     params.mixer.uncacheClip(params.animations[params.previousClip])
   }
 
-  const action = params.mixer.clipAction(params.animations[params.number])
+  const action = params.mixer.clipAction(params.animations[params.number - 1])
   console.log('New clip animation assigned to mixer.');
   console.log(params.mixer);
   action.play()
   // Changing the value of params.previousClip so that it will delete the current animation on the next change
-  params.previousClip = params.number
+  params.previousClip = params.number - 1
 }
 
 
