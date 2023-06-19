@@ -60,7 +60,7 @@ let params = {
   }
 }
 
-gltfLoader.load('/models/Omabuarts/models/sparrow.glb',
+gltfLoader.load('/models/Omabuarts/models/herring.glb',
   (gltf) => {
     console.log('Model successfully loaded');
     console.log(gltf.scene);
@@ -73,7 +73,7 @@ gltfLoader.load('/models/Omabuarts/models/sparrow.glb',
     mixer = new THREE.AnimationMixer(gltf.scene)
     params.mixer = mixer;
 
-    gltfLoader.load('/models/Omabuarts/animations/sparrow_animations.glb',
+    gltfLoader.load('/models/Omabuarts/animations/herring_animations.glb',
     (anim) => {
         console.log(anim);
         console.log('Successfully loaded animation folder');
@@ -121,7 +121,7 @@ const doOnceThenWalk = (newAction) => {
 
   const action = params.mixer.clipAction(newAction)
   action.setLoop(THREE.LoopRepeat, 2)
-  action.setDuration(1)
+  action.setDuration(0.5)
 
   console.log(params.mixer);
   // params.number = (params.animations.indexOf(newAction) + 1)
