@@ -17,6 +17,7 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 
+
 // GLTF
 const gltfLoader = new GLTFLoader()
 // gltfLoader.load('/models/Duck/glTF/Duck.gltf',
@@ -47,7 +48,8 @@ let params = {
   number: 0,
   previousClip: null,
   duration: 0.5,
-  loop: 0
+  loop: 0,
+  color: ''
 }
 
 gltfLoader.load('/models/Omabuarts/models/sparrow.glb',
@@ -115,6 +117,16 @@ const floor = new THREE.Mesh(
 floor.receiveShadow = true
 floor.rotation.x = - Math.PI * 0.5
 scene.add(floor)
+
+const updateBackground = () => {
+  console.log(scene);
+  const newColor = new THREE.Color(params.color)
+  floor.material.color = newColor
+  scene.background = newColor;
+}
+
+gui.addColor(params, 'color').onFinishChange(updateBackground)
+
 
 /**
  * Lights
