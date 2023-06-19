@@ -55,7 +55,9 @@ let params = {
   loop: 0,
   color: '#3dc4d6',
   background: '#3dc4d6',
-  catalogue: {}
+  catalogue: {
+    "None": 0
+  }
 }
 
 gltfLoader.load('/models/Omabuarts/models/sparrow.glb',
@@ -108,19 +110,21 @@ const playAction = () => {
     params.previousClip = params.number - 1
   }
 }
+
 const doOnceThenWalk = (newAction) => {
-  params.mixer.stopAllAction()
-  params.mixer.uncacheClip(params.animations[params.previousClip])
+  if (params.number != 0) {
+    params.mixer.stopAllAction()
+    params.mixer.uncacheClip(params.animations[params.previousClip])
+  }
 
 
-  const action = params.mixer.clipAction(action)
-  action.setLoop(THREE.LoopRepeat, 1)
-  action.setDuration(0.5)
-  console.log(params.mixer);
-  action.play()
-  // Changing the value of params.previousClip so that it will delete the current animation on the next change
-  params.previousClip = params.number - 1
+  // const action = params.mixer.clipAction(action)
+  // action.setLoop(THREE.LoopRepeat, 1)
+  // action.setDuration(0.5)
+  // console.log(params.mixer);
+  // action.play()
 
+  params.previousClip = 18
 }
 
 
@@ -270,16 +274,16 @@ const tick = () =>
 }
 
 const actions = {
-  3: "Jump",
+  1: "Walk",
+  3: "Jump"
 }
 
-const triggerAction = (actionName) => {
-  console.log(params.animations);
-  console.log(actionName);
-  const action = params.animations.find((a) => a.name == actionName)
-  console.log(action);
-  // params.number = actions[params.message]
-  // doOnce()
+const triggerAction = (actionToDo) => {
+  const action = params.animations.find((a) => a.name == actionToDo)
+  params.number = (params.animations.indexOf(action) + 1)
+  console.log("Current action no.: " + params.number);
+  console.log("Previous action no.: " + params.previousClip);
+  doOnceThenWalk(action)
 }
 
 const messageContainer = document.getElementById('text')
@@ -304,7 +308,8 @@ document.getElementById('next').addEventListener('click', () => {
   //   // messageContainer.classList.remove('animate__fadeOut')
   //   messageContainer.classList.add('animate__fadeIn')
   // }, 0);
-  if (actions[params.messageNumber]) triggerAction(actions[params.messageNumber])
+  const actionToDo = actions[params.messageNumber]
+  if (actionToDo) triggerAction(actionToDo)
   var typed = new Typed(messageContainer, {
     strings: [messages[params.messageNumber]],
     typeSpeed: 50,
