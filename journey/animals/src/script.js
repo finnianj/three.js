@@ -60,6 +60,7 @@ gltfLoader.load('/models/Omabuarts/models/sparrow.glb',
   (gltf) => {
     console.log('Model successfully loaded');
     console.log(gltf.scene);
+    gltf.scene.children[0].children[0].castShadow = true;
     scene.add(gltf.scene)
     // objectsToAnimate.push(fox)
     mixer = new THREE.AnimationMixer(gltf.scene)
@@ -110,22 +111,21 @@ const playAction = () => {
 /**
  * Floor
  */
-// const floor = new THREE.Mesh(
-//     new THREE.PlaneGeometry(100, 100),
-//     new THREE.MeshStandardMaterial({
-//         color: params.color,
-//         metalness: 0,
-//         roughness: 0.5
-//     })
-// )
-// floor.receiveShadow = true
-// floor.rotation.x = - Math.PI * 0.5
-// scene.add(floor)
+const floor = new THREE.Mesh(
+    new THREE.PlaneGeometry(100, 100),
+    new THREE.MeshStandardMaterial({
+        color: params.color,
+        metalness: 0,
+        roughness: 0.5
+    })
+)
+floor.rotation.x = - Math.PI * 0.5
+scene.add(floor)
 
 const updateBackground = () => {
   console.log(scene);
   const newColor = new THREE.Color(params.color)
-  // floor.material.color = newColor
+  floor.material.color = newColor
   scene.background = newColor;
 }
 
@@ -139,15 +139,19 @@ const ambientLight = new THREE.AmbientLight(0xffffff, 0.8)
 scene.add(ambientLight)
 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6)
-directionalLight.castShadow = true
-directionalLight.shadow.mapSize.set(1024, 1024)
-directionalLight.shadow.camera.far = 15
-directionalLight.shadow.camera.left = - 7
-directionalLight.shadow.camera.top = 7
-directionalLight.shadow.camera.right = 7
-directionalLight.shadow.camera.bottom = - 7
+// directionalLight.shadow.camera.left = - 7
+// directionalLight.shadow.camera.top = 7
+// directionalLight.shadow.camera.right = 7
+// directionalLight.shadow.camera.bottom = - 7
 directionalLight.position.set(5, 5, 5)
 scene.add(directionalLight)
+
+const dhelper = new THREE.DirectionalLightHelper(directionalLight)
+scene.add(dhelper)
+
+const pointLight = new THREE.PointLight('#ffffff', 8, 3)
+pointLight.position.y = 2
+scene.add(pointLight)
 
 /**
  * Sizes
@@ -191,10 +195,25 @@ controls.enableDamping = true
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas
 })
-renderer.shadowMap.enabled = true
-renderer.shadowMap.type = THREE.PCFSoftShadowMap
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+
+// Shadows
+
+renderer.shadowMap.enabled = true
+renderer.shadowMap.type = THREE.PCFSoftShadowMap
+
+floor.receiveShadow = true
+directionalLight.castShadow = true
+directionalLight.shadow.camera.far = 25
+directionalLight.shadow.mapSize.set(1024, 1024)
+
+pointLight.castShadow = true
+pointLight.shadow.mapSize.width = 256
+pointLight.shadow.mapSize.height = 256
+pointLight.shadow.camera.far = 7
+
+console.log(directionalLight);
 
 /**
  * Animate
