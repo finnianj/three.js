@@ -46,8 +46,8 @@ let mixer = null
 let params = {
   number: 0,
   previousClip: null,
-  duration: 1,
-  loop: false
+  duration: 0.5,
+  loop: 0
 }
 
 gltfLoader.load('/models/Omabuarts/models/sparrow.glb',
@@ -70,6 +70,8 @@ gltfLoader.load('/models/Omabuarts/models/sparrow.glb',
         }
         console.log(catalogue);
         gui.add(params, 'number', catalogue).name('Animation').onFinishChange(playAction)
+        gui.add(params, 'duration').min(0.3).max(2).step(0.1).onFinishChange(playAction)
+        gui.add(params, 'loop').min(0).max(10).step(1).name('No. of Loops. (0 = inifinite)').onFinishChange(playAction)
       }
       )
   }
@@ -85,7 +87,10 @@ const playAction = () => {
 
   if (params.number != 0) {
     const action = params.mixer.clipAction(params.animations[params.number - 1])
-    action.setLoop(THREE.LoopRepeat, 2)
+    // if (params.loop == 0) action.setLoop(THREE.LoopRepeat)
+    if (params.loop == 0) params.loop = 'Infinity'
+    action.setLoop(THREE.LoopRepeat, params.loop)
+    action.setDuration(params.duration)
     console.log('New clip animation assigned to mixer.');
     console.log(params.mixer);
     action.play()
