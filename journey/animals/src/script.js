@@ -16,11 +16,6 @@ const canvas = document.querySelector('canvas.webgl')
 
 // Scene
 const scene = new THREE.Scene()
-scene.background = new THREE.Color('#3dc4d6')
-
-// Fog
-const fog = new THREE.Fog('#3dc4d6', 1, 10)
-scene.fog = fog
 
 // GLTF
 const gltfLoader = new GLTFLoader()
@@ -53,12 +48,18 @@ let params = {
   previousClip: 0,
   duration: 0.5,
   loop: 0,
-  color: '#ff9d2e',
-  background: '#ff9d2e',
+  color: '#0042ad',
+  background: '#0593ff',
   catalogue: {
     "None": 0
   }
 }
+
+scene.background = new THREE.Color(params.background)
+
+// Fog
+const fog = new THREE.Fog(params.background, 1, 10)
+scene.fog = fog
 
 gltfLoader.load('/models/Omabuarts/models/herring.glb',
   (gltf) => {
@@ -67,7 +68,8 @@ gltfLoader.load('/models/Omabuarts/models/herring.glb',
 
     // Cast shadow?
     gltf.scene.children[0].children[0].castShadow = true;
-
+    gltf.scene.position.y = 1
+    // params.model = gltf.scene
     scene.add(gltf.scene)
     // objectsToAnimate.push(fox)
     mixer = new THREE.AnimationMixer(gltf.scene)
@@ -223,7 +225,7 @@ scene.add(camera)
 
 // Controls
 const controls = new OrbitControls(camera, canvas)
-controls.target.set(0, 0.75, 0)
+controls.target.set(0, 1.5, 0)
 controls.enableDamping = true
 
 /**
@@ -267,6 +269,7 @@ const tick = () =>
     // objectsToAnimate.forEach((item) => {
     //   item.rotation.x = Math.sin(elapsedTime) / 4
     // })
+    // camera.lookAt(new THREE.Vector3(0, 4, 0))
 
     // Update controls
     controls.update()
