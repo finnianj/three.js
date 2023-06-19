@@ -18,6 +18,10 @@ const canvas = document.querySelector('canvas.webgl')
 const scene = new THREE.Scene()
 scene.background = new THREE.Color('#3dc4d6')
 
+// Fog
+const fog = new THREE.Fog('#3dc4d6', 1, 10)
+// scene.fog = fog
+
 // GLTF
 const gltfLoader = new GLTFLoader()
 // gltfLoader.load('/models/Duck/glTF/Duck.gltf',
@@ -106,22 +110,22 @@ const playAction = () => {
 /**
  * Floor
  */
-const floor = new THREE.Mesh(
-    new THREE.PlaneGeometry(10, 10),
-    new THREE.MeshStandardMaterial({
-        color: params.color,
-        metalness: 0,
-        roughness: 0.5
-    })
-)
-floor.receiveShadow = true
-floor.rotation.x = - Math.PI * 0.5
-scene.add(floor)
+// const floor = new THREE.Mesh(
+//     new THREE.PlaneGeometry(100, 100),
+//     new THREE.MeshStandardMaterial({
+//         color: params.color,
+//         metalness: 0,
+//         roughness: 0.5
+//     })
+// )
+// floor.receiveShadow = true
+// floor.rotation.x = - Math.PI * 0.5
+// scene.add(floor)
 
 const updateBackground = () => {
   console.log(scene);
   const newColor = new THREE.Color(params.color)
-  floor.material.color = newColor
+  // floor.material.color = newColor
   scene.background = newColor;
 }
 
