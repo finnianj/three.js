@@ -270,17 +270,14 @@ const tick = () =>
 }
 
 const actions = {
-  0: "",
-  1: "",
-  2: "",
   3: "Jump",
-  4: "",
-  5: ""
 }
 
-const triggerAction = () => {
-  console.log(actions[params.message]);
-  console.log(params.catalogue);
+const triggerAction = (actionName) => {
+  console.log(params.animations);
+  console.log(actionName);
+  const action = params.animations.find((a) => a.name == actionName)
+  console.log(action);
   // params.number = actions[params.message]
   // doOnce()
 }
@@ -307,7 +304,7 @@ document.getElementById('next').addEventListener('click', () => {
   //   // messageContainer.classList.remove('animate__fadeOut')
   //   messageContainer.classList.add('animate__fadeIn')
   // }, 0);
-  if (actions[params.messageNumber]) triggerAction()
+  if (actions[params.messageNumber]) triggerAction(actions[params.messageNumber])
   var typed = new Typed(messageContainer, {
     strings: [messages[params.messageNumber]],
     typeSpeed: 50,
