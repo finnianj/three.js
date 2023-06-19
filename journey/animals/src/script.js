@@ -81,6 +81,7 @@ gltfLoader.load('/models/Omabuarts/models/sparrow.glb',
         for (let i = 0; i < anim.animations.length; i++) {
           params.catalogue[anim.animations[i].name] = i + 1;
         }
+        walk()
         gui.add(params, 'number', params.catalogue).name('Animation').onFinishChange(playAction)
         gui.add(params, 'duration').min(0.3).max(2).step(0.1).onFinishChange(playAction)
         gui.add(params, 'loop').min(0).max(10).step(1).name('No. of Loops. (0 = inifinite)').onFinishChange(playAction)
@@ -112,27 +113,33 @@ const playAction = () => {
 }
 
 const walk = () => {
-
+  const action = params.mixer.clipAction(params.animations[17])
+  action.play()
 }
 
 const doOnceThenWalk = (newAction) => {
 
-  if (params.previousClip != 0) {
-    params.mixer.stopAllAction()
-    console.log(params.previousClip);
-    console.log('uncaching: ');
-    console.log(params.animations[params.previousClip]);
-    params.mixer.uncacheClip(params.animations[params.previousClip])
-  }
-
+  // if (params.previousClip != 0) {
+  //   params.mixer.stopAllAction()
+  //   console.log(params.previousClip);
+  //   console.log('uncaching: ');
+  //   console.log(params.animations[params.previousClip]);
+  //   params.mixer.uncacheClip(params.animations[params.previousClip])
+  // }
 
   const action = params.mixer.clipAction(newAction)
+  console.log(params.mixer);
   // params.number = (params.animations.indexOf(newAction) + 1)
   action.setLoop(THREE.LoopRepeat, 1)
-  action.setDuration(0.5)
+  action.setDuration(3)
   action.play()
+  params.mixer.addEventListener( 'finished', function( e	) {
+    console.log("Action finished. Uncaching...");
+    params.mixer.uncacheClip(newAction)
+    console.log(params.mixer);
+  } )
 
-  params.previousClip = 18 - 1
+  // params.previousClip = 18 - 1
 }
 
 
@@ -282,7 +289,6 @@ const tick = () =>
 }
 
 const actions = {
-  1: "Walk",
   3: "Jump"
 }
 
@@ -314,6 +320,7 @@ document.getElementById('next').addEventListener('click', () => {
   //   messageContainer.classList.add('animate__fadeIn')
   // }, 0);
   const actionName = actions[params.messageNumber]
+  console.log(actionName);
   if (actionName) triggerAction(actionName)
   var typed = new Typed(messageContainer, {
     strings: [messages[params.messageNumber]],
