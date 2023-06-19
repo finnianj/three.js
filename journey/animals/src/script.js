@@ -49,27 +49,28 @@ let params = {
 
 gltfLoader.load('/models/Omabuarts/models/sparrow.glb',
   (gltf) => {
-    console.log('success');
+    console.log('Model successfully loaded');
     console.log(gltf.scene);
-
-    // const fox = gltf.scene
     scene.add(gltf.scene)
     // objectsToAnimate.push(fox)
-    gltfLoader.load('/models/Omabuarts/sparrow_animations.glb',
+    mixer = new THREE.AnimationMixer(gltf.scene)
+    params.mixer = mixer;
+
+    gltfLoader.load('/models/Omabuarts/animations/sparrow_animations.glb',
     (anim) => {
         console.log(anim);
-        console.log('success');
-        mixer = new THREE.AnimationMixer(gltf.scene)
-        params.mixer = mixer;
+        console.log('Successfully loaded animation folder');
         params.animations = anim.animations;
       }
       )
-    }
+  }
 )
 
 const playAction = () => {
   console.log('New action');
   params.mixer.stopAllAction()
+  params.mixer._actions = []
+  params.mixer._actionsByClip = {}
   // if (params.mixer.actions) params.mixer.uncacheAction(params.mixer.actions[0])
   const action = params.mixer.clipAction(params.animations[params.number])
   console.log(params.mixer);
