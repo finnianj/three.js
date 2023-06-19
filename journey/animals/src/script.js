@@ -115,27 +115,25 @@ const playAction = () => {
 const walk = () => {
   const action = params.mixer.clipAction(params.animations[17])
   action.play()
+  params.previousClip = 17
 }
 
 const doOnceThenWalk = (newAction) => {
 
-  // if (params.previousClip != 0) {
-  //   params.mixer.stopAllAction()
-  //   console.log(params.previousClip);
-  //   console.log('uncaching: ');
-  //   console.log(params.animations[params.previousClip]);
-  //   params.mixer.uncacheClip(params.animations[params.previousClip])
-  // }
-
   const action = params.mixer.clipAction(newAction)
-  console.log(params.mixer);
-  // params.number = (params.animations.indexOf(newAction) + 1)
   action.setLoop(THREE.LoopRepeat, 1)
   action.setDuration(3)
+
+  console.log(params.mixer);
+  // params.number = (params.animations.indexOf(newAction) + 1)
+
+  params.mixer._actions[0].stop()
   action.play()
+
   params.mixer.addEventListener( 'finished', function( e	) {
     console.log("Action finished. Uncaching...");
     params.mixer.uncacheClip(newAction)
+    params.mixer._actions[0].play()
     console.log(params.mixer);
   } )
 
@@ -320,7 +318,6 @@ document.getElementById('next').addEventListener('click', () => {
   //   messageContainer.classList.add('animate__fadeIn')
   // }, 0);
   const actionName = actions[params.messageNumber]
-  console.log(actionName);
   if (actionName) triggerAction(actionName)
   var typed = new Typed(messageContainer, {
     strings: [messages[params.messageNumber]],
