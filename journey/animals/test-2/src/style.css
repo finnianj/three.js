@@ -15,6 +15,9 @@ html,
 body
 {
     overflow: hidden;
+    font-family: cherry;
+  margin: 0;
+  background-color: rgb(255, 227, 192);
 }
 
 .webgl
@@ -66,4 +69,100 @@ body
 .button:hover{
   cursor: pointer;
   opacity: 80%;
+}
+
+#box1{
+  border: 1px solid black;
+  /* z-index: 10; */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 200px;
+  background-color: rgb(255, 0, 144);
+  border-bottom-right-radius: 100%;
+  /* animation: pulse-pink 6s infinite; */
+}
+#box2{
+  border: 1px solid black;
+  /* z-index: 10; */
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  background-color: #00d1ffd1;
+  border-bottom-left-radius: 100%;
+  /* animation: pulse-blue 4s infinite; */
+}
+#box3{
+  border: 1px solid black;
+  /* z-index: 10; */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 150px;
+  height: 150px;
+  background-color: #00ce75d1;
+  border-top-right-radius: 100%;
+  align-self: end;
+  /* animation: pulse-green 5s infinite; */
+}
+#box4{
+  border: 1px solid black;
+  /* z-index: 10; */
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 300px;
+  height: 300px;
+  background-color: rgb(255, 191, 0);
+  border-top-left-radius: 100%;
+  /* animation: pulse-yellow 7s infinite; */
+}
+
+#container{
+  z-index: 100;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.text{
+  color: rgb(43, 43, 43);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+  padding-bottom: 200px;
+  overflow: scroll;
+  scroll-behavior: smooth;
+}
+
+.text-fade{
+  mask-image: linear-gradient(to bottom, transparent 0%, black 40%, black 60%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+
+.text::-webkit-scrollbar{
+  display: none;
+}
+
+h2{
+  text-align: center;
+  font-size: 8vw;
+  font-weight: lighter;
+  width: 70%;
+  margin-top: 40vw;
+}
+.title{
+  margin-top: 30vh !important;
 }

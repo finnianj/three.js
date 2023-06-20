@@ -55,11 +55,11 @@ let params = {
   }
 }
 
-scene.background = new THREE.Color(params.background)
+// scene.background = new THREE.Color(params.background)
 
 // Fog
-const fog = new THREE.Fog(params.background, 1, 10)
-scene.fog = fog
+// const fog = new THREE.Fog(params.background, 1, 10)
+// scene.fog = fog
 
 gltfLoader.load('/models/Omabuarts/models/herring.glb',
   (gltf) => {
@@ -71,6 +71,7 @@ gltfLoader.load('/models/Omabuarts/models/herring.glb',
     gltf.scene.position.y = 1
     // params.model = gltf.scene
     scene.add(gltf.scene)
+    camera.lookAt(gltf.scene.position)
     // objectsToAnimate.push(fox)
     mixer = new THREE.AnimationMixer(gltf.scene)
     params.mixer = mixer;
@@ -84,9 +85,9 @@ gltfLoader.load('/models/Omabuarts/models/herring.glb',
           params.catalogue[anim.animations[i].name] = i + 1;
         }
         walk()
-        gui.add(params, 'number', params.catalogue).name('Animation').onFinishChange(playAction)
-        gui.add(params, 'duration').min(0.3).max(2).step(0.1).onFinishChange(playAction)
-        gui.add(params, 'loop').min(0).max(10).step(1).name('No. of Loops. (0 = inifinite)').onFinishChange(playAction)
+        // gui.add(params, 'number', params.catalogue).name('Animation').onFinishChange(playAction)
+        // gui.add(params, 'duration').min(0.3).max(2).step(0.1).onFinishChange(playAction)
+        // gui.add(params, 'loop').min(0).max(10).step(1).name('No. of Loops. (0 = inifinite)').onFinishChange(playAction)
       }
       )
   }
@@ -167,7 +168,7 @@ const floor = new THREE.Mesh(
     })
 )
 floor.rotation.x = - Math.PI * 0.5
-scene.add(floor)
+// scene.add(floor)
 
 const updateFloor = () => {
   const newColor = new THREE.Color(params.color)
@@ -181,8 +182,8 @@ const updateBackground = () => {
   scene.fog = fog
 }
 
-gui.addColor(params, 'color').onFinishChange(updateFloor)
-gui.addColor(params, 'background').onFinishChange(updateBackground)
+// gui.addColor(params, 'color').onFinishChange(updateFloor)
+// gui.addColor(params, 'background').onFinishChange(updateBackground)
 
 
 /**
@@ -234,21 +235,26 @@ window.addEventListener('resize', () =>
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.set(2, 2, 2)
+camera.position.set(-1, 2, 0)
 scene.add(camera)
+gui.add(camer.position, 'x').min(-5).max(5).step(0.1)
+gui.add(camer.position, 'y').min(-5).max(5).step(0.1)
+gui.add(camer.position, 'z').min(-5).max(5).step(0.1)
+
 
 // Controls
-const controls = new OrbitControls(camera, canvas)
-controls.target.set(0, 1.5, 0)
-controls.enableDamping = true
+// const controls = new OrbitControls(camera, canvas)
+// controls.target.set(0, 1.5, 0)
+// controls.enableDamping = true
 
 /**
  * Renderer
  */
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
-    // alpha: true
+    alpha: true
 })
+renderer.setClearColor(0xffffff, 0);
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
@@ -287,7 +293,7 @@ const tick = () =>
     // camera.lookAt(new THREE.Vector3(0, 4, 0))
 
     // Update controls
-    controls.update()
+    // controls.update()
 
     // Update mixer
     if (mixer != null) {
@@ -310,54 +316,54 @@ const tick = () =>
 // -----------------------------------------
 // -----------------------------------------
 
-const actions = {
-  3: "Jump",
-  5: "Roll"
-}
+// const actions = {
+//   3: "Jump",
+//   5: "Roll"
+// }
 
-const triggerAction = (actionName) => {
-  const newAction = params.animations.find((a) => a.name == actionName)
-  doOnceThenWalk(newAction)
-}
+// const triggerAction = (actionName) => {
+//   const newAction = params.animations.find((a) => a.name == actionName)
+//   doOnceThenWalk(newAction)
+// }
 
-const messageContainer = document.getElementById('text')
-const messages = [
-  "Hello there",
-  "Nice to meet you",
-  "What is your name?",
-  "That's a nice name.",
-  "I do not have a name...",
-  "I am merely a construct of Finn's consciousness",
-  "Do I exist? Who can say..."
-]
+// const messageContainer = document.getElementById('text')
+// const messages = [
+//   "Hello there",
+//   "Nice to meet you",
+//   "What is your name?",
+//   "That's a nice name.",
+//   "I do not have a name...",
+//   "I am merely a construct of Finn's consciousness",
+//   "Do I exist? Who can say..."
+// ]
 
-params.messageNumber = 0
+// params.messageNumber = 0
 
-const update = () => {
-  messageContainer.innerText = ""
-  const actionName = actions[params.messageNumber]
-  console.log(actionName);
-  if (actionName) triggerAction(actionName)
-  var typed = new Typed(messageContainer, {
-    strings: [messages[params.messageNumber]],
-    typeSpeed: 50,
-  });
-}
+// const update = () => {
+//   messageContainer.innerText = ""
+//   const actionName = actions[params.messageNumber]
+//   console.log(actionName);
+//   if (actionName) triggerAction(actionName)
+//   var typed = new Typed(messageContainer, {
+//     strings: [messages[params.messageNumber]],
+//     typeSpeed: 50,
+//   });
+// }
 
-document.getElementById('next').addEventListener('click', () => {
-  params.messageNumber += 1;
-  update()
-  // // messageContainer.classList.add('animate__fadeOut')
-  // setTimeout(() => {
-  //   messageContainer.innerText = messages[params.message]
-  //   // messageContainer.classList.remove('animate__fadeOut')
-  //   messageContainer.classList.add('animate__fadeIn')
-  // }, 0);
-})
-document.getElementById('previous').addEventListener('click', () => {
-  params.messageNumber -= 1;
-  update()
-})
+// document.getElementById('next').addEventListener('click', () => {
+//   params.messageNumber += 1;
+//   update()
+//   // // messageContainer.classList.add('animate__fadeOut')
+//   // setTimeout(() => {
+//   //   messageContainer.innerText = messages[params.message]
+//   //   // messageContainer.classList.remove('animate__fadeOut')
+//   //   messageContainer.classList.add('animate__fadeIn')
+//   // }, 0);
+// })
+// document.getElementById('previous').addEventListener('click', () => {
+//   params.messageNumber -= 1;
+//   update()
+// })
 
 
 tick()
