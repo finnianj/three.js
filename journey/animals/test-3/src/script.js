@@ -43,7 +43,7 @@ scene.background = new THREE.Color(params.background)
 
 // Fog
 const fog = new THREE.Fog(params.background, 1, 10)
-// scene.fog = fog
+scene.fog = fog
 
 // particles
 let geometry = null;
@@ -135,18 +135,20 @@ gltfLoader.load('/models/Omabuarts/animals/inkfish.glb',
 /**
  * Plants
  */
+
 const directory = '/models/Omabuarts/models/nature/3d/OBJ/'
+const mtlLoader = new MTLLoader()
+const objLoader = new OBJLoader()
 
-const loadPlants = (path, number) => {
+const loadPlants = (path, number, scale, area) => {
 
-  new MTLLoader()
-    .load( `${directory}${path}`, function ( materials ) {
+  mtlLoader.load( `${directory}${path}.mtl`, function ( materials ) {
 
       materials.preload();
 
-      new OBJLoader()
+    objLoader
         .setMaterials( materials )
-        .load( `${directory}${path}`, function ( object ) {
+        .load( `${directory}${path}.obj`, function ( object ) {
 
           // object.position.y = - 95;
           console.log(object);
@@ -160,13 +162,13 @@ const loadPlants = (path, number) => {
             }
 
           } );
-          object.scale.set(0.2, 0.2, 0.2)
+          object.scale.set(scale, scale, scale)
           scene.add( object );
 
-          for(let i = 0; i < 10; i++) {
+          for(let i = 1; i < number; i++) {
             let clone = object.clone()
-            clone.position.z = Math.random() * 20 - 10
-            clone.position.x = Math.random() * 20 - 10
+            clone.position.z = Math.random() * area - (area / 2)
+            clone.position.x = Math.random() * area - (area / 2)
             scene.add(clone)
 
           }
@@ -176,7 +178,20 @@ const loadPlants = (path, number) => {
 
 }
 
-loadPlants()
+loadPlants('Seaweed_A_01_LOD0', 5, 0.2, 30)
+loadPlants('Seaweed_A_02_LOD0', 5, 0.2, 30)
+loadPlants('Seaweed_A_03_LOD0', 5, 0.2, 30)
+loadPlants('Coral_D_03_LOD0', 1, 0.2, 50)
+loadPlants('Coral_C_03_LOD0', 1, 0.6, 50)
+loadPlants('Coral_B_03_LOD0', 1, 0.3, 50)
+loadPlants('Coral_A_03_LOD0', 1, 0.5, 50)
+loadPlants('Rock_A_01_LOD0', 20, 0.1, 30)
+// loadPlants('Sponge_A_02_LOD0', 1, 0.1, 5)
+// loadPlants('Sponge_A_03_LOD0', 1, 0.1, 5)
+// loadPlants('Sponge_B_01_LOD0', 6, 0.1, 20)
+// loadPlants('Sponge_B_02_LOD0', 6, 0.1, 20)
+loadPlants('Sponge_B_03_LOD0', 6, 0.1, 20) // the coolest
+loadPlants('Starfish_01_LOD0', 10, 0.1, 20)
 
 // const playAction = () => {
 //   console.log(params.number);
