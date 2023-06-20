@@ -43,7 +43,7 @@ scene.background = new THREE.Color(params.background)
 
 // Fog
 const fog = new THREE.Fog(params.background, 1, 10)
-scene.fog = fog
+// scene.fog = fog
 
 // particles
 let geometry = null;
@@ -131,43 +131,52 @@ gltfLoader.load('/models/Omabuarts/animals/inkfish.glb',
   }
 )
 
-new MTLLoader()
-					.setPath( '/models/Omabuarts/models/nature/3d/OBJ/' )
-					.load( 'Seaweed_A_01_LOD0.mtl', function ( materials ) {
 
-						materials.preload();
+/**
+ * Plants
+ */
+const directory = '/models/Omabuarts/models/nature/3d/OBJ/'
 
-						new OBJLoader()
-							.setMaterials( materials )
-							.setPath( '/models/Omabuarts/models/nature/3d/OBJ/' )
-							.load( 'Seaweed_A_01_LOD0.obj', function ( object ) {
+const loadPlants = (path, number) => {
 
-								// object.position.y = - 95;
-                console.log(object);
-                object.traverse( function ( child ) {
+  new MTLLoader()
+    .load( `${directory}${path}`, function ( materials ) {
 
-                  if ( child.isMesh ) {
+      materials.preload();
 
-                    child.castShadow = true;
-                    child.receiveShadow = true;
+      new OBJLoader()
+        .setMaterials( materials )
+        .load( `${directory}${path}`, function ( object ) {
 
-                  }
+          // object.position.y = - 95;
+          console.log(object);
+          object.traverse( function ( child ) {
 
-                } );
-                object.scale.set(0.2, 0.2, 0.2)
-								scene.add( object );
+            if ( child.isMesh ) {
 
-                for(let i = 0; i < 10; i++) {
-                  let clone = object.clone()
-                  clone.position.z = Math.random() * 20 - 10
-                  clone.position.x = Math.random() * 20 - 10
-                  scene.add(clone)
+              child.castShadow = true;
+              child.receiveShadow = true;
 
-                }
-							});
+            }
 
-					} );
+          } );
+          object.scale.set(0.2, 0.2, 0.2)
+          scene.add( object );
 
+          for(let i = 0; i < 10; i++) {
+            let clone = object.clone()
+            clone.position.z = Math.random() * 20 - 10
+            clone.position.x = Math.random() * 20 - 10
+            scene.add(clone)
+
+          }
+        });
+
+    } );
+
+}
+
+loadPlants()
 
 // const playAction = () => {
 //   console.log(params.number);
