@@ -53,7 +53,7 @@ let params = {
   catalogue: {
     "None": 0
   },
-  count: 500,
+  count: 200,
   size: 0.1
 }
 
@@ -61,7 +61,7 @@ scene.background = new THREE.Color(params.background)
 
 // Fog
 const fog = new THREE.Fog(params.background, 1, 10)
-// scene.fog = fog
+scene.fog = fog
 
 // particles
 let geometry = null;
@@ -86,9 +86,9 @@ const generateParticles = () => {
 
   for (let i = 0; i < params.count; i++) {
     const i3 = i * 3
-    vertices[i3 + 0] = (Math.random() * 10) - 5
-    vertices[i3 + 1] = (Math.random() * 10) - 5
-    vertices[i3 + 2] = (Math.random() * 10) - 5
+    vertices[i3 + 0] = (Math.random() * 40) - 20
+    vertices[i3 + 1] = (Math.random() * 40) - 20
+    vertices[i3 + 2] = (Math.random() * 40) - 20
 
   }
 
@@ -336,8 +336,8 @@ const tick = () =>
       params.model.position.z = Math.sin(elapsedTime * 0.1) * 10
       params.model.position.x = Math.cos(elapsedTime * 0.1) * 10
 
-      camera.position.z = Math.sin((elapsedTime + 0.5) * 0.1)  * 11.5
-      camera.position.x = Math.cos((elapsedTime + 0.5) * 0.1) * 11.5
+      camera.position.z = Math.sin((elapsedTime + 1) * 0.1)  * 12
+      camera.position.x = Math.cos((elapsedTime + 1) * 0.1) * 12
       params.model.rotation.y = elapsedTime * -0.1
       // camera.lookAt(params.model.position)
     }
