@@ -178,6 +178,7 @@ const loadPlants = (path, number, scale, area) => {
 
 }
 
+console.log('check out other anemone/rocks(?)');
 loadPlants('Seaweed_A_01_LOD3', 5, 0.2, 30)
 loadPlants('Seaweed_A_02_LOD3', 5, 0.2, 30)
 loadPlants('Seaweed_A_03_LOD3', 5, 0.2, 30)
