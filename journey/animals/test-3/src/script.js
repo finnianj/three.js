@@ -436,6 +436,7 @@ const update = () => {
   const actionName = actions[params.messageNumber]
   console.log(actionName);
   if (actionName) triggerAction(actionName)
+  console.log('typed should split by newline character');
   var typed = new Typed(messageContainer, {
     strings: [messages[params.messageNumber]],
     typeSpeed: 50,
