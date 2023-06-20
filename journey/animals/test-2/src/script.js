@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import * as dat from 'lil-gui'
+// import * as dat from 'lil-gui'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
 const objectsToAnimate = []
@@ -9,7 +9,7 @@ const objectsToAnimate = []
  * Base
  */
 // Debug
-const gui = new dat.GUI()
+// const gui = new dat.GUI()
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
@@ -52,7 +52,8 @@ let params = {
   background: '#0593ff',
   catalogue: {
     "None": 0
-  }
+  },
+  animal: "taipan"
 }
 
 // scene.background = new THREE.Color(params.background)
@@ -61,7 +62,7 @@ let params = {
 // const fog = new THREE.Fog(params.background, 1, 10)
 // scene.fog = fog
 
-gltfLoader.load('/models/Omabuarts/models/herring.glb',
+gltfLoader.load(`/models/Omabuarts/models/${params.animal}.glb`,
   (gltf) => {
     console.log('Model successfully loaded');
     console.log(gltf.scene);
@@ -69,14 +70,13 @@ gltfLoader.load('/models/Omabuarts/models/herring.glb',
     // Cast shadow?
     gltf.scene.children[0].children[0].castShadow = true;
     gltf.scene.position.y = 1
-    // params.model = gltf.scene
+    params.scene = gltf.scene
     scene.add(gltf.scene)
-    camera.lookAt(gltf.scene.position)
     // objectsToAnimate.push(fox)
     mixer = new THREE.AnimationMixer(gltf.scene)
     params.mixer = mixer;
 
-    gltfLoader.load('/models/Omabuarts/animations/herring_animations.glb',
+    gltfLoader.load(`/models/Omabuarts/animations/${params.animal}_animations.glb`,
     (anim) => {
         console.log(anim);
         console.log('Successfully loaded animation folder');
@@ -131,6 +131,7 @@ const playAction = () => {
 
 const walk = () => {
   const action = params.mixer.clipAction(params.animations[16])
+  action.setDuration(0.5)
   action.play()
 }
 
@@ -235,11 +236,11 @@ window.addEventListener('resize', () =>
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.set(-1, 2, 0)
+camera.position.set(2.5, 2, 3)
 scene.add(camera)
-gui.add(camer.position, 'x').min(-5).max(5).step(0.1)
-gui.add(camer.position, 'y').min(-5).max(5).step(0.1)
-gui.add(camer.position, 'z').min(-5).max(5).step(0.1)
+// gui.add(camera.position, 'x').min(-5).max(5).step(0.1)
+// gui.add(camera.position, 'y').min(-5).max(5).step(0.1)
+// gui.add(camera.position, 'z').min(-5).max(5).step(0.1)
 
 
 // Controls
@@ -290,8 +291,13 @@ const tick = () =>
     // objectsToAnimate.forEach((item) => {
     //   item.rotation.x = Math.sin(elapsedTime) / 4
     // })
-    // camera.lookAt(new THREE.Vector3(0, 4, 0))
+    if (params.scene) {
 
+      camera.lookAt(params.scene.position)
+    }
+
+    camera.position.x = Math.sin(elapsedTime * 0.5) * 2
+    camera.position.y = Math.cos(elapsedTime * 0.5) + 2
     // Update controls
     // controls.update()
 
