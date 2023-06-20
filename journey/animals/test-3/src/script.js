@@ -2,6 +2,8 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 
 const objectsToAnimate = []
 
@@ -19,27 +21,7 @@ const scene = new THREE.Scene()
 
 // GLTF
 const gltfLoader = new GLTFLoader()
-// gltfLoader.load('/models/Duck/glTF/Duck.gltf',
-//   (gltf) => {
-//     console.log('success');
-//     const duck = gltf.scene.children[0]
-//     scene.add(duck)
-//     objectsToAnimate.push(duck)
-//   }
-// )
-// gltfLoader.load('/models/FlightHelmet/glTF/FlightHelmet.gltf',
-//   (gltf) => {
-//     console.log('success');
-//     const children = [...gltf.scene.children]
-//     for (const item of children) {
-//       console.log(item);
-//       item.position.z = 2
-//       item.rotation.y = Math.PI * 0.5
-//       scene.add(item)
-//       objectsToAnimate.push(item)
-//     }
-//   }
-// )
+
 
 let mixer = null
 
@@ -61,7 +43,7 @@ scene.background = new THREE.Color(params.background)
 
 // Fog
 const fog = new THREE.Fog(params.background, 1, 10)
-scene.fog = fog
+// scene.fog = fog
 
 // particles
 let geometry = null;
@@ -117,52 +99,87 @@ const generateParticles = () => {
 
 generateParticles()
 
-gltfLoader.load('/models/Omabuarts/models/inkfish.glb',
-  (gltf) => {
-    // console.log('Model successfully loaded');
-    // console.log(gltf.scene);
+// gltfLoader.load('/models/Omabuarts/models/inkfish.glb',
+//   (gltf) => {
+//     // console.log('Model successfully loaded');
+//     // console.log(gltf.scene);
 
-    // Cast shadow?
-    gltf.scene.children[0].children[0].castShadow = true;
-    gltf.scene.position.y = 1
-    params.model = gltf.scene
-    // console.log(controls);
-    scene.add(gltf.scene)
-    // objectsToAnimate.push(fox)
-    mixer = new THREE.AnimationMixer(gltf.scene)
-    params.mixer = mixer;
+//     // Cast shadow?
+//     gltf.scene.children[0].children[0].castShadow = true;
+//     gltf.scene.position.y = 1
+//     params.model = gltf.scene
+//     // console.log(controls);
+//     scene.add(gltf.scene)
+//     // objectsToAnimate.push(fox)
+//     mixer = new THREE.AnimationMixer(gltf.scene)
+//     params.mixer = mixer;
 
-    gltfLoader.load('/models/Omabuarts/animations/inkfish_animations.glb',
-    (anim) => {
-        // console.log(anim);
-        // console.log('Successfully loaded animation folder');
-        params.animations = anim.animations;
-        for (let i = 0; i < anim.animations.length; i++) {
-          params.catalogue[anim.animations[i].name] = i + 1;
-        }
-        walk()
-        // gui.add(params, 'number', params.catalogue).name('Animation').onFinishChange(playAction)
-        // gui.add(params, 'duration').min(0.3).max(2).step(0.1).onFinishChange(playAction)
-        // gui.add(params, 'loop').min(0).max(10).step(1).name('No. of Loops. (0 = inifinite)').onFinishChange(playAction)
-      }
-      )
-  }
+//     gltfLoader.load('/models/Omabuarts/animations/inkfish_animations.glb',
+//     (anim) => {
+//         // console.log(anim);
+//         // console.log('Successfully loaded animation folder');
+//         params.animations = anim.animations;
+//         for (let i = 0; i < anim.animations.length; i++) {
+//           params.catalogue[anim.animations[i].name] = i + 1;
+//         }
+//         walk()
+//         // gui.add(params, 'number', params.catalogue).name('Animation').onFinishChange(playAction)
+//         // gui.add(params, 'duration').min(0.3).max(2).step(0.1).onFinishChange(playAction)
+//         // gui.add(params, 'loop').min(0).max(10).step(1).name('No. of Loops. (0 = inifinite)').onFinishChange(playAction)
+//       }
+//       )
+//   }
+// )
+
+// gltfLoader.load('/models/Omabuarts/models/nature/coral.gltf',
+//   (gltf) => {
+//     console.log('Model successfully loaded');
+//     console.log(gltf);
+
+//     // // Cast shadow?
+//     // gltf.scene.children[0].children[0].castShadow = true;
+//     // gltf.scene.position.y = 1
+//     // params.model = gltf.scene
+//     scene.add(gltf.scene)
+
+//   }
+// )
+// const loader = new OBJLoader()
+// loader.load(
+//     '/models/Omabuarts/models/nature/OBJ/Coral_A_03_LOD0.obj',
+//     (object) => {
+//         // object.traverse(function (child) {
+//         //     if ((child as THREE.Mesh).isMesh) {
+//         //         // (child as THREE.Mesh).material = material
+//         //         if ((child as THREE.Mesh).material) {
+//         //             ((child as THREE.Mesh).material as THREE.MeshBasicMaterial).transparent = false
+//         //         }
+//         //     }
+//         // })
+//         // object.scale.set(.01, .01, .01)
+//         console.log(object);
+//         object.position.set(0, 0, 0)
+//         scene.add(object)
+//     }
+// )
+const loader = new OBJLoader()
+loader.load(
+    '/models/Omabuarts/models/nature/OBJ/Anemone_A_01_LOD0.obj',
+    (object) => {
+        // object.traverse(function (child) {
+        //     if ((child as THREE.Mesh).isMesh) {
+        //         // (child as THREE.Mesh).material = material
+        //         if ((child as THREE.Mesh).material) {
+        //             ((child as THREE.Mesh).material as THREE.MeshBasicMaterial).transparent = false
+        //         }
+        //     }
+        // })
+        // object.scale.set(.01, .01, .01)
+        console.log(object);
+        scene.add(object)
+    }
 )
 
-gltfLoader.load('/models/stone/scene.gltf',
-  (gltf) => {
-    console.log('Model successfully loaded');
-    console.log(gltf);
-
-    // // Cast shadow?
-    // gltf.scene.children[0].children[0].castShadow = true;
-    // gltf.scene.position.y = 1
-    // params.model = gltf.scene
-    gltf.scene.scale.set(0.1, 0.1, 0.1)
-    scene.add(gltf.scene)
-
-  }
-)
 
 // const playAction = () => {
 //   console.log(params.number);
@@ -344,14 +361,14 @@ const tick = () =>
     previousTime = elapsedTime
 
 
-    if (params.model) {
-      params.model.position.z = Math.sin(elapsedTime * 0.1) * 6
-      params.model.position.x = Math.cos(elapsedTime * 0.1) * 6
+    // if (params.model) {
+    //   params.model.position.z = Math.sin(elapsedTime * 0.1) * 6
+    //   params.model.position.x = Math.cos(elapsedTime * 0.1) * 6
 
-      camera.position.z = Math.sin((elapsedTime + 1) * 0.1)  * 8
-      camera.position.x = Math.cos((elapsedTime + 1) * 0.1) * 8
-      params.model.rotation.y = elapsedTime * -0.1
-    }
+    //   camera.position.z = Math.sin((elapsedTime + 1) * 0.1)  * 8
+    //   camera.position.x = Math.cos((elapsedTime + 1) * 0.1) * 8
+    //   params.model.rotation.y = elapsedTime * -0.1
+    // }
 
 
 
@@ -391,6 +408,7 @@ const triggerAction = (actionName) => {
 
 const messageContainer = document.getElementById('text')
 const messages = [
+  "Oh! \nIt's you...",
   "How are you?",
   "I am a squid",
   "Woooooo",
@@ -427,5 +445,6 @@ document.getElementById('previous').addEventListener('click', () => {
   update()
 })
 
+window.onload = () => { messageContainer.innerText = messages[0] }
 
 tick()
