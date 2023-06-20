@@ -104,7 +104,7 @@ const generateParticles = () => {
 
 generateParticles()
 
-gltfLoader.load('/models/Omabuarts/models/herring.glb',
+gltfLoader.load('/models/Omabuarts/models/inkfish.glb',
   (gltf) => {
     console.log('Model successfully loaded');
     console.log(gltf.scene);
@@ -119,7 +119,7 @@ gltfLoader.load('/models/Omabuarts/models/herring.glb',
     mixer = new THREE.AnimationMixer(gltf.scene)
     params.mixer = mixer;
 
-    gltfLoader.load('/models/Omabuarts/animations/herring_animations.glb',
+    gltfLoader.load('/models/Omabuarts/animations/inkfish_animations.glb',
     (anim) => {
         console.log(anim);
         console.log('Successfully loaded animation folder');
@@ -174,31 +174,32 @@ gltfLoader.load('/models/Omabuarts/models/herring.glb',
 
 const walk = () => {
   const action = params.mixer.clipAction(params.animations[16])
+  action.setDuration(1.5)
   action.play()
 }
 
 const axesHelper = new THREE.AxesHelper( 5 );
 scene.add( axesHelper );
 
-// const doOnceThenWalk = (newAction) => {
+const doOnceThenWalk = (newAction) => {
 
-//   const action = params.mixer.clipAction(newAction)
-//   action.setLoop(THREE.LoopRepeat, 2)
-//   action.setDuration(0.5)
+  const action = params.mixer.clipAction(newAction)
+  action.setLoop(THREE.LoopRepeat, 2)
+  action.setDuration(0.5)
 
-//   console.log(params.mixer);
-//   // params.number = (params.animations.indexOf(newAction) + 1)
+  console.log(params.mixer);
+  // params.number = (params.animations.indexOf(newAction) + 1)
 
-//   params.mixer._actions[0].stop()
-//   action.play()
+  params.mixer._actions[0].stop()
+  action.play()
 
-//   params.mixer.addEventListener( 'finished', function( e	) {
-//     console.log("Action finished. Uncaching...");
-//     params.mixer.uncacheClip(newAction)
-//     params.mixer._actions[0].play()
-//     console.log(params.mixer);
-//   } )
-// }
+  params.mixer.addEventListener( 'finished', function( e	) {
+    console.log("Action finished. Uncaching...");
+    params.mixer.uncacheClip(newAction)
+    params.mixer._actions[0].play()
+    console.log(params.mixer);
+  } )
+}
 
 
 
@@ -374,49 +375,49 @@ const actions = {
   5: "Roll"
 }
 
-// const triggerAction = (actionName) => {
-//   const newAction = params.animations.find((a) => a.name == actionName)
-//   doOnceThenWalk(newAction)
-// }
+const triggerAction = (actionName) => {
+  const newAction = params.animations.find((a) => a.name == actionName)
+  doOnceThenWalk(newAction)
+}
 
-// const messageContainer = document.getElementById('text')
-// const messages = [
-//   "Hello there",
-//   "Nice to meet you",
-//   "What is your name?",
-//   "That's a nice name.",
-//   "I do not have a name...",
-//   "I am merely a construct of Finn's consciousness",
-//   "Do I exist? Who can say..."
-// ]
+const messageContainer = document.getElementById('text')
+const messages = [
+  "Hello Bella",
+  "How are you?",
+  "I am a squid",
+  "Woooooo",
+  "I do not really exist",
+  "I am merely a construct of Finn's consciousness",
+  "*guuuuuuuurrrrp*"
+]
 
-// params.messageNumber = 0
+params.messageNumber = 0
 
-// const update = () => {
-//   messageContainer.innerText = ""
-//   const actionName = actions[params.messageNumber]
-//   console.log(actionName);
-//   if (actionName) triggerAction(actionName)
-//   var typed = new Typed(messageContainer, {
-//     strings: [messages[params.messageNumber]],
-//     typeSpeed: 50,
-//   });
-// }
+const update = () => {
+  messageContainer.innerText = ""
+  const actionName = actions[params.messageNumber]
+  console.log(actionName);
+  if (actionName) triggerAction(actionName)
+  var typed = new Typed(messageContainer, {
+    strings: [messages[params.messageNumber]],
+    typeSpeed: 50,
+  });
+}
 
-// document.getElementById('next').addEventListener('click', () => {
-//   params.messageNumber += 1;
-//   update()
-//   // // messageContainer.classList.add('animate__fadeOut')
-//   // setTimeout(() => {
-//   //   messageContainer.innerText = messages[params.message]
-//   //   // messageContainer.classList.remove('animate__fadeOut')
-//   //   messageContainer.classList.add('animate__fadeIn')
-//   // }, 0);
-// })
-// document.getElementById('previous').addEventListener('click', () => {
-//   params.messageNumber -= 1;
-//   update()
-// })
+document.getElementById('next').addEventListener('click', () => {
+  params.messageNumber += 1;
+  update()
+  // // messageContainer.classList.add('animate__fadeOut')
+  // setTimeout(() => {
+  //   messageContainer.innerText = messages[params.message]
+  //   // messageContainer.classList.remove('animate__fadeOut')
+  //   messageContainer.classList.add('animate__fadeIn')
+  // }, 0);
+})
+document.getElementById('previous').addEventListener('click', () => {
+  params.messageNumber -= 1;
+  update()
+})
 
 
 tick()
