@@ -61,7 +61,7 @@ scene.background = new THREE.Color(params.background)
 
 // Fog
 const fog = new THREE.Fog(params.background, 1, 10)
-scene.fog = fog
+// scene.fog = fog
 
 // particles
 let geometry = null;
@@ -77,7 +77,7 @@ const generateParticles = () => {
   material = new THREE.PointsMaterial({
     size: params.size,
     sizeAttenuation: true,
-    depthWrite: false,
+    // depthWrite: false,
     blending: THREE.AdditiveBlending,
     color: '#ffffff'
   })
@@ -86,9 +86,9 @@ const generateParticles = () => {
 
   for (let i = 0; i < params.count; i++) {
     const i3 = i * 3
-    vertices[i3 + 0] = Math.random() * 10
-    vertices[i3 + 1] = Math.random() * 10
-    vertices[i3 + 2] = Math.random() * 10
+    vertices[i3 + 0] = (Math.random() * 10) - 5
+    vertices[i3 + 1] = (Math.random() * 10) - 5
+    vertices[i3 + 2] = (Math.random() * 10) - 5
 
   }
 
@@ -104,36 +104,37 @@ const generateParticles = () => {
 
 generateParticles()
 
-// gltfLoader.load('/models/Omabuarts/models/herring.glb',
-//   (gltf) => {
-//     console.log('Model successfully loaded');
-//     console.log(gltf.scene);
+gltfLoader.load('/models/Omabuarts/models/herring.glb',
+  (gltf) => {
+    console.log('Model successfully loaded');
+    console.log(gltf.scene);
 
-//     // Cast shadow?
-//     gltf.scene.children[0].children[0].castShadow = true;
-//     gltf.scene.position.y = 1
-//     // params.model = gltf.scene
-//     scene.add(gltf.scene)
-//     // objectsToAnimate.push(fox)
-//     mixer = new THREE.AnimationMixer(gltf.scene)
-//     params.mixer = mixer;
+    // Cast shadow?
+    gltf.scene.children[0].children[0].castShadow = true;
+    gltf.scene.position.y = 1
+    params.model = gltf.scene
+    // console.log(controls);
+    scene.add(gltf.scene)
+    // objectsToAnimate.push(fox)
+    mixer = new THREE.AnimationMixer(gltf.scene)
+    params.mixer = mixer;
 
-//     gltfLoader.load('/models/Omabuarts/animations/herring_animations.glb',
-//     (anim) => {
-//         console.log(anim);
-//         console.log('Successfully loaded animation folder');
-//         params.animations = anim.animations;
-//         for (let i = 0; i < anim.animations.length; i++) {
-//           params.catalogue[anim.animations[i].name] = i + 1;
-//         }
-//         walk()
-//         gui.add(params, 'number', params.catalogue).name('Animation').onFinishChange(playAction)
-//         gui.add(params, 'duration').min(0.3).max(2).step(0.1).onFinishChange(playAction)
-//         gui.add(params, 'loop').min(0).max(10).step(1).name('No. of Loops. (0 = inifinite)').onFinishChange(playAction)
-//       }
-//       )
-//   }
-// )
+    gltfLoader.load('/models/Omabuarts/animations/herring_animations.glb',
+    (anim) => {
+        console.log(anim);
+        console.log('Successfully loaded animation folder');
+        params.animations = anim.animations;
+        for (let i = 0; i < anim.animations.length; i++) {
+          params.catalogue[anim.animations[i].name] = i + 1;
+        }
+        walk()
+        gui.add(params, 'number', params.catalogue).name('Animation').onFinishChange(playAction)
+        gui.add(params, 'duration').min(0.3).max(2).step(0.1).onFinishChange(playAction)
+        gui.add(params, 'loop').min(0).max(10).step(1).name('No. of Loops. (0 = inifinite)').onFinishChange(playAction)
+      }
+      )
+  }
+)
 
 // gltfLoader.load('/models/stone/scene.gltf',
 //   (gltf) => {
@@ -149,52 +150,55 @@ generateParticles()
 //   }
 // )
 
-const playAction = () => {
-  console.log(params.number);
-  if (params.previousClip != null) {
-    console.log('Uncaching previous clip from mixer...');
-    params.mixer.stopAllAction()
-    params.mixer.uncacheClip(params.animations[params.previousClip])
-  }
+// const playAction = () => {
+//   console.log(params.number);
+//   if (params.previousClip != null) {
+//     console.log('Uncaching previous clip from mixer...');
+//     params.mixer.stopAllAction()
+//     params.mixer.uncacheClip(params.animations[params.previousClip])
+//   }
 
-  if (params.number != 0) {
-    const action = params.mixer.clipAction(params.animations[params.number - 1])
-    // if (params.loop == 0) action.setLoop(THREE.LoopRepeat)
-    if (params.loop == 0) params.loop = 'Infinity'
-    action.setLoop(THREE.LoopRepeat, params.loop)
-    action.setDuration(params.duration)
-    console.log('New clip animation assigned to mixer.');
-    console.log(params.mixer);
-    action.play()
-    // Changing the value of params.previousClip so that it will delete the current animation on the next change
-    params.previousClip = params.number - 1
-  }
-}
+//   if (params.number != 0) {
+//     const action = params.mixer.clipAction(params.animations[params.number - 1])
+//     // if (params.loop == 0) action.setLoop(THREE.LoopRepeat)
+//     if (params.loop == 0) params.loop = 'Infinity'
+//     action.setLoop(THREE.LoopRepeat, params.loop)
+//     action.setDuration(params.duration)
+//     console.log('New clip animation assigned to mixer.');
+//     console.log(params.mixer);
+//     action.play()
+//     // Changing the value of params.previousClip so that it will delete the current animation on the next change
+//     params.previousClip = params.number - 1
+//   }
+// }
 
 const walk = () => {
   const action = params.mixer.clipAction(params.animations[16])
   action.play()
 }
 
-const doOnceThenWalk = (newAction) => {
+const axesHelper = new THREE.AxesHelper( 5 );
+scene.add( axesHelper );
 
-  const action = params.mixer.clipAction(newAction)
-  action.setLoop(THREE.LoopRepeat, 2)
-  action.setDuration(0.5)
+// const doOnceThenWalk = (newAction) => {
 
-  console.log(params.mixer);
-  // params.number = (params.animations.indexOf(newAction) + 1)
+//   const action = params.mixer.clipAction(newAction)
+//   action.setLoop(THREE.LoopRepeat, 2)
+//   action.setDuration(0.5)
 
-  params.mixer._actions[0].stop()
-  action.play()
+//   console.log(params.mixer);
+//   // params.number = (params.animations.indexOf(newAction) + 1)
 
-  params.mixer.addEventListener( 'finished', function( e	) {
-    console.log("Action finished. Uncaching...");
-    params.mixer.uncacheClip(newAction)
-    params.mixer._actions[0].play()
-    console.log(params.mixer);
-  } )
-}
+//   params.mixer._actions[0].stop()
+//   action.play()
+
+//   params.mixer.addEventListener( 'finished', function( e	) {
+//     console.log("Action finished. Uncaching...");
+//     params.mixer.uncacheClip(newAction)
+//     params.mixer._actions[0].play()
+//     console.log(params.mixer);
+//   } )
+// }
 
 
 
@@ -328,6 +332,18 @@ const tick = () =>
     //   item.rotation.x = Math.sin(elapsedTime) / 4
     // })
     // camera.lookAt(new THREE.Vector3(0, 4, 0))
+    if (params.model) {
+      params.model.position.z = Math.sin(elapsedTime * 0.1) * 10
+      params.model.position.x = Math.cos(elapsedTime * 0.1) * 10
+
+      camera.position.z = Math.sin((elapsedTime + 0.5) * 0.1)  * 11.5
+      camera.position.x = Math.cos((elapsedTime + 0.5) * 0.1) * 11.5
+      params.model.rotation.y = elapsedTime * -0.1
+      // camera.lookAt(params.model.position)
+    }
+
+    // camera.position.x = Math.sin(elapsedTime)
+    // camera.position.y = Math.cos(elapsedTime * 0.2) + 1
 
     // Update controls
     controls.update()
@@ -358,49 +374,49 @@ const actions = {
   5: "Roll"
 }
 
-const triggerAction = (actionName) => {
-  const newAction = params.animations.find((a) => a.name == actionName)
-  doOnceThenWalk(newAction)
-}
+// const triggerAction = (actionName) => {
+//   const newAction = params.animations.find((a) => a.name == actionName)
+//   doOnceThenWalk(newAction)
+// }
 
-const messageContainer = document.getElementById('text')
-const messages = [
-  "Hello there",
-  "Nice to meet you",
-  "What is your name?",
-  "That's a nice name.",
-  "I do not have a name...",
-  "I am merely a construct of Finn's consciousness",
-  "Do I exist? Who can say..."
-]
+// const messageContainer = document.getElementById('text')
+// const messages = [
+//   "Hello there",
+//   "Nice to meet you",
+//   "What is your name?",
+//   "That's a nice name.",
+//   "I do not have a name...",
+//   "I am merely a construct of Finn's consciousness",
+//   "Do I exist? Who can say..."
+// ]
 
-params.messageNumber = 0
+// params.messageNumber = 0
 
-const update = () => {
-  messageContainer.innerText = ""
-  const actionName = actions[params.messageNumber]
-  console.log(actionName);
-  if (actionName) triggerAction(actionName)
-  var typed = new Typed(messageContainer, {
-    strings: [messages[params.messageNumber]],
-    typeSpeed: 50,
-  });
-}
+// const update = () => {
+//   messageContainer.innerText = ""
+//   const actionName = actions[params.messageNumber]
+//   console.log(actionName);
+//   if (actionName) triggerAction(actionName)
+//   var typed = new Typed(messageContainer, {
+//     strings: [messages[params.messageNumber]],
+//     typeSpeed: 50,
+//   });
+// }
 
-document.getElementById('next').addEventListener('click', () => {
-  params.messageNumber += 1;
-  update()
-  // // messageContainer.classList.add('animate__fadeOut')
-  // setTimeout(() => {
-  //   messageContainer.innerText = messages[params.message]
-  //   // messageContainer.classList.remove('animate__fadeOut')
-  //   messageContainer.classList.add('animate__fadeIn')
-  // }, 0);
-})
-document.getElementById('previous').addEventListener('click', () => {
-  params.messageNumber -= 1;
-  update()
-})
+// document.getElementById('next').addEventListener('click', () => {
+//   params.messageNumber += 1;
+//   update()
+//   // // messageContainer.classList.add('animate__fadeOut')
+//   // setTimeout(() => {
+//   //   messageContainer.innerText = messages[params.message]
+//   //   // messageContainer.classList.remove('animate__fadeOut')
+//   //   messageContainer.classList.add('animate__fadeIn')
+//   // }, 0);
+// })
+// document.getElementById('previous').addEventListener('click', () => {
+//   params.messageNumber -= 1;
+//   update()
+// })
 
 
 tick()
