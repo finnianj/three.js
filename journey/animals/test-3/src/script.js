@@ -4,6 +4,7 @@ import * as dat from 'lil-gui'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
 
 const objectsToAnimate = []
 
@@ -144,9 +145,10 @@ generateParticles()
 
 //   }
 // )
-// const loader = new OBJLoader()
+
+// const loader = new FBXLoader()
 // loader.load(
-//     '/models/Omabuarts/models/nature/OBJ/Coral_A_03_LOD0.obj',
+//     '/models/Omabuarts/models/nature/FBX/Coral_A_01.fbx',
 //     (object) => {
 //         // object.traverse(function (child) {
 //         //     if ((child as THREE.Mesh).isMesh) {
@@ -158,27 +160,41 @@ generateParticles()
 //         // })
 //         // object.scale.set(.01, .01, .01)
 //         console.log(object);
-//         object.position.set(0, 0, 0)
 //         scene.add(object)
 //     }
 // )
-const loader = new OBJLoader()
-loader.load(
-    '/models/Omabuarts/models/nature/OBJ/Anemone_A_01_LOD0.obj',
-    (object) => {
-        // object.traverse(function (child) {
-        //     if ((child as THREE.Mesh).isMesh) {
-        //         // (child as THREE.Mesh).material = material
-        //         if ((child as THREE.Mesh).material) {
-        //             ((child as THREE.Mesh).material as THREE.MeshBasicMaterial).transparent = false
-        //         }
-        //     }
-        // })
-        // object.scale.set(.01, .01, .01)
-        console.log(object);
-        scene.add(object)
-    }
-)
+
+
+
+new MTLLoader()
+					.setPath( '/models/Omabuarts/models/nature/3d/OBJ/' )
+					.load( 'Seaweed_A_01_LOD0.mtl', function ( materials ) {
+
+						materials.preload();
+
+						new OBJLoader()
+							.setMaterials( materials )
+							.setPath( '/models/Omabuarts/models/nature/3d/OBJ/' )
+							.load( 'Seaweed_A_01_LOD0.obj', function ( object ) {
+
+								// object.position.y = - 95;
+                console.log(object);
+                object.traverse( function ( child ) {
+
+                  if ( child.isMesh ) {
+
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+
+                  }
+
+                } );
+                object.scale.set(0.2, 0.2, 0.2)
+								scene.add( object );
+
+							});
+
+					} );
 
 
 // const playAction = () => {
@@ -313,7 +329,7 @@ window.addEventListener('resize', () =>
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.set(2, 2, 2)
+camera.position.set(5, 2, 5)
 scene.add(camera)
 
 // Controls
