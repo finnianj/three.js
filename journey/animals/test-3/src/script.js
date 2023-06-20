@@ -53,7 +53,7 @@ let params = {
   catalogue: {
     "None": 0
   },
-  count: 200,
+  count: 600,
   size: 0.1
 }
 
@@ -68,9 +68,18 @@ let geometry = null;
 let material = null;
 let points = null;
 
+/**
+ * Textures
+ */
+const textureLoader = new THREE.TextureLoader()
+const particleTexture = textureLoader.load('/textures/particles/2.png')
+
+// ...
+
+
 const generateParticles = () => {
 
-  console.log('generate particles');
+  // console.log('generate particles');
 
   const vertices = new Float32Array(params.count * 3)
   geometry = new THREE.BufferGeometry()
@@ -81,14 +90,18 @@ const generateParticles = () => {
     blending: THREE.AdditiveBlending,
     color: '#ffffff'
   })
+  material.map = particleTexture
+  material.transparent = true
+  material.alphaMap = particleTexture
+
   points = new THREE.Points(geometry, material)
-  console.log(points);
+  // console.log(points);
 
   for (let i = 0; i < params.count; i++) {
     const i3 = i * 3
-    vertices[i3 + 0] = (Math.random() * 40) - 20
-    vertices[i3 + 1] = (Math.random() * 40) - 20
-    vertices[i3 + 2] = (Math.random() * 40) - 20
+    vertices[i3 + 0] = (Math.random() * 20) - 10
+    vertices[i3 + 1] = (Math.random() * 20) - 10
+    vertices[i3 + 2] = (Math.random() * 20) - 10
 
   }
 
@@ -106,8 +119,8 @@ generateParticles()
 
 gltfLoader.load('/models/Omabuarts/models/inkfish.glb',
   (gltf) => {
-    console.log('Model successfully loaded');
-    console.log(gltf.scene);
+    // console.log('Model successfully loaded');
+    // console.log(gltf.scene);
 
     // Cast shadow?
     gltf.scene.children[0].children[0].castShadow = true;
@@ -121,34 +134,35 @@ gltfLoader.load('/models/Omabuarts/models/inkfish.glb',
 
     gltfLoader.load('/models/Omabuarts/animations/inkfish_animations.glb',
     (anim) => {
-        console.log(anim);
-        console.log('Successfully loaded animation folder');
+        // console.log(anim);
+        // console.log('Successfully loaded animation folder');
         params.animations = anim.animations;
         for (let i = 0; i < anim.animations.length; i++) {
           params.catalogue[anim.animations[i].name] = i + 1;
         }
         walk()
-        gui.add(params, 'number', params.catalogue).name('Animation').onFinishChange(playAction)
-        gui.add(params, 'duration').min(0.3).max(2).step(0.1).onFinishChange(playAction)
-        gui.add(params, 'loop').min(0).max(10).step(1).name('No. of Loops. (0 = inifinite)').onFinishChange(playAction)
+        // gui.add(params, 'number', params.catalogue).name('Animation').onFinishChange(playAction)
+        // gui.add(params, 'duration').min(0.3).max(2).step(0.1).onFinishChange(playAction)
+        // gui.add(params, 'loop').min(0).max(10).step(1).name('No. of Loops. (0 = inifinite)').onFinishChange(playAction)
       }
       )
   }
 )
 
-// gltfLoader.load('/models/stone/scene.gltf',
-//   (gltf) => {
-//     console.log('Model successfully loaded');
-//     console.log(gltf);
+gltfLoader.load('/models/stone/scene.gltf',
+  (gltf) => {
+    console.log('Model successfully loaded');
+    console.log(gltf);
 
-//     // // Cast shadow?
-//     // gltf.scene.children[0].children[0].castShadow = true;
-//     // gltf.scene.position.y = 1
-//     // params.model = gltf.scene
-//     scene.add(gltf.scene)
+    // // Cast shadow?
+    // gltf.scene.children[0].children[0].castShadow = true;
+    // gltf.scene.position.y = 1
+    // params.model = gltf.scene
+    gltf.scene.scale.set(0.1, 0.1, 0.1)
+    scene.add(gltf.scene)
 
-//   }
-// )
+  }
+)
 
 // const playAction = () => {
 //   console.log(params.number);
@@ -187,17 +201,17 @@ const doOnceThenWalk = (newAction) => {
   action.setLoop(THREE.LoopRepeat, 2)
   action.setDuration(0.5)
 
-  console.log(params.mixer);
+  // console.log(params.mixer);
   // params.number = (params.animations.indexOf(newAction) + 1)
 
   params.mixer._actions[0].stop()
   action.play()
 
   params.mixer.addEventListener( 'finished', function( e	) {
-    console.log("Action finished. Uncaching...");
+    // console.log("Action finished. Uncaching...");
     params.mixer.uncacheClip(newAction)
     params.mixer._actions[0].play()
-    console.log(params.mixer);
+    // console.log(params.mixer);
   } )
 }
 
@@ -315,7 +329,7 @@ pointLight.shadow.mapSize.width = 256
 pointLight.shadow.mapSize.height = 256
 pointLight.shadow.camera.far = 7
 
-console.log(directionalLight);
+// console.log(directionalLight);
 
 /**
  * Animate
@@ -329,22 +343,17 @@ const tick = () =>
     const deltaTime = elapsedTime - previousTime
     previousTime = elapsedTime
 
-    // objectsToAnimate.forEach((item) => {
-    //   item.rotation.x = Math.sin(elapsedTime) / 4
-    // })
-    // camera.lookAt(new THREE.Vector3(0, 4, 0))
-    if (params.model) {
-      params.model.position.z = Math.sin(elapsedTime * 0.1) * 10
-      params.model.position.x = Math.cos(elapsedTime * 0.1) * 10
 
-      camera.position.z = Math.sin((elapsedTime + 1) * 0.1)  * 12
-      camera.position.x = Math.cos((elapsedTime + 1) * 0.1) * 12
+    if (params.model) {
+      params.model.position.z = Math.sin(elapsedTime * 0.1) * 6
+      params.model.position.x = Math.cos(elapsedTime * 0.1) * 6
+
+      camera.position.z = Math.sin((elapsedTime + 1) * 0.1)  * 8
+      camera.position.x = Math.cos((elapsedTime + 1) * 0.1) * 8
       params.model.rotation.y = elapsedTime * -0.1
-      // camera.lookAt(params.model.position)
     }
 
-    // camera.position.x = Math.sin(elapsedTime)
-    // camera.position.y = Math.cos(elapsedTime * 0.2) + 1
+
 
     // Update controls
     controls.update()
@@ -382,7 +391,6 @@ const triggerAction = (actionName) => {
 
 const messageContainer = document.getElementById('text')
 const messages = [
-  "Hello Bella",
   "How are you?",
   "I am a squid",
   "Woooooo",

@@ -3,50 +3,50 @@
     {
       "bufferView": 2,
       "componentType": 5126,
-      "count": 1309,
+      "count": 7106,
       "max": [
-        -169.45956420898438,
-        141.18014526367188,
-        332.1752624511719
+        3.8902430534362793,
+        4.398749828338623,
+        5.264082908630371
       ],
       "min": [
-        -418.2799377441406,
-        -19.148508071899414,
-        76.79207611083984
+        -4.377699851989746,
+        -3.500349998474121,
+        -0.09630700200796127
       ],
       "type": "VEC3"
     },
     {
       "bufferView": 2,
-      "byteOffset": 15708,
+      "byteOffset": 85272,
       "componentType": 5126,
-      "count": 1309,
+      "count": 7106,
       "max": [
-        0.9853662252426147,
-        0.9971797466278076,
-        0.9997087717056274
+        0.9966524839401245,
+        0.9999887943267822,
+        0.9998905658721924
       ],
       "min": [
-        -0.9989413619041443,
-        -0.9980565905570984,
-        -0.9996709823608398
+        -0.9998299479484558,
+        -0.9996992945671082,
+        -0.9887327551841736
       ],
       "type": "VEC3"
     },
     {
       "bufferView": 3,
       "componentType": 5126,
-      "count": 1309,
+      "count": 7106,
       "max": [
-        0.9170110821723938,
-        0.9973442554473877,
-        0.9460774064064026,
+        0.9674389362335205,
+        0.9886744618415833,
+        0.9999805688858032,
         1.0
       ],
       "min": [
-        -0.9251248836517334,
-        -0.9953271746635437,
-        -0.9997101426124573,
+        -0.9903143048286438,
+        -0.9977805018424988,
+        -0.9393581748008728,
         1.0
       ],
       "type": "VEC4"
@@ -54,61 +54,61 @@
     {
       "bufferView": 1,
       "componentType": 5126,
-      "count": 1309,
+      "count": 7106,
       "max": [
-        0.9922497272491455,
-        0.9873444437980652
+        0.9980400204658508,
+        0.8167700171470642
       ],
       "min": [
-        0.010819632560014725,
-        0.017621442675590515
+        0.0019499999471008778,
+        0.0019499999471008778
       ],
       "type": "VEC2"
     },
     {
       "bufferView": 0,
       "componentType": 5125,
-      "count": 7458,
+      "count": 41184,
       "type": "SCALAR"
     }
   ],
   "asset": {
     "extras": {
-      "author": "Xephira (https://sketchfab.com/xephira)",
+      "author": "Siesta (https://sketchfab.com/siesta)",
       "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
-      "source": "https://sketchfab.com/3d-models/stone-2e966dce9db34fecad1290452bdab165",
-      "title": "Stone"
+      "source": "https://sketchfab.com/3d-models/rock-b66d5b63deb447299ca3effa904bc789",
+      "title": "Rock"
     },
-    "generator": "Sketchfab-12.67.0",
+    "generator": "Sketchfab-12.68.0",
     "version": "2.0"
   },
   "bufferViews": [
     {
       "buffer": 0,
-      "byteLength": 29832,
+      "byteLength": 164736,
       "name": "floatBufferViews",
       "target": 34963
     },
     {
       "buffer": 0,
-      "byteLength": 10472,
-      "byteOffset": 29832,
+      "byteLength": 56848,
+      "byteOffset": 164736,
       "byteStride": 8,
       "name": "floatBufferViews",
       "target": 34962
     },
     {
       "buffer": 0,
-      "byteLength": 31416,
-      "byteOffset": 40304,
+      "byteLength": 170544,
+      "byteOffset": 221584,
       "byteStride": 12,
       "name": "floatBufferViews",
       "target": 34962
     },
     {
       "buffer": 0,
-      "byteLength": 20944,
-      "byteOffset": 71720,
+      "byteLength": 113696,
+      "byteOffset": 392128,
       "byteStride": 16,
       "name": "floatBufferViews",
       "target": 34962
@@ -116,25 +116,24 @@
   ],
   "buffers": [
     {
-      "byteLength": 92664,
+      "byteLength": 505824,
       "uri": "scene.bin"
     }
   ],
   "images": [
     {
-      "uri": "textures/Material_108_baseColor.jpeg"
+      "uri": "textures/Material_baseColor.png"
     },
     {
-      "uri": "textures/Material_108_metallicRoughness.png"
+      "uri": "textures/Material_metallicRoughness.png"
     },
     {
-      "uri": "textures/Material_108_normal.png"
+      "uri": "textures/Material_normal.png"
     }
   ],
   "materials": [
     {
-      "doubleSided": true,
-      "name": "Material_108",
+      "name": "Material",
       "normalTexture": {
         "index": 2
       },
@@ -148,13 +147,14 @@
         "metallicFactor": 0.0,
         "metallicRoughnessTexture": {
           "index": 1
-        }
+        },
+        "roughnessFactor": 0.7090320122
       }
     }
   ],
   "meshes": [
     {
-      "name": "LowPoly001_Material #108_0",
+      "name": "Object_0",
       "primitives": [
         {
           "attributes": {
@@ -199,83 +199,11 @@
       "children": [
         2
       ],
-      "matrix": [
-        1.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        1.0,
-        0.0,
-        0.0,
-        -1.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        1.0
-      ],
-      "name": "af3387fbdb174fc79da0b21d5f2b0ad0.fbx"
-    },
-    {
-      "children": [
-        3
-      ],
-      "name": "RootNode"
-    },
-    {
-      "children": [
-        4
-      ],
-      "matrix": [
-        1.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.999999999999999,
-        4.371138828673792e-08,
-        0.0,
-        0.0,
-        -4.371138828673792e-08,
-        0.999999999999999,
-        0.0,
-        1035.917724609375,
-        0.0,
-        0.0,
-        1.0
-      ],
-      "name": "LowPoly001"
-    },
-    {
-      "children": [
-        5
-      ],
-      "matrix": [
-        1.0,
-        0.0,
-        -0.0,
-        0.0,
-        0.0,
-        1.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        1.0,
-        0.0,
-        293.8697509765625,
-        -61.01581954956055,
-        -204.48367309570313,
-        1.0
-      ],
-      "name": "Object_4"
+      "name": "untitled.obj.cleaner.materialmerger.gles"
     },
     {
       "mesh": 0,
-      "name": "LowPoly001_Material #108_0"
+      "name": "Object_2"
     }
   ],
   "samplers": [
