@@ -214,7 +214,7 @@ const torusGeometry = new THREE.TorusGeometry( 1, 0.05, 10, 100 );
 const torusMaterial = new THREE.MeshStandardMaterial( { color: '#ff7f50' } );
 const portfolioItems = []
 
-const addPortfolioItem = (image, name, url ) => {
+const addPortfolioItem = (image, name, url, position) => {
   const texture = textureLoader.load(image);
   circleMaterial.map = texture
   console.log(circleMaterial);
@@ -229,11 +229,12 @@ const addPortfolioItem = (image, name, url ) => {
 
   const group = new THREE.Group();
   group.add(circle, circle2, torus)
+  group.position.set(position[0], position[1], position[2])
   scene.add(group)
   portfolioItems.push(group)
 
 }
-addPortfolioItem('Moss.jpeg', 'moss', 'https://www.mossradio.live/users/sign_in')
+addPortfolioItem('Moss.jpeg', 'moss', 'https://www.mossradio.live/users/sign_in', [0, 1, 0])
 
 /**
  * Lights
