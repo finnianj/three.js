@@ -192,13 +192,18 @@ const texture = textureLoader.load('/test.png');
 const geometry = new THREE.CircleGeometry( 1, 32 );
 const material = new THREE.MeshBasicMaterial( { map: texture } );
 const circle = new THREE.Mesh( geometry, material );
-circle.position.y = 1
+circle.position.y = 1.5
+const circle2 = circle.clone()
+circle2.rotation.y = Math.PI
 
-scene.add(circle)
+scene.add(circle, circle2)
 
-const torusGeometry = new THREE.TorusGeometry( 10, 3, 16, 100 );
-const torusMaterial = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
-const torus = new THREE.Mesh( torusGeometry, torusMaterial ); scene.add( torus );
+const torusGeometry = new THREE.TorusGeometry( 1, 0.05, 10, 32 );
+const torusMaterial = new THREE.MeshStandardMaterial( { color: '#5A5A5A' } );
+const torus = new THREE.Mesh( torusGeometry, torusMaterial );
+torus.position.y = 1.5;
+torus.position.z = 0.001;
+scene.add( torus );
 
 /**
  * Lights
