@@ -154,6 +154,7 @@ generateParticles()
 gltfLoader.load('/models/Omabuarts/animals/inkfish.glb', (gltf) => {
   gltf.scene.children[0].children[0].castShadow = true;
   gltf.scene.position.y = 1
+  gltf.scene.position.x = 6
   params.model = gltf.scene
   scene.add(gltf.scene)
   mixer = new THREE.AnimationMixer(gltf.scene)
@@ -385,7 +386,7 @@ function checkKey(e) {
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.set(5, 2, 5)
+camera.position.set(8, 2, 0)
 scene.add(camera)
 
 // Controls
