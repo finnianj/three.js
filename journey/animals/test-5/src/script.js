@@ -305,6 +305,8 @@ function onClick() {
 
 addPortfolioItem('Moss.jpeg', 'moss', 'https://www.mossradio.live/users/sign_in', [0, 1, 0])
 
+document.addEventListener('click', onClick);
+
 
 
 /**
@@ -345,6 +347,7 @@ directionalLight.shadow.mapSize.set(1024, 1024)
  */
 const clock = new THREE.Clock()
 let previousTime = 0
+let currentIntersect = null
 
 const tick = () =>
 {
@@ -366,6 +369,17 @@ const tick = () =>
 
     // Update controls
     controls.update()
+
+    // Raycaster
+    raycaster.setFromCamera(mouse, camera)
+    let currentIntersect = null
+    const intersects = raycaster.intersectObject(portfolioItems, true)
+
+    if (intersects.length) {
+      document.body.classList.add('pointer-cursor');
+    } else {
+      document.body.classList.remove('pointer-cursor');
+    }
 
     // Update mixer
     if (mixer != null) {
