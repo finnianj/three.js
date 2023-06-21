@@ -29,6 +29,17 @@ body
   cursor: pointer;
 }
 
+#info{
+  position: fixed;
+  font-size: 4vw;
+  color: white;
+  visibility: hidden;
+}
+
+.show-info{
+  visibility: visible !important;
+}
+
 #text{
   font-family: cherry;
   position: fixed;

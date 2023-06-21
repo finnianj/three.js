@@ -309,11 +309,26 @@ function onClick() {
 addPortfolioItem('Moss.jpeg', 'moss', 'https://www.mossradio.live/users/sign_in', [0, 1, 5], 0)
 addPortfolioItem('api.jpeg', 'api', 'https://www.mossradio.live/users/sign_in', [-5, 1, 0], (Math.PI * 0.5))
 addPortfolioItem('pomodoro.png', 'widgets', 'https://www.mossradio.live/users/sign_in', [5, 1, 0], (Math.PI * 0.5), true)
+addPortfolioItem('pomodoro.png', 'info', 'https://www.mossradio.live/users/sign_in', [0, 1, -5], 0)
 console.log(portfolioItems);
 portfolioItems.forEach(i => scene.add(i))
 document.addEventListener('click', onClick);
 
-
+const infoHash = {
+  'moss': 'This is Moss Radio',
+  'api': 'This is my API',
+  'widgets': 'These are some widgets',
+  'info': 'This is a clock',
+}
+const info = document.getElementById('info')
+const showInfo = (item) => {
+  const text = infoHash[item.object.userData.name]
+  info.innerText = text
+  info.classList.add('show-info')
+}
+const hideInfo = (item) => {
+  info.classList.remove('show-info')
+}
 
 /**
  * Camera
@@ -383,8 +398,10 @@ const tick = () =>
 
     if (intersects.length) {
       document.body.classList.add('pointer-cursor');
+      showInfo(intersects[0])
     } else {
       document.body.classList.remove('pointer-cursor');
+      hideInfo()
     }
 
     // Update mixer
