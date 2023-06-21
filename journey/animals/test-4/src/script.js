@@ -199,7 +199,7 @@ circle2.rotation.y = Math.PI
 scene.add(circle, circle2)
 
 const torusGeometry = new THREE.TorusGeometry( 1, 0.05, 10, 32 );
-const torusMaterial = new THREE.MeshStandardMaterial( { color: '#5A5A5A' } );
+const torusMaterial = new THREE.MeshStandardMaterial( { color: '#ff7f50' } );
 const torus = new THREE.Mesh( torusGeometry, torusMaterial );
 torus.position.y = 1.5;
 torus.position.z = 0.001;
