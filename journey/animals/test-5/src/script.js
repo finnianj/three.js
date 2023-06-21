@@ -33,6 +33,8 @@ let params = {
   heldKeys: []
 }
 
+const speed = 0.05
+
 scene.background = new THREE.Color(params.background)
 
 // Fog
@@ -460,37 +462,37 @@ const tick = () =>
       switch (params.heldKeys.join('')) {
         case 'upleft':
         case 'leftup':
-          params.model.position.z += 0.01
-          camera.position.z += 0.01
-          params.model.position.x -= 0.01
-          camera.position.x -= 0.01
+          params.model.position.z += speed
+          camera.position.z += speed
+          params.model.position.x -= speed
+          camera.position.x -= speed
           params.model.rotation.y = Math.PI * 1.75
           console.log('upleft/leftup');
           break;
         case 'upright':
         case 'rightup':
-          params.model.position.z -= 0.01
-          camera.position.z -= 0.01
-          params.model.position.x -= 0.01
-          camera.position.x -= 0.01
+          params.model.position.z -= speed
+          camera.position.z -= speed
+          params.model.position.x -= speed
+          camera.position.x -= speed
           params.model.rotation.y = Math.PI * 1.25
           console.log('upright');
           break;
         case 'downleft':
         case 'leftdown':
-          params.model.position.z += 0.01
-          camera.position.z += 0.01
-          params.model.position.x += 0.01
-          camera.position.x += 0.01
+          params.model.position.z += speed
+          camera.position.z += speed
+          params.model.position.x += speed
+          camera.position.x += speed
           params.model.rotation.y = Math.PI * 0.25
           console.log('downleft');
           break;
         case 'downright':
         case 'rightdown':
-          params.model.position.z -= 0.01
-          camera.position.z -= 0.01
-          params.model.position.x += 0.01
-          camera.position.x += 0.01
+          params.model.position.z -= speed
+          camera.position.z -= speed
+          params.model.position.x += speed
+          camera.position.x += speed
           params.model.rotation.y = Math.PI * 0.75
           console.log('downright');
           break;
@@ -512,23 +514,23 @@ const tick = () =>
       // params.model.position.x = Math.cos(movementValue) * 6
       switch (params.heldKeys[0]) {
         case 'left':
-          params.model.position.z += 0.01
-          camera.position.z += 0.01
+          params.model.position.z += speed
+          camera.position.z += speed
           params.model.rotation.y = 0
           break;
         case 'up':
-          params.model.position.x -= 0.01
-          camera.position.x -= 0.01
+          params.model.position.x -= speed
+          camera.position.x -= speed
           params.model.rotation.y = Math.PI * 1.5
           break;
         case 'right':
-          params.model.position.z -= 0.01
-          camera.position.z -= 0.01
+          params.model.position.z -= speed
+          camera.position.z -= speed
           params.model.rotation.y = Math.PI
           break;
         case 'down':
-          params.model.position.x += 0.01
-        camera.position.x += 0.01
+          params.model.position.x += speed
+        camera.position.x += speed
         params.model.rotation.y = Math.PI * 0.5
           break;
       }
