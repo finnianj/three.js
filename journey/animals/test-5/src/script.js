@@ -420,9 +420,9 @@ camera.lookAt(0, 2, 0)
 scene.add(camera)
 
 // Controls
-// const controls = new OrbitControls(camera, canvas)
-// controls.target.set(0, 1.5, 0)
-// controls.enableDamping = true
+const controls = new OrbitControls(camera, canvas)
+controls.target.set(0, 1.5, 0)
+controls.enableDamping = true
 
 /**
  * Renderer
@@ -499,6 +499,8 @@ const tick = () =>
         default:
           break;
       }
+      let p = params.model.position || {x: 0, y: 2, z: 0}
+      controls.target.set(p.x, p.y + 1, p.z)
     }
 
     if (params.heldKeys.length == 1) {
@@ -534,15 +536,15 @@ const tick = () =>
         params.model.rotation.y = Math.PI * 0.5
           break;
       }
-
-      let p = params.model.position
-      camera.lookAt(p.x, 2, p.z)
+      let p = params.model.position || {x: 0, y: 2, z: 0}
+      controls.target.set(p.x, p.y + 1, p.z)
     }
 
 
 
-    // // Update controls
-    // controls.update()
+    // Update controls
+
+    controls.update()
 
     // Raycaster
     raycaster.setFromCamera(mouse, camera)
