@@ -339,7 +339,6 @@ const hideInfo = (item) => {
 document.onkeydown = checkKey;
 document.onkeyup = (() => params.keypress = false)
 function checkKey(e) {
-  console.log('keypress');
     e = e || window.event;
     params.keypress = true
     if (e.keyCode == '37') {
@@ -394,6 +393,7 @@ directionalLight.shadow.mapSize.set(1024, 1024)
 const clock = new THREE.Clock()
 let previousTime = 0
 let currentIntersect = null
+let movementValue = 0
 
 const tick = () =>
 {
@@ -412,10 +412,16 @@ const tick = () =>
 
     if (params.keypress) {
       if (params.key == 'left') {
-        params.model.position.z += 0.01
+        movementValue += 0.01
+        params.model.rotation.y = - movementValue
       } else if (params.key == 'right') {
-        params.model.position.z -= 0.01
+        movementValue -= 0.01
+        params.model.rotation.y = Math.PI - movementValue
       }
+      camera.position.z = Math.sin(movementValue) * 8
+      camera.position.x = Math.cos(movementValue) * 8
+      params.model.position.z = Math.sin(movementValue) * 6
+      params.model.position.x = Math.cos(movementValue) * 6
     }
 
 
