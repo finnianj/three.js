@@ -178,20 +178,21 @@ const loadPlants = (path, number, scale, area) => {
 
 }
 
-loadPlants('Seaweed_A_01_LOD0', 5, 0.2, 30)
-loadPlants('Seaweed_A_02_LOD0', 5, 0.2, 30)
-loadPlants('Seaweed_A_03_LOD0', 5, 0.2, 30)
-loadPlants('Coral_D_03_LOD0', 1, 0.2, 50)
-loadPlants('Coral_C_03_LOD0', 1, 0.6, 50)
-loadPlants('Coral_B_03_LOD0', 1, 0.3, 50)
-loadPlants('Coral_A_03_LOD0', 1, 0.5, 50)
-loadPlants('Rock_A_01_LOD0', 20, 0.1, 30)
+console.log('check out other anemone/rocks(?)');
+loadPlants('Seaweed_A_01_LOD3', 5, 0.2, 30)
+loadPlants('Seaweed_A_02_LOD3', 5, 0.2, 30)
+loadPlants('Seaweed_A_03_LOD3', 5, 0.2, 30)
+loadPlants('Coral_D_03_LOD3', 1, 0.2, 50)
+loadPlants('Coral_C_03_LOD3', 1, 0.6, 50)
+loadPlants('Coral_B_03_LOD3', 1, 0.3, 50)
+loadPlants('Coral_A_03_LOD3', 1, 0.5, 50)
+loadPlants('Rock_A_01_LOD3', 20, 0.1, 30)
 // loadPlants('Sponge_A_02_LOD0', 1, 0.1, 5)
 // loadPlants('Sponge_A_03_LOD0', 1, 0.1, 5)
 // loadPlants('Sponge_B_01_LOD0', 6, 0.1, 20)
 // loadPlants('Sponge_B_02_LOD0', 6, 0.1, 20)
-loadPlants('Sponge_B_03_LOD0', 6, 0.1, 20) // the coolest
-loadPlants('Starfish_01_LOD0', 10, 0.1, 20)
+loadPlants('Sponge_B_03_LOD3', 6, 0.1, 20) // the coolest
+loadPlants('Starfish_01_LOD3', 10, 0.1, 20)
 
 // const playAction = () => {
 //   console.log(params.number);
