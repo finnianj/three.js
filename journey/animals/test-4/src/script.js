@@ -59,7 +59,7 @@ scene.background = new THREE.Color(params.background)
 
 // Fog
 const fog = new THREE.Fog(params.background, 1, 10)
-scene.fog = fog
+// scene.fog = fog
 
 // gltfLoader.load('/models/Omabuarts/models/herring.glb',
 //   (gltf) => {
@@ -187,7 +187,18 @@ gui.addColor(params, 'background').onFinishChange(updateBackground)
 
 // Portfolio items
 
+const textureLoader = new THREE.TextureLoader();
+const texture = textureLoader.load('/test.png');
+const geometry = new THREE.CircleGeometry( 1, 32 );
+const material = new THREE.MeshBasicMaterial( { map: texture } );
+const circle = new THREE.Mesh( geometry, material );
+circle.position.y = 1
 
+scene.add(circle)
+
+const torusGeometry = new THREE.TorusGeometry( 10, 3, 16, 100 );
+const torusMaterial = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
+const torus = new THREE.Mesh( torusGeometry, torusMaterial ); scene.add( torus );
 
 /**
  * Lights
