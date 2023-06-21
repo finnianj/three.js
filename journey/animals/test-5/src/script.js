@@ -259,14 +259,18 @@ const loadPlants = (path, number, scale, area) => {
 */
 
 const circleGeometry = new THREE.CircleGeometry( 1, 32 );
-const circleMaterial = new THREE.MeshStandardMaterial();
 const torusGeometry = new THREE.TorusGeometry( 1, 0.05, 10, 100 );
 const torusMaterial = new THREE.MeshStandardMaterial( { color: '#ff7f50' } );
 const portfolioItems = []
 
-const addPortfolioItem = (image, name, url, position) => {
-  const texture = textureLoader.load(image);
+const addPortfolioItem = (image, name, url, position, rotation, alpha = false) => {
+  const circleMaterial = new THREE.MeshStandardMaterial();
+  let texture = textureLoader.load(image);
   circleMaterial.map = texture
+  if (alpha) {
+    circleMaterial.alphaMap = textureLoader.load('alpha.png')
+    circleMaterial.transparent = true;
+  }
   console.log(circleMaterial);
   const circle = new THREE.Mesh( circleGeometry, circleMaterial );
   circle.position.y = 1.5
@@ -280,9 +284,8 @@ const addPortfolioItem = (image, name, url, position) => {
   const group = new THREE.Group();
   group.add(circle, circle2, torus)
   group.position.set(position[0], position[1], position[2])
-  scene.add(group)
+  group.rotation.y = rotation
   portfolioItems.push(group)
-
 }
 
 function onClick() {
@@ -303,8 +306,11 @@ function onClick() {
   }
 }
 
-addPortfolioItem('Moss.jpeg', 'moss', 'https://www.mossradio.live/users/sign_in', [0, 1, 0])
-
+addPortfolioItem('Moss.jpeg', 'moss', 'https://www.mossradio.live/users/sign_in', [0, 1, 5], 0)
+addPortfolioItem('api.jpeg', 'api', 'https://www.mossradio.live/users/sign_in', [-5, 1, 0], (Math.PI * 0.5))
+addPortfolioItem('pomodoro.png', 'widgets', 'https://www.mossradio.live/users/sign_in', [5, 1, 0], (Math.PI * 0.5), true)
+console.log(portfolioItems);
+portfolioItems.forEach(i => scene.add(i))
 document.addEventListener('click', onClick);
 
 
