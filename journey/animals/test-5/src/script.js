@@ -373,7 +373,7 @@ const tick = () =>
     // Raycaster
     raycaster.setFromCamera(mouse, camera)
     let currentIntersect = null
-    const intersects = raycaster.intersectObject(portfolioItems, true)
+    const intersects = raycaster.intersectObjects(portfolioItems, true)
 
     if (intersects.length) {
       document.body.classList.add('pointer-cursor');

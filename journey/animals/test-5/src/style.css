@@ -25,6 +25,10 @@ body
     outline: none;
 }
 
+.pointer-cursor{
+  cursor: pointer;
+}
+
 #text{
   font-family: cherry;
   position: fixed;
