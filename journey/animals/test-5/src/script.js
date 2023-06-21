@@ -314,6 +314,13 @@ console.log(portfolioItems);
 portfolioItems.forEach(i => scene.add(i))
 document.addEventListener('click', onClick);
 
+
+
+// testing area
+// testing area
+// testing area
+// testing area
+// testing area
 const infoHash = {
   'moss': 'This is Moss Radio',
   'api': 'This is my API',
@@ -329,7 +336,25 @@ const showInfo = (item) => {
 const hideInfo = (item) => {
   info.classList.remove('show-info')
 }
+document.onkeydown = checkKey;
+document.onkeyup = (() => params.keypress = false)
+function checkKey(e) {
+  console.log('keypress');
+    e = e || window.event;
+    params.keypress = true
+    if (e.keyCode == '37') {
+      params.key = 'left'
+    }
+    else if (e.keyCode == '39') {
+       params.key = 'right'
+    }
 
+}
+// testing area
+// testing area
+// testing area
+// testing area
+// testing area
 /**
  * Camera
  */
@@ -376,14 +401,21 @@ const tick = () =>
     const deltaTime = elapsedTime - previousTime
     previousTime = elapsedTime
 
+    // if (params.model) {
+    //   params.model.position.z = Math.sin(elapsedTime * 0.1) * 6
+    //   params.model.position.x = Math.cos(elapsedTime * 0.1) * 6
 
-    if (params.model) {
-      params.model.position.z = Math.sin(elapsedTime * 0.1) * 6
-      params.model.position.x = Math.cos(elapsedTime * 0.1) * 6
+    //   camera.position.z = Math.sin((elapsedTime + 1) * 0.1)  * 8
+    //   camera.position.x = Math.cos((elapsedTime + 1) * 0.1) * 8
+    //   params.model.rotation.y = elapsedTime * -0.1
+    // }
 
-      camera.position.z = Math.sin((elapsedTime + 1) * 0.1)  * 8
-      camera.position.x = Math.cos((elapsedTime + 1) * 0.1) * 8
-      params.model.rotation.y = elapsedTime * -0.1
+    if (params.keypress) {
+      if (params.key == 'left') {
+        params.model.position.z += 0.01
+      } else if (params.key == 'right') {
+        params.model.position.z -= 0.01
+      }
     }
 
 
