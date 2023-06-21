@@ -23,7 +23,13 @@ let params = {
   color: '#0042ad',
   background: '#0593ff',
   particleCount: 600,
-  particleSize: 0.1
+  particleSize: 0.1,
+  keyCodes: {
+    'left': 37,
+    'up': 38,
+    'right': 39,
+    'down': 40
+  }
 }
 
 scene.background = new THREE.Color(params.background)
@@ -358,23 +364,41 @@ const showInfo = (item) => {
 const hideInfo = (item) => {
   info.classList.remove('show-info')
 }
+
+
 document.onkeydown = checkKey;
 document.onkeyup = (() => {
   idle()
   params.keypress = false
 })
+
+let illegalKeys = [
+  '3739',
+  '3937',
+  '3840',
+  '4038'
+]
+
+
+let cache = null
 function checkKey(e) {
     if (e.repeat) { return }
     e = e || window.event;
     swim()
-    params.keypress = true
-    if (e.keyCode == '37') {
-      params.key = 'left'
-    }
-    else if (e.keyCode == '39') {
-       params.key = 'right'
+
+    //Double movement directions
+    if (cache) {
+      if (illegalKeys.includes(`${cache}${e.keyCode}`)) {
+        console.log('illegal key');
+        return
+      }
+      params.doubleKey = [`${cache}${e.keyCode}`]
+      cache = params.keyCodes[e.keyCode]
     }
 
+    // Single movement directions
+    params.keypress = true
+    params.key = params.keyCodes[e.keyCode]
 }
 // testing area
 // testing area
@@ -387,12 +411,13 @@ function checkKey(e) {
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
 camera.position.set(8, 2, 0)
+camera.lookAt(0, 2, 0)
 scene.add(camera)
 
 // Controls
-const controls = new OrbitControls(camera, canvas)
-controls.target.set(0, 1.5, 0)
-controls.enableDamping = true
+// const controls = new OrbitControls(camera, canvas)
+// controls.target.set(0, 1.5, 0)
+// controls.enableDamping = true
 
 /**
  * Renderer
@@ -438,23 +463,43 @@ const tick = () =>
     // }
 
     if (params.keypress) {
+      // if (params.key == 'left') {
+      //   params.model.rotation.y = - movementValue
+      // } else if (params.key == 'right') {
+      //   movementValue -= 0.01
+      //   params.model.rotation.y = Math.PI - movementValue
+      // }
+      // camera.position.z = Math.sin(movementValue) * 8
+      // camera.position.x = Math.cos(movementValue) * 8
+      // params.model.position.z = Math.sin(movementValue) * 6
+      // params.model.position.x = Math.cos(movementValue) * 6
+
       if (params.key == 'left') {
-        movementValue += 0.01
-        params.model.rotation.y = - movementValue
+        params.model.position.z += 0.01
+        camera.position.z += 0.01
+        params.model.rotation.y = 0
       } else if (params.key == 'right') {
-        movementValue -= 0.01
-        params.model.rotation.y = Math.PI - movementValue
+        params.model.position.z -= 0.01
+        camera.position.z -= 0.01
+        params.model.rotation.y = Math.PI
+      } else if (params.key == 'up') {
+        params.model.position.x -= 0.01
+        camera.position.x -= 0.01
+        params.model.rotation.y = Math.PI * 1.5
+      } else if (params.key == 'down') {
+        params.model.position.x += 0.01
+        camera.position.x += 0.01
+        params.model.rotation.y = Math.PI * 0.5
+
       }
-      camera.position.z = Math.sin(movementValue) * 8
-      camera.position.x = Math.cos(movementValue) * 8
-      params.model.position.z = Math.sin(movementValue) * 6
-      params.model.position.x = Math.cos(movementValue) * 6
+      let p = params.model.position
+      camera.lookAt(p.x, 2, p.z)
     }
 
 
 
-    // Update controls
-    controls.update()
+    // // Update controls
+    // controls.update()
 
     // Raycaster
     raycaster.setFromCamera(mouse, camera)
