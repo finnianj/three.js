@@ -208,29 +208,32 @@ gui.addColor(params, 'background').onFinishChange(updateBackground)
 // Portfolio items
 
 const textureLoader = new THREE.TextureLoader();
-const texture = textureLoader.load('/test.png');
-const geometry = new THREE.CircleGeometry( 1, 32 );
-const material = new THREE.MeshBasicMaterial( { map: texture } );
-const circle = new THREE.Mesh( geometry, material );
-circle.position.y = 1.5
-circle.userData = { id: 'moss', url:'https://www.mossradio.live/users/sign_in' };
-const circle2 = circle.clone()
-circle2.rotation.y = Math.PI
-
-// scene.add(circle, circle2)
-
+const circleGeometry = new THREE.CircleGeometry( 1, 32 );
+const circleMaterial = new THREE.MeshStandardMaterial();
 const torusGeometry = new THREE.TorusGeometry( 1, 0.05, 10, 100 );
 const torusMaterial = new THREE.MeshStandardMaterial( { color: '#ff7f50' } );
-const torus = new THREE.Mesh( torusGeometry, torusMaterial );
-torus.position.y = 1.5;
-torus.position.z = 0.001;
-// scene.add( torus );
+const portfolioItems = []
 
-const group = new THREE.Group();
-group.add(circle, circle2, torus)
+const addPortfolioItem = (image, name, url ) => {
+  const texture = textureLoader.load(image);
+  circleMaterial.map = texture
+  console.log(circleMaterial);
+  const circle = new THREE.Mesh( circleGeometry, circleMaterial );
+  circle.position.y = 1.5
+  circle.userData = { name: name, url: url };
+  const circle2 = circle.clone()
+  circle2.rotation.y = Math.PI
+  const torus = new THREE.Mesh( torusGeometry, torusMaterial );
+  torus.position.y = 1.5;
+  torus.position.z = 0.001;
 
+  const group = new THREE.Group();
+  group.add(circle, circle2, torus)
+  scene.add(group)
+  portfolioItems.push(group)
 
-scene.add(group)
+}
+addPortfolioItem('Moss.jpeg', 'moss', 'https://www.mossradio.live/users/sign_in')
 
 /**
  * Lights
@@ -355,7 +358,7 @@ const tick = () =>
     raycaster.setFromCamera(mouse, camera)
     let currentIntersect = null
 
-    const intersects = raycaster.intersectObject(group)
+    const intersects = raycaster.intersectObject(portfolioItems[0])
 
       if (intersects.length) {
         document.body.classList.add('pointer-cursor');
