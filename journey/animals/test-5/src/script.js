@@ -371,6 +371,9 @@ document.onkeyup = (() => {
   idle()
   params.keypress = false
   params.doubleKeypress = false
+  setTimeout(() => {
+    cache = null
+  }, 1000);
 })
 
 let illegalKeys = [
@@ -389,18 +392,25 @@ function checkKey(e) {
 
     //Double movement directions
     if (cache) {
+      clearTimeout()
       if (illegalKeys.includes(`${cache}${e.keyCode}`)) {
         console.log('illegal key');
         return
       }
       params.doubleKeypress = [`${params.keyCodes[cache]}`, `${params.keyCodes[e.keyCode]}`]
       cache = params.keyCodes[e.keyCode]
-    }
+    } else {
 
-    // Single movement directions
-    params.keypress = true
-    params.key = params.keyCodes[e.keyCode]
-    console.log(params.key);
+      // Single movement directions
+      params.keypress = true
+      params.key = params.keyCodes[e.keyCode]
+      cache = e.keyCode
+      console.log(params.key);
+    }
+    setTimeout(() => {
+      cache = null
+    }, 1000);
+
 }
 // testing area
 // testing area
