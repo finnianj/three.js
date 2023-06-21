@@ -40,34 +40,39 @@ const textureLoader = new THREE.TextureLoader()
 const particleTexture = textureLoader.load('/textures/particles/2.png')
 
 
+
+/**
+ * Sizes
+*/
+const sizes = {
+  width: window.innerWidth,
+  height: window.innerHeight
+}
+
+window.addEventListener('resize', () => {
+  // Update sizes
+  sizes.width = window.innerWidth
+  sizes.height = window.innerHeight
+
+  // Update camera
+  camera.aspect = sizes.width / sizes.height
+  camera.updateProjectionMatrix()
+
+  // Update renderer
+  renderer.setSize(sizes.width, sizes.height)
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+})
+
 /**
  * Raycaster
 */
 const raycaster = new THREE.Raycaster()
+const mouse = new THREE.Vector2()
 
-
-/**
- * Sizes
- */
-const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight
-}
-
-window.addEventListener('resize', () => {
-    // Update sizes
-    sizes.width = window.innerWidth
-    sizes.height = window.innerHeight
-
-    // Update camera
-    camera.aspect = sizes.width / sizes.height
-    camera.updateProjectionMatrix()
-
-    // Update renderer
-    renderer.setSize(sizes.width, sizes.height)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+window.addEventListener('mousemove', (e) => {
+  mouse.x = e.clientX / sizes.width * 2 - 1
+  mouse.y = - (e.clientY / sizes.height) * 2 + 1
 })
-
 
 /**
  * Floor
@@ -250,7 +255,31 @@ const loadPlants = (path, number, scale, area) => {
 
 
 
+/**
+ * Portfolio Items
+*/
 
+const addPortfolioItem = (image, name, url, position) => {
+  const texture = textureLoader.load(image);
+  circleMaterial.map = texture
+  console.log(circleMaterial);
+  const circle = new THREE.Mesh( circleGeometry, circleMaterial );
+  circle.position.y = 1.5
+  circle.userData = { name: name, url: url };
+  const circle2 = circle.clone()
+  circle2.rotation.y = Math.PI
+  const torus = new THREE.Mesh( torusGeometry, torusMaterial );
+  torus.position.y = 1.5;
+  torus.position.z = 0.001;
+
+  const group = new THREE.Group();
+  group.add(circle, circle2, torus)
+  group.position.set(position[0], position[1], position[2])
+  scene.add(group)
+  portfolioItems.push(group)
+
+}
+addPortfolioItem('Moss.jpeg', 'moss', 'https://www.mossradio.live/users/sign_in', [0, 1, 0])
 
 
 
