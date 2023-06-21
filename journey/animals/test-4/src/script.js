@@ -196,14 +196,19 @@ circle.position.y = 1.5
 const circle2 = circle.clone()
 circle2.rotation.y = Math.PI
 
-scene.add(circle, circle2)
+// scene.add(circle, circle2)
 
 const torusGeometry = new THREE.TorusGeometry( 1, 0.05, 10, 32 );
 const torusMaterial = new THREE.MeshStandardMaterial( { color: '#ff7f50' } );
 const torus = new THREE.Mesh( torusGeometry, torusMaterial );
 torus.position.y = 1.5;
 torus.position.z = 0.001;
-scene.add( torus );
+// scene.add( torus );
+
+const group = new THREE.Group();
+group.add(circle, circle2, torus)
+scene.add(group)
+group.position.z = -5
 
 /**
  * Lights
