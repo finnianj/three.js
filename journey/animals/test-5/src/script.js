@@ -397,7 +397,8 @@ function checkKey(e) {
         console.log('illegal key');
         return
       }
-      params.doubleKeypress = [`${params.keyCodes[cache]}`, `${params.keyCodes[e.keyCode]}`]
+      params.keypress = false
+      params.doubleKeypress = `${params.keyCodes[cache]}${params.keyCodes[e.keyCode]}`
       cache = params.keyCodes[e.keyCode]
     } else {
 
@@ -407,9 +408,10 @@ function checkKey(e) {
       cache = e.keyCode
       console.log(params.key);
     }
-    setTimeout(() => {
-      cache = null
-    }, 1000);
+
+    // setTimeout(() => {
+    //   cache = null
+    // }, 1000);
 
 }
 // testing area
@@ -475,7 +477,46 @@ const tick = () =>
     // }
 
     if (params.doubleKeypress) {
-      console.log(params.doubleKeypress);
+      switch (params.doubleKeypress) {
+        case 'upleft':
+        case 'leftup':
+          params.model.position.z += 0.01
+          camera.position.z += 0.01
+          params.model.position.x -= 0.01
+          camera.position.x -= 0.01
+          params.model.rotation.y = Math.PI * 1.75
+          console.log('upleft/leftup');
+          break;
+        case 'upright':
+        case 'rightup':
+          params.model.position.z -= 0.01
+          camera.position.z -= 0.01
+          params.model.position.x -= 0.01
+          camera.position.x -= 0.01
+          params.model.rotation.y = Math.PI * 1.25
+          console.log('upright');
+          break;
+        case 'downleft':
+        case 'leftdown':
+          params.model.position.z += 0.01
+          camera.position.z += 0.01
+          params.model.position.x += 0.01
+          camera.position.x += 0.01
+          params.model.rotation.y = Math.PI * 0.25
+          console.log('downleft');
+          break;
+        case 'downright':
+        case 'rightdown':
+          params.model.position.z -= 0.01
+          camera.position.z -= 0.01
+          params.model.position.x += 0.01
+          camera.position.x += 0.01
+          params.model.rotation.y = Math.PI * 0.75
+          console.log('downright');
+          break;
+        default:
+          break;
+      }
     }
 
     if (params.keypress) {
