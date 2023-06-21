@@ -25,10 +25,10 @@ let params = {
   particleCount: 600,
   particleSize: 0.1,
   keyCodes: {
-    'left': 37,
-    'up': 38,
-    'right': 39,
-    'down': 40
+    '37': 'left',
+    '38': 'up',
+    '39':'right',
+    '40':'down'
   }
 }
 
@@ -370,6 +370,7 @@ document.onkeydown = checkKey;
 document.onkeyup = (() => {
   idle()
   params.keypress = false
+  params.doubleKeypress = false
 })
 
 let illegalKeys = [
@@ -392,13 +393,14 @@ function checkKey(e) {
         console.log('illegal key');
         return
       }
-      params.doubleKey = [`${cache}${e.keyCode}`]
+      params.doubleKeypress = [`${params.keyCodes[cache]}`, `${params.keyCodes[e.keyCode]}`]
       cache = params.keyCodes[e.keyCode]
     }
 
     // Single movement directions
     params.keypress = true
     params.key = params.keyCodes[e.keyCode]
+    console.log(params.key);
 }
 // testing area
 // testing area
@@ -461,6 +463,10 @@ const tick = () =>
     //   camera.position.x = Math.cos((elapsedTime + 1) * 0.1) * 8
     //   params.model.rotation.y = elapsedTime * -0.1
     // }
+
+    if (params.doubleKeypress) {
+      console.log(params.doubleKeypress);
+    }
 
     if (params.keypress) {
       // if (params.key == 'left') {
