@@ -29,7 +29,8 @@ let params = {
     '38': 'up',
     '39':'right',
     '40':'down'
-  }
+  },
+  heldKeys: []
 }
 
 scene.background = new THREE.Color(params.background)
@@ -263,20 +264,20 @@ const loadPlants = (path, number, scale, area) => {
   });
 }
 
-// console.log('check out other anemone/rocks(?)');
-// loadPlants('Seaweed_A_01_LOD3', 5, 0.2, 30)
-// loadPlants('Seaweed_A_02_LOD3', 5, 0.2, 30)
-// loadPlants('Seaweed_A_03_LOD3', 5, 0.2, 30)
+// // console.log('check out other anemone/rocks(?)');
+// loadPlants('Seaweed_A_01_LOD2', 5, 0.2, 30)
+// loadPlants('Seaweed_A_02_LOD2', 5, 0.2, 30)
+// loadPlants('Seaweed_A_03_LOD2', 5, 0.2, 30)
 // loadPlants('Coral_D_03_LOD3', 1, 0.2, 50)
 // loadPlants('Coral_C_03_LOD3', 1, 0.6, 50)
-// loadPlants('Coral_B_03_LOD3', 1, 0.3, 50)
-// loadPlants('Coral_A_03_LOD3', 1, 0.5, 50)
+// loadPlants('Coral_B_03_LOD2', 1, 0.3, 50)
+// loadPlants('Coral_A_03_LOD2', 1, 0.5, 50)
 // loadPlants('Rock_A_01_LOD3', 20, 0.1, 30)
 // // loadPlants('Sponge_A_02_LOD0', 1, 0.1, 5)
 // // loadPlants('Sponge_A_03_LOD0', 1, 0.1, 5)
 // // loadPlants('Sponge_B_01_LOD0', 6, 0.1, 20)
 // // loadPlants('Sponge_B_02_LOD0', 6, 0.1, 20)
-// loadPlants('Sponge_B_03_LOD3', 6, 0.1, 20) // the coolest
+// loadPlants('Sponge_B_03_LOD2', 6, 0.1, 20) // the coolest
 // loadPlants('Starfish_01_LOD3', 10, 0.1, 20)
 
 
@@ -367,13 +368,13 @@ const hideInfo = (item) => {
 
 
 document.onkeydown = checkKey;
-document.onkeyup = (() => {
-  idle()
-  params.keypress = false
-  params.doubleKeypress = false
-  setTimeout(() => {
-    cache = null
-  }, 1000);
+document.onkeyup = ((e) => {
+  if (params.keyCodes[e.keyCode]) {
+    idle()
+    console.log(params.heldKeys);
+    let i = params.heldKeys.indexOf(params.keyCodes[e.keyCode])
+    params.heldKeys.splice(i, 1)
+  }
 })
 
 let illegalKeys = [
@@ -384,36 +385,24 @@ let illegalKeys = [
 ]
 
 
-let cache = null
 function checkKey(e) {
     if (e.repeat) { return }
     e = e || window.event;
     swim()
 
     //Double movement directions
-    if (cache) {
-      clearTimeout()
-      if (illegalKeys.includes(`${cache}${e.keyCode}`)) {
-        console.log('illegal key');
-        return
-      }
-      params.keypress = false
-      params.doubleKeypress = `${params.keyCodes[cache]}${params.keyCodes[e.keyCode]}`
-      cache = params.keyCodes[e.keyCode]
-    } else {
-
-      // Single movement directions
-      params.keypress = true
-      params.key = params.keyCodes[e.keyCode]
-      cache = e.keyCode
-      console.log(params.key);
+    if (illegalKeys.includes(`${params.heldKeys[0]}${e.keyCode}`)) {
+      console.log('illegal keypress');
+      return
     }
 
-    // setTimeout(() => {
-    //   cache = null
-    // }, 1000);
+    if (params.keyCodes[e.keyCode]) {
+      params.heldKeys.push(params.keyCodes[e.keyCode])
+    }
 
 }
+
+
 // testing area
 // testing area
 // testing area
@@ -467,17 +456,8 @@ const tick = () =>
     const deltaTime = elapsedTime - previousTime
     previousTime = elapsedTime
 
-    // if (params.model) {
-    //   params.model.position.z = Math.sin(elapsedTime * 0.1) * 6
-    //   params.model.position.x = Math.cos(elapsedTime * 0.1) * 6
-
-    //   camera.position.z = Math.sin((elapsedTime + 1) * 0.1)  * 8
-    //   camera.position.x = Math.cos((elapsedTime + 1) * 0.1) * 8
-    //   params.model.rotation.y = elapsedTime * -0.1
-    // }
-
-    if (params.doubleKeypress) {
-      switch (params.doubleKeypress) {
+    if (params.heldKeys.length == 2) {
+      switch (params.heldKeys.join('')) {
         case 'upleft':
         case 'leftup':
           params.model.position.z += 0.01
@@ -519,7 +499,7 @@ const tick = () =>
       }
     }
 
-    if (params.keypress) {
+    if (params.heldKeys.length == 1) {
       // if (params.key == 'left') {
       //   params.model.rotation.y = - movementValue
       // } else if (params.key == 'right') {
@@ -530,25 +510,29 @@ const tick = () =>
       // camera.position.x = Math.cos(movementValue) * 8
       // params.model.position.z = Math.sin(movementValue) * 6
       // params.model.position.x = Math.cos(movementValue) * 6
-
-      if (params.key == 'left') {
-        params.model.position.z += 0.01
-        camera.position.z += 0.01
-        params.model.rotation.y = 0
-      } else if (params.key == 'right') {
-        params.model.position.z -= 0.01
-        camera.position.z -= 0.01
-        params.model.rotation.y = Math.PI
-      } else if (params.key == 'up') {
-        params.model.position.x -= 0.01
-        camera.position.x -= 0.01
-        params.model.rotation.y = Math.PI * 1.5
-      } else if (params.key == 'down') {
-        params.model.position.x += 0.01
+      switch (params.heldKeys[0]) {
+        case 'left':
+          params.model.position.z += 0.01
+          camera.position.z += 0.01
+          params.model.rotation.y = 0
+          break;
+        case 'up':
+          params.model.position.x -= 0.01
+          camera.position.x -= 0.01
+          params.model.rotation.y = Math.PI * 1.5
+          break;
+        case 'right':
+          params.model.position.z -= 0.01
+          camera.position.z -= 0.01
+          params.model.rotation.y = Math.PI
+          break;
+        case 'down':
+          params.model.position.x += 0.01
         camera.position.x += 0.01
         params.model.rotation.y = Math.PI * 0.5
-
+          break;
       }
+
       let p = params.model.position
       camera.lookAt(p.x, 2, p.z)
     }
