@@ -17,6 +17,26 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 
+//raycaster
+const raycaster = new THREE.Raycaster()
+
+/**
+ * Sizes
+ */
+const sizes = {
+  width: window.innerWidth,
+  height: window.innerHeight
+}
+
+// Mouse
+
+const mouse = new THREE.Vector2()
+
+window.addEventListener('mousemove', (e) => {
+  mouse.x = e.clientX / sizes.width * 2 - 1
+  mouse.y = - (e.clientY / sizes.height) * 2 + 1
+})
+
 // GLTF
 const gltfLoader = new GLTFLoader()
 // gltfLoader.load('/models/Duck/glTF/Duck.gltf',
@@ -193,12 +213,13 @@ const geometry = new THREE.CircleGeometry( 1, 32 );
 const material = new THREE.MeshBasicMaterial( { map: texture } );
 const circle = new THREE.Mesh( geometry, material );
 circle.position.y = 1.5
+circle.userData = { id: 'moss', url:'https://www.mossradio.live/users/sign_in' };
 const circle2 = circle.clone()
 circle2.rotation.y = Math.PI
 
 // scene.add(circle, circle2)
 
-const torusGeometry = new THREE.TorusGeometry( 1, 0.05, 10, 32 );
+const torusGeometry = new THREE.TorusGeometry( 1, 0.05, 10, 100 );
 const torusMaterial = new THREE.MeshStandardMaterial( { color: '#ff7f50' } );
 const torus = new THREE.Mesh( torusGeometry, torusMaterial );
 torus.position.y = 1.5;
@@ -207,8 +228,9 @@ torus.position.z = 0.001;
 
 const group = new THREE.Group();
 group.add(circle, circle2, torus)
+
+
 scene.add(group)
-group.position.z = -5
 
 /**
  * Lights
@@ -231,13 +253,6 @@ const pointLight = new THREE.PointLight('#ffffff', 8, 3)
 pointLight.position.y = 2
 // scene.add(pointLight)
 
-/**
- * Sizes
- */
-const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight
-}
 
 window.addEventListener('resize', () =>
 {
@@ -300,6 +315,28 @@ console.log(directionalLight);
 const clock = new THREE.Clock()
 let previousTime = 0
 
+function onClick() {
+  // Check for intersections when the mouse is clicked
+  const intersects = raycaster.intersectObjects(scene.children, true);
+
+  if (intersects.length > 0) {
+
+    // An object was clicked
+    const clickedObject = intersects[0].object;
+    console.log(clickedObject);
+
+    // Check if the clickedObject has a specific userData property
+    if (clickedObject.userData.url) {
+      // Redirect to the specified URL
+      window.open(clickedObject.userData.url, '_blank');
+    }
+  }
+}
+
+document.addEventListener('click', onClick, false);
+
+let currentIntersect = null
+
 const tick = () =>
 {
     const elapsedTime = clock.getElapsedTime()
@@ -314,6 +351,20 @@ const tick = () =>
     // Update controls
     controls.update()
 
+
+    raycaster.setFromCamera(mouse, camera)
+    let currentIntersect = null
+
+    const intersects = raycaster.intersectObject(group)
+
+      if (intersects.length) {
+        document.body.classList.add('pointer-cursor');
+      } else {
+        document.body.classList.remove('pointer-cursor');
+      }
+
+
+
     // Update mixer
     if (mixer != null) {
       mixer.update(deltaTime)
@@ -325,7 +376,6 @@ const tick = () =>
     // Call tick again on the next frame
     window.requestAnimationFrame(tick)
 }
-
 
 // -----------------------------------------
 // -----------------------------------------
