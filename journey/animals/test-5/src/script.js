@@ -162,7 +162,8 @@ gltfLoader.load('/models/Omabuarts/animals/inkfish.glb', (gltf) => {
   gltfLoader.load('/models/Omabuarts/animals/animations/inkfish_animations.glb',
   (anim) => {
     params.animations = anim.animations;
-    walk()
+    loadActions()
+    idle()
   }
   )
 })
@@ -171,13 +172,33 @@ gltfLoader.load('/models/Omabuarts/animals/inkfish.glb', (gltf) => {
 // Squid Animations
 // --------------------
 
-const walk = () => {
-  const action = params.mixer.clipAction(params.animations[16])
-  action.setDuration(1.5)
-  action.play()
+const loadActions = () => {
+  const action1 = params.mixer.clipAction(params.animations[8])
+  action1.setDuration(1.5)
+  const action2 = params.mixer.clipAction(params.animations[16])
+  action2.setDuration(1.5)
 }
 
-const doOnceThenWalk = (newAction) => {
+const swim = () => {
+  // console.log(params.mixer._actions[0]._clip.name);
+  console.log(params.mixer);
+  params.mixer._actions.find(a => a._clip.name == 'Idle_A').stop()
+  params.mixer._actions.find(a => a._clip.name == 'Swim').play()
+  // console.log(params.mixer.existingAction('Idle_A'));
+  // params.mixer.existingAction('Swim').play()
+}
+const idle = () => {
+  params.mixer._actions.find(a => a._clip.name == 'Swim').stop()
+  params.mixer._actions.find(a => a._clip.name == 'Idle_A').play()
+  // console.log(params.mixer._actions[1]._clip.name);
+  // console.log('idling');
+  // console.log(params.mixer.existingAction('Idle A'));
+
+  // params.mixer.existingAction('Swim').stop()
+  // params.mixer.existingAction('Idle A').play()
+}
+
+const doOnceThenIdle = (newAction) => {
 
   const action = params.mixer.clipAction(newAction)
   action.setLoop(THREE.LoopRepeat, 2)
@@ -337,9 +358,14 @@ const hideInfo = (item) => {
   info.classList.remove('show-info')
 }
 document.onkeydown = checkKey;
-document.onkeyup = (() => params.keypress = false)
+document.onkeyup = (() => {
+  idle()
+  params.keypress = false
+})
 function checkKey(e) {
+    if (e.repeat) { return }
     e = e || window.event;
+    swim()
     params.keypress = true
     if (e.keyCode == '37') {
       params.key = 'left'
