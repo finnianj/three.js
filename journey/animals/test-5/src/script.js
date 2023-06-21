@@ -34,11 +34,9 @@ const fog = new THREE.Fog(params.background, 1, 10)
 
 
 /**
- * Textures
+ * Texture Loader
 */
 const textureLoader = new THREE.TextureLoader()
-const particleTexture = textureLoader.load('/textures/particles/2.png')
-
 
 
 /**
@@ -120,6 +118,7 @@ const generateParticles = () => {
     blending: THREE.AdditiveBlending,
     color: '#ffffff'
   })
+  const particleTexture = textureLoader.load('/textures/particles/2.png')
   material.map = particleTexture
   material.transparent = true
   material.alphaMap = particleTexture
@@ -259,6 +258,12 @@ const loadPlants = (path, number, scale, area) => {
  * Portfolio Items
 */
 
+const circleGeometry = new THREE.CircleGeometry( 1, 32 );
+const circleMaterial = new THREE.MeshStandardMaterial();
+const torusGeometry = new THREE.TorusGeometry( 1, 0.05, 10, 100 );
+const torusMaterial = new THREE.MeshStandardMaterial( { color: '#ff7f50' } );
+const portfolioItems = []
+
 const addPortfolioItem = (image, name, url, position) => {
   const texture = textureLoader.load(image);
   circleMaterial.map = texture
@@ -279,6 +284,25 @@ const addPortfolioItem = (image, name, url, position) => {
   portfolioItems.push(group)
 
 }
+
+function onClick() {
+  // Check for intersections when the mouse is clicked
+  const intersects = raycaster.intersectObjects(portfolioItems, true);
+
+  if (intersects.length > 0) {
+
+    // An object was clicked
+    const clickedObject = intersects[0].object;
+    console.log(clickedObject);
+
+    // Check if the clickedObject has a specific userData property
+    if (clickedObject.userData.url) {
+      // Redirect to the specified URL
+      window.open(clickedObject.userData.url, '_blank');
+    }
+  }
+}
+
 addPortfolioItem('Moss.jpeg', 'moss', 'https://www.mossradio.live/users/sign_in', [0, 1, 0])
 
 
