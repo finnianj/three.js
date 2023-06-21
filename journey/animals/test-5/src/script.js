@@ -405,7 +405,7 @@ function checkKey(e) {
       // controls.reset()
     }
 
-    console.log(controls.getAzimuthalAngle());
+    console.log(controls.getPolarAngle());
 }
 
 
@@ -426,9 +426,10 @@ scene.add(camera)
 // Controls
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
-controls.enableZoom = false
+// controls.enableZoom = false
 controls.maxAzimuthAngle = 1.8
 controls.minAzimuthAngle = 1.2
+controls.maxPolarAngle = 2.3
 
 /**
  * Renderer
