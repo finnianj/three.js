@@ -15,6 +15,7 @@ html,
 body
 {
     overflow: hidden;
+    cursor: grab;
 }
 
 .webgl

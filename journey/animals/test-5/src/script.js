@@ -30,7 +30,8 @@ let params = {
     '39':'right',
     '40':'down'
   },
-  heldKeys: []
+  heldKeys: [],
+  modelPosition: {}
 }
 
 const speed = 0.05
@@ -166,6 +167,7 @@ gltfLoader.load('/models/Omabuarts/animals/inkfish.glb', (gltf) => {
   gltf.scene.position.x = 6
   params.model = gltf.scene
   scene.add(gltf.scene)
+  controls.target.set(6, 2, 0)
   mixer = new THREE.AnimationMixer(gltf.scene)
   params.mixer = mixer;
 
@@ -400,8 +402,10 @@ function checkKey(e) {
 
     if (params.keyCodes[e.keyCode]) {
       params.heldKeys.push(params.keyCodes[e.keyCode])
+      // controls.reset()
     }
 
+    console.log(controls.getAzimuthalAngle());
 }
 
 
@@ -421,8 +425,10 @@ scene.add(camera)
 
 // Controls
 const controls = new OrbitControls(camera, canvas)
-controls.target.set(0, 1.5, 0)
 controls.enableDamping = true
+controls.enableZoom = false
+controls.maxAzimuthAngle = 1.8
+controls.minAzimuthAngle = 1.2
 
 /**
  * Renderer
@@ -499,7 +505,7 @@ const tick = () =>
         default:
           break;
       }
-      let p = params.model.position || {x: 0, y: 2, z: 0}
+      let p = params.model.position
       controls.target.set(p.x, p.y + 1, p.z)
     }
 
@@ -538,6 +544,7 @@ const tick = () =>
       }
       let p = params.model.position || {x: 0, y: 2, z: 0}
       controls.target.set(p.x, p.y + 1, p.z)
+
     }
 
 
