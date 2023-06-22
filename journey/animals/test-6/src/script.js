@@ -40,7 +40,7 @@ scene.background = new THREE.Color(params.background)
 
 // Fog
 const fog = new THREE.Fog(params.background, 1, 10)
-scene.fog = fog
+// scene.fog = fog
 
 
 /**
@@ -154,9 +154,12 @@ const generateParticles = () => {
 generateParticles()
 
 
-gltfLoader.load('/models/sand.glb',
+gltfLoader.load('/models/1.glb',
   (floor) => {
     console.log(floor);
+    floor.scene.children[0].receiveShadow = true
+    floor.scene.position.x = -15
+    // floor.scene.children[0].material.roughness = 5
     scene.add(floor.scene)
   })
 
@@ -198,7 +201,6 @@ const loadActions = () => {
 
 const swim = () => {
   // console.log(params.mixer._actions[0]._clip.name);
-  console.log(params.mixer);
   params.mixer._actions.find(a => a._clip.name == 'Idle_A').stop()
   params.mixer._actions.find(a => a._clip.name == 'Swim').play()
   // console.log(params.mixer.existingAction('Idle_A'));
@@ -277,17 +279,17 @@ const loadPlants = (path, number, scale, area) => {
 loadPlants('Seaweed_A_01_LOD2', 5, 0.2, 30)
 loadPlants('Seaweed_A_02_LOD2', 5, 0.2, 30)
 loadPlants('Seaweed_A_03_LOD2', 5, 0.2, 30)
-// loadPlants('Coral_D_03_LOD3', 1, 0.2, 50)
-// loadPlants('Coral_C_03_LOD3', 1, 0.6, 50)
-// loadPlants('Coral_B_03_LOD2', 1, 0.3, 50)
-// loadPlants('Coral_A_03_LOD2', 1, 0.5, 50)
-// loadPlants('Rock_A_01_LOD3', 20, 0.1, 30)
-// // loadPlants('Sponge_A_02_LOD0', 1, 0.1, 5)
-// // loadPlants('Sponge_A_03_LOD0', 1, 0.1, 5)
-// // loadPlants('Sponge_B_01_LOD0', 6, 0.1, 20)
-// // loadPlants('Sponge_B_02_LOD0', 6, 0.1, 20)
-// loadPlants('Sponge_B_03_LOD2', 6, 0.1, 20) // the coolest
-// loadPlants('Starfish_01_LOD3', 10, 0.1, 20)
+loadPlants('Coral_D_03_LOD3', 1, 0.2, 50)
+loadPlants('Coral_C_03_LOD3', 1, 0.6, 50)
+loadPlants('Coral_B_03_LOD2', 1, 0.3, 50)
+loadPlants('Coral_A_03_LOD2', 1, 0.5, 50)
+loadPlants('Rock_A_01_LOD3', 20, 0.1, 30)
+// loadPlants('Sponge_A_02_LOD0', 1, 0.1, 5)
+// loadPlants('Sponge_A_03_LOD0', 1, 0.1, 5)
+// loadPlants('Sponge_B_01_LOD0', 6, 0.1, 20)
+// loadPlants('Sponge_B_02_LOD0', 6, 0.1, 20)
+loadPlants('Sponge_B_03_LOD2', 6, 0.1, 20) // the coolest
+loadPlants('Starfish_01_LOD3', 10, 0.1, 20)
 
 
 
@@ -380,7 +382,6 @@ document.onkeydown = checkKey;
 document.onkeyup = ((e) => {
   if (params.keyCodes[e.keyCode]) {
     idle()
-    console.log(params.heldKeys);
     let i = params.heldKeys.indexOf(params.keyCodes[e.keyCode])
     params.heldKeys.splice(i, 1)
   }
@@ -401,7 +402,6 @@ function checkKey(e) {
 
     //Double movement directions
     if (illegalKeys.includes(`${params.heldKeys[0]}${e.keyCode}`)) {
-      console.log('illegal keypress');
       return
     }
 
@@ -410,7 +410,6 @@ function checkKey(e) {
       // controls.reset()
     }
 
-    console.log(controls.getPolarAngle());
 }
 
 
@@ -447,13 +446,13 @@ renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 // Shadows
-// renderer.shadowMap.enabled = true
-// renderer.shadowMap.type = THREE.PCFSoftShadowMap
+renderer.shadowMap.enabled = true
+renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
 // floor.receiveShadow = true
-// directionalLight.castShadow = true
-// directionalLight.shadow.camera.far = 25
-// directionalLight.shadow.mapSize.set(1024, 1024)
+directionalLight.castShadow = true
+directionalLight.shadow.camera.far = 25
+directionalLight.shadow.mapSize.set(1024, 1024)
 
 
 /**
