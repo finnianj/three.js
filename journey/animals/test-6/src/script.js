@@ -471,6 +471,10 @@ const checkDistances = () => {
         fadeOut: true,
         fadeOutDelay: 1000,
         showCursor: false,
+        preStringTyped: (_a, _s) => {
+          console.log("hi");
+          // if (!model.position.x == 8 && !model.position.z == 0) typed.stop()
+        },
         onComplete: () => {
           setTimeout(() => {
             params.messageEmpty = true
@@ -667,14 +671,27 @@ const update = () => {
 
 window.onload = () => {
   var typed = new Typed(messageContainer, {
-    strings: ["I'm glad you made it", "Let's have a look around, shall we?", "Use the arrow keys to move", ""],
+    strings: ["Oh, it's you!", "I'm glad you made it", " Let's have a look around, shall we?", " Use the arrow keys to move", ""],
     typeSpeed: 50,
-    startDelay: 4000,
+    startDelay: 500,
     backDelay: 2000,
     fadeOut: true,
-    fadeOutDelay: 1000,
+    fadeOutDelay: 2000,
     showCursor: false,
-    onComplete: () => { params.messageEmpty = true }
+    onStringTyped: () => {
+      if (params.model.position.x != 8 || params.model.position.z != 0) {
+        messageContainer.classList.add('fadeout')
+        setTimeout(() => {
+          typed.stop()
+          console.log("Stopped");
+          messageContainer.innerText = ""
+          params.messageEmpty = true
+        }, 1000);
+      }
+    },
+    onComplete: () => {
+      params.messageEmpty = true
+    }
   });
 }
 
