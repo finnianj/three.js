@@ -413,7 +413,6 @@ function checkKey(e) {
 // testing area
 // testing area
 // testing area
-// testing area
 /**
  * Camera
  */
