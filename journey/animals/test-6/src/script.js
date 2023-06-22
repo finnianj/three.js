@@ -33,8 +33,8 @@ let params = {
   heldKeys: [],
   modelPosition: {},
   limits: {
-    x: [-20, 10],
-    z: [10, 10]
+    x: [-35, 10],
+    z: [-10, 10]
   },
 }
 
@@ -44,7 +44,7 @@ scene.background = new THREE.Color(params.background)
 
 // Fog
 const fog = new THREE.Fog(params.background, 1, 10)
-// scene.fog = fog
+scene.fog = fog
 
 
 /**
@@ -144,7 +144,7 @@ const generateParticles = () => {
     const i3 = i * 3
     vertices[i3 + 0] = (Math.random() * 45) - 35
     vertices[i3 + 1] = (Math.random() * 5)
-    vertices[i3 + 2] = (Math.random() * 20) - 10
+    vertices[i3 + 2] = (Math.random() * 40) - 20
 
   }
   geometry.setAttribute(
@@ -421,8 +421,12 @@ function checkKey(e) {
 
 }
 
-const validateMove = (axis) => {
-  return (camera.position[axis] >= params.limits[axis][0] && camera.position[axis] <= params.limits[axis][1])
+const validateMove = (axis, posOrNeg) => {
+  if (posOrNeg == 0) {
+    return (camera.position[axis] > params.limits[axis][posOrNeg])
+  } else if (posOrNeg == 1) {
+    return (camera.position[axis] < params.limits[axis][posOrNeg])
+  }
 }
 
 
@@ -506,6 +510,8 @@ const tick = () =>
       switch (params.heldKeys.join('')) {
         case 'upleft':
         case 'leftup':
+          if (!validateMove('z', 1)) break;
+          if (!validateMove('x', 0)) break;
           params.model.position.z += speed
           camera.position.z += speed
           params.model.position.x -= speed
@@ -515,6 +521,8 @@ const tick = () =>
           break;
         case 'upright':
         case 'rightup':
+          if (!validateMove('z', 0)) break;
+          if (!validateMove('x', 0)) break;
           params.model.position.z -= speed
           camera.position.z -= speed
           params.model.position.x -= speed
@@ -524,6 +532,8 @@ const tick = () =>
           break;
         case 'downleft':
         case 'leftdown':
+          if (!validateMove('z', 1)) break;
+          if (!validateMove('x', 1)) break;
           params.model.position.z += speed
           camera.position.z += speed
           params.model.position.x += speed
@@ -533,6 +543,8 @@ const tick = () =>
           break;
         case 'downright':
         case 'rightdown':
+          if (!validateMove('z', 0)) break;
+          if (!validateMove('x', 1)) break;
           params.model.position.z -= speed
           camera.position.z -= speed
           params.model.position.x += speed
@@ -560,30 +572,33 @@ const tick = () =>
       // params.model.position.x = Math.cos(movementValue) * 6
       switch (params.heldKeys[0]) {
         case 'left':
+          if (!validateMove('z', 1)) break;
           params.model.position.z += speed
           camera.position.z += speed
           rotate(0)
           // params.model.rotation.y = 0
           break;
         case 'up':
+          if (!validateMove('x', 0)) break;
           params.model.position.x -= speed
           camera.position.x -= speed
           rotate(Math.PI * 1.5)
           // params.model.rotation.y = Math.PI * 1.5
           break;
         case 'right':
+          if (!validateMove('z', 0)) break;
           params.model.position.z -= speed
           camera.position.z -= speed
           rotate(Math.PI)
           // params.model.rotation.y = Math.PI
           break;
         case 'down':
-          if (validateMove('x', 1)) {
+          if (!validateMove('x', 1)) break;
             params.model.position.x += speed
             camera.position.x += speed
             rotate(Math.PI * 0.5)
             // params.model.rotation.y = Math.PI * 0.5
-          }
+
           break;
       }
       let p = params.model.position || {x: 0, y: 2, z: 0}
