@@ -47,7 +47,8 @@ let params = {
     'x-1z-1': Math.PI * 1.25,
     'x-1z1': Math.PI * 1.75,
     'z1x-1': Math.PI * 1.75,
-  }
+  },
+  messageEmpty: false
 }
 
 const speed = 0.05
@@ -318,7 +319,7 @@ const torusGeometry = new THREE.TorusGeometry( 1, 0.05, 10, 100 );
 const torusMaterial = new THREE.MeshStandardMaterial( { color: '#ff7f50' } );
 const portfolioItems = []
 
-const addPortfolioItem = (image, name, url, position, alpha = false) => {
+const addPortfolioItem = (image, name, info, url, position, alpha = false) => {
   const circleMaterial = new THREE.MeshStandardMaterial();
   let texture = textureLoader.load(image);
   circleMaterial.map = texture
@@ -329,7 +330,7 @@ const addPortfolioItem = (image, name, url, position, alpha = false) => {
   console.log(circleMaterial);
   const circle = new THREE.Mesh( circleGeometry, circleMaterial );
   circle.position.y = 1.5
-  circle.userData = { name: name, url: url };
+  circle.userData = { name: name, url: url, info: info };
   const circle2 = circle.clone()
   circle2.rotation.y = Math.PI
   const torus = new THREE.Mesh( torusGeometry, torusMaterial );
@@ -361,12 +362,12 @@ const addPortfolioItem = (image, name, url, position, alpha = false) => {
 //   }
 // }
 
-addPortfolioItem('Moss.jpeg', 'moss', 'https://www.mossradio.live/users/sign_in', [1, 1, 4])
-addPortfolioItem('api.jpeg', 'api', 'https://www.mossradio.live/users/sign_in', [-6, 1, -4])
-addPortfolioItem('pomodoro.png', 'widgets', 'https://www.mossradio.live/users/sign_in', [-13, 1, 4], true)
-addPortfolioItem('pomodoro.png', 'info', 'https://www.mossradio.live/users/sign_in', [-20, 1, -4])
-addPortfolioItem('pomodoro.png', 'info', 'https://www.mossradio.live/users/sign_in', [-27, 1, 4])
-addPortfolioItem('pomodoro.png', 'info', 'https://www.mossradio.live/users/sign_in', [-35, 1, 4])
+addPortfolioItem('Moss.jpeg', 'moss', 'Moss Radio. Built using Ruby on Rails. It features a live chat, live music stream, and beautiful smooth front end.', 'https://www.mossradio.live/users/sign_in', [1, 1, 4])
+addPortfolioItem('api.jpeg', 'api', 'info about API', 'https://www.mossradio.live/users/sign_in', [-6, 1, -4])
+addPortfolioItem('pomodoro.png', 'widgets', 'info about widgets', 'https://www.mossradio.live/users/sign_in', [-13, 1, 4], true)
+addPortfolioItem('pomodoro.png', 'info', 'info about D3', 'https://www.mossradio.live/users/sign_in', [-20, 1, -4])
+addPortfolioItem('pomodoro.png', 'info', 'info for certs skills about', 'https://www.mossradio.live/users/sign_in', [-27, 1, 4])
+addPortfolioItem('pomodoro.png', 'info', 'info', 'https://www.mossradio.live/users/sign_in', [-35, 1, 4])
 // console.log(portfolioItems);
 portfolioItems.forEach(i => scene.add(i))
 // document.addEventListener('click', onClick);
@@ -456,6 +457,29 @@ const rotate = (targetRotation) => {
       const rotationIncrement = rotationDiff > 0 ? 0.1 : -0.1;
       params.model.rotation.y += rotationIncrement;
     }
+}
+
+const checkDistances = () => {
+  portfolioItems.forEach((i)  => {
+    if (params.model.position.distanceTo(i.position) < 2) {
+      params.messageEmpty = false
+      var typed = new Typed(messageContainer, {
+        strings: i.children[0].userData.info.split("."),
+        typeSpeed: 50,
+        startDelay: 500,
+        backDelay: 1000,
+        fadeOut: true,
+        fadeOutDelay: 1000,
+        showCursor: false,
+        onComplete: () => {
+          setTimeout(() => {
+            params.messageEmpty = true
+          }, 5000);
+        }
+      });
+
+    }
+  })
 }
 
 
@@ -559,6 +583,10 @@ const tick = () => {
 
     }
 
+    if (params.messageEmpty) {
+      checkDistances()
+    }
+
 
 
     // Update controls
@@ -610,15 +638,6 @@ const triggerAction = (actionName) => {
 }
 
 const messageContainer = document.getElementById('text')
-const messages = [
-  "Oh! \nIt's you...",
-  "How are you?",
-  "I am a squid",
-  "Woooooo",
-  "I do not really exist",
-  "I am merely a construct of Finn's consciousness",
-  "*guuuuuuuurrrrp*"
-]
 
 params.messageNumber = 0
 
@@ -648,13 +667,14 @@ const update = () => {
 
 window.onload = () => {
   var typed = new Typed(messageContainer, {
-    strings: ["Oh, it's you", "I'm glad you made it", "Let's have a look around, shall we?", "Use the arrow keys to move", ""],
+    strings: ["I'm glad you made it", "Let's have a look around, shall we?", "Use the arrow keys to move", ""],
     typeSpeed: 50,
-    startDelay: 2000,
+    startDelay: 4000,
     backDelay: 2000,
     fadeOut: true,
-    fadeOutDelay: 2500,
-    showCursor: false
+    fadeOutDelay: 1000,
+    showCursor: false,
+    onComplete: () => { params.messageEmpty = true }
   });
 }
 
