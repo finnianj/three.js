@@ -683,9 +683,10 @@ window.onload = () => {
         messageContainer.classList.add('fadeout')
         setTimeout(() => {
           typed.stop()
-          console.log("Stopped");
           messageContainer.innerText = ""
           params.messageEmpty = true
+          messageContainer.classList.remove('fadeout')
+          messageContainer.classList.add('fadein')
         }, 1000);
       }
     },

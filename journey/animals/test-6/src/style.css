@@ -45,6 +45,10 @@ body
   animation-name: fadeOut;
   animation-duration: 1s;
 }
+.fadein{
+  animation-name: fadeIn;
+  animation-duration: 1s;
+}
 
 #text{
   font-family: cherry;
@@ -95,5 +99,13 @@ body
   }
   to {
     opacity: 0;
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
