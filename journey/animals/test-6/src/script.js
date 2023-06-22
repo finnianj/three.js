@@ -684,8 +684,12 @@ const messages = [
   "🎵 Under the seaaaa....🎵",
   "I've heard there is a whole world above the ocean...",
   "I enjoy working for Finn! He tells me about the world beyond.",
-  "Tell me, what is water? I heard Finn mention it",
-  "Recently I've become very fond of juggling. Have you tried it?"
+  "Tell me, what is water? Finn always mentions it...",
+  "Recently I've become very fond of juggling. Have you tried it?",
+  "You know, it's so great that you're here.",
+  "My friend showed me a multicolored shell today. Isn't that nice?",
+  "🎵 A B C D E F G... 🎵 ",
+  "Ha! You're feet are covered in sand!"
 ]
 
 const triggerAction = (actionName) => {
