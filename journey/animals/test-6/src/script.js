@@ -459,17 +459,17 @@ const rotate = (targetRotation) => {
     }
 }
 
-const checkDistances = (elapsedTime) => {
+const checkDistances = () => {
   portfolioItems.forEach((item)  => {
     if (params.model.position.distanceTo(item.position) < 2) {
       params.messageEmpty = false
-      typeInfo(item, elapsedTime)
+      typeInfo(item)
       return
     }
   })
 }
 
-const typeInfo = (item, elapsedTime) => {
+const typeInfo = (item) => {
   let typed = new Typed(messageContainer, {
     strings: item.children[0].userData.info.split(".."),
     typeSpeed: 50,
@@ -504,14 +504,27 @@ const typeInfo = (item, elapsedTime) => {
 }
 
 const randomMessage = () => {
+  params.messageEmpty = false;
   let typed = new Typed(messageContainer, {
-    strings: messages.sample,
+    strings: [messages[Math.floor(Math.random() * messages.length)], ""],
     typeSpeed: 50,
     startDelay: 0,
-    backDelay: 1000,
+    backDelay: 2000,
     fadeOut: true,
     fadeOutDelay: 1000,
     showCursor: false,
+    onComplete: () => {
+      setTimeout(() => {
+        console.log("completed random message");
+        params.messageEmpty = true
+      }, 2000)
+      setTimeout(() => {
+        if (params.messageEmpty == true) {
+          console.log("making another rando");
+          randomMessage()
+        }
+      }, 8000);
+    }
   });
 
 }
@@ -669,7 +682,7 @@ const messages = [
   "Nice weather we're having, no?",
   "*guuuuuuuurrrrppp*",
   "🎵 Under the seaaaa....🎵",
-  "I've heard there is a whole world above the ocean.",
+  "I've heard there is a whole world above the ocean...",
   "I enjoy working for Finn! He tells me about the world beyond.",
   "Tell me, what is water? I heard Finn mention it",
   "Recently I've become very fond of juggling. Have you tried it?"
