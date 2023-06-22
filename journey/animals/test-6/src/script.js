@@ -463,6 +463,7 @@ const checkDistances = () => {
     if (params.model.position.distanceTo(item.position) < 2) {
       params.messageEmpty = false
       typeInfo(item)
+      return
     }
   })
 }
@@ -493,6 +494,19 @@ const typeInfo = (item) => {
       }, 3000);
     }
   });
+}
+
+const randomMessage = () => {
+  let typed = new Typed(messageContainer, {
+    strings: messages.sample,
+    typeSpeed: 50,
+    startDelay: 0,
+    backDelay: 1000,
+    fadeOut: true,
+    fadeOutDelay: 1000,
+    showCursor: false,
+  });
+
 }
 
 
