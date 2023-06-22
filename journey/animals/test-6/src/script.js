@@ -56,7 +56,7 @@ scene.background = new THREE.Color(params.background)
 
 // Fog
 const fog = new THREE.Fog(params.background, 1, 10)
-// scene.fog = fog
+scene.fog = fog
 
 
 /**
@@ -628,27 +628,34 @@ const update = () => {
   console.log(actionName);
   if (actionName) triggerAction(actionName)
   console.log('typed should split by newline character');
-  var typed = new Typed(messageContainer, {
-    strings: [messages[params.messageNumber]],
-    typeSpeed: 50,
-  });
+
 }
 
-document.getElementById('next').addEventListener('click', () => {
-  params.messageNumber += 1;
-  update()
-  // // messageContainer.classList.add('animate__fadeOut')
-  // setTimeout(() => {
-  //   messageContainer.innerText = messages[params.message]
-  //   // messageContainer.classList.remove('animate__fadeOut')
-  //   messageContainer.classList.add('animate__fadeIn')
-  // }, 0);
-})
-document.getElementById('previous').addEventListener('click', () => {
-  params.messageNumber -= 1;
-  update()
-})
+// document.getElementById('next').addEventListener('click', () => {
+//   params.messageNumber += 1;
+//   update()
+//   // // messageContainer.classList.add('animate__fadeOut')
+//   // setTimeout(() => {
+//   //   messageContainer.innerText = messages[params.message]
+//   //   // messageContainer.classList.remove('animate__fadeOut')
+//   //   messageContainer.classList.add('animate__fadeIn')
+//   // }, 0);
+// })
+// document.getElementById('previous').addEventListener('click', () => {
+//   params.messageNumber -= 1;
+//   update()
+// })
 
-window.onload = () => { messageContainer.innerText = messages[0] }
+window.onload = () => {
+  var typed = new Typed(messageContainer, {
+    strings: ["Oh, it's you", "I'm glad you made it", "Let's have a look around, shall we?", "Use the arrow keys to move", ""],
+    typeSpeed: 50,
+    startDelay: 2000,
+    backDelay: 2000,
+    fadeOut: true,
+    fadeOutDelay: 2500,
+    showCursor: false
+  });
+}
 
 tick()
