@@ -35,7 +35,7 @@ let params = {
   limits: {
     x: [-20, 10],
     z: [10, 10]
-  }
+  },
 }
 
 const speed = 0.05
@@ -415,6 +415,8 @@ function checkKey(e) {
     // check it's an arrow
     if (params.keyCodes[key]) {
 
+
+
       params.heldKeys.push(params.keyCodes[key])
       // controls.reset()
     }
@@ -423,6 +425,23 @@ function checkKey(e) {
 
 const validateMove = (axis) => {
   return (camera.position[axis] >= params.limits[axis][0] && camera.position[axis] <= params.limits[axis][1])
+}
+
+
+const rotate = (targetRotation) => {
+    let currentRotation = params.model.rotation.y
+    let rotationDiff = (targetRotation - currentRotation) ;
+    rotationDiff = ((rotationDiff + Math.PI) % (2 * Math.PI)) - Math.PI;
+    if (rotationDiff > Math.PI) {
+      rotationDiff -= 2 * Math.PI;
+    } else if (rotationDiff < -Math.PI) {
+      rotationDiff += 2 * Math.PI;
+    }
+    if (Math.abs(rotationDiff) > 0.1) {
+      // Rotate the object by 0.1 in the appropriate direction
+      const rotationIncrement = rotationDiff > 0 ? 0.1 : -0.1;
+      params.model.rotation.y += rotationIncrement;
+    }
 }
 
 
@@ -443,6 +462,9 @@ scene.add(camera)
 // Controls
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
+controls.enablePan = false
+// controls.autoRotate = true;
+
 // controls.enableZoom = false
 // controls.maxAzimuthAngle = 1.8
 // controls.minAzimuthAngle = 1.2
@@ -490,7 +512,7 @@ const tick = () =>
           camera.position.z += speed
           params.model.position.x -= speed
           camera.position.x -= speed
-          params.model.rotation.y = Math.PI * 1.75
+          rotate(Math.PI * 1.75)
           console.log('upleft/leftup');
           break;
         case 'upright':
@@ -499,7 +521,7 @@ const tick = () =>
           camera.position.z -= speed
           params.model.position.x -= speed
           camera.position.x -= speed
-          params.model.rotation.y = Math.PI * 1.25
+          rotate(Math.PI * 1.25)
           console.log('upright');
           break;
         case 'downleft':
@@ -508,7 +530,7 @@ const tick = () =>
           camera.position.z += speed
           params.model.position.x += speed
           camera.position.x += speed
-          params.model.rotation.y = Math.PI * 0.25
+          rotate(Math.PI * 0.25)
           console.log('downleft');
           break;
         case 'downright':
@@ -517,7 +539,7 @@ const tick = () =>
           camera.position.z -= speed
           params.model.position.x += speed
           camera.position.x += speed
-          params.model.rotation.y = Math.PI * 0.75
+          rotate(Math.PI * 0.75)
           console.log('downright');
           break;
         default:
@@ -542,22 +564,26 @@ const tick = () =>
         case 'left':
           params.model.position.z += speed
           camera.position.z += speed
-          params.model.rotation.y = 0
+          rotate(0)
+          // params.model.rotation.y = 0
           break;
         case 'up':
           params.model.position.x -= speed
           camera.position.x -= speed
-          params.model.rotation.y = Math.PI * 1.5
+          rotate(Math.PI * 1.5)
+          // params.model.rotation.y = Math.PI * 1.5
           break;
         case 'right':
           params.model.position.z -= speed
           camera.position.z -= speed
-          params.model.rotation.y = Math.PI
+          rotate(Math.PI)
+          // params.model.rotation.y = Math.PI
           break;
         case 'down':
           if (validateMove('x', 1)) {
             params.model.position.x += speed
             camera.position.x += speed
+            rotate(Math.PI * 0.5)
             // params.model.rotation.y = Math.PI * 0.5
           }
           break;
