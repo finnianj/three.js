@@ -48,7 +48,8 @@ let params = {
     'x-1z1': Math.PI * 1.75,
     'z1x-1': Math.PI * 1.75,
   },
-  messageEmpty: false
+  messageEmpty: false,
+  timeOfLastMessage: 0
 }
 
 const speed = 0.05
@@ -458,17 +459,17 @@ const rotate = (targetRotation) => {
     }
 }
 
-const checkDistances = () => {
+const checkDistances = (elapsedTime) => {
   portfolioItems.forEach((item)  => {
     if (params.model.position.distanceTo(item.position) < 2) {
       params.messageEmpty = false
-      typeInfo(item)
+      typeInfo(item, elapsedTime)
       return
     }
   })
 }
 
-const typeInfo = (item) => {
+const typeInfo = (item, elapsedTime) => {
   let typed = new Typed(messageContainer, {
     strings: item.children[0].userData.info.split(".."),
     typeSpeed: 50,
@@ -486,12 +487,18 @@ const typeInfo = (item) => {
           params.messageEmpty = true
           messageContainer.classList.remove('fadeout')
         }, 1000);
+        setTimeout(() => {
+          if (params.messageEmpty == true) randomMessage()
+        }, 8000);
       }
     },
     onComplete: () => {
       setTimeout(() => {
         params.messageEmpty = true
       }, 3000);
+      setTimeout(() => {
+        if (params.messageEmpty == true) randomMessage()
+      }, 8000);
     }
   });
 }
@@ -561,7 +568,6 @@ directionalLight.shadow.mapSize.set(1024, 1024)
 const clock = new THREE.Clock()
 let previousTime = 0
 let currentIntersect = null
-let movementValue = 0
 
 const tick = () => {
 
@@ -659,6 +665,16 @@ const actions = {
   5: "Roll"
 }
 
+const messages = [
+  "Nice weather we're having, no?",
+  "*guuuuuuuurrrrppp*",
+  "🎵 Under the seaaaa....🎵",
+  "I've heard there is a whole world above the ocean.",
+  "I enjoy working for Finn! He tells me about the world beyond.",
+  "Tell me, what is water? I heard Finn mention it",
+  "Recently I've become very fond of juggling. Have you tried it?"
+]
+
 const triggerAction = (actionName) => {
   const newAction = params.animations.find((a) => a.name == actionName)
   doOnceThenWalk(newAction)
@@ -666,16 +682,6 @@ const triggerAction = (actionName) => {
 
 const messageContainer = document.getElementById('text')
 
-params.messageNumber = 0
-
-const update = () => {
-  messageContainer.innerText = ""
-  const actionName = actions[params.messageNumber]
-  console.log(actionName);
-  if (actionName) triggerAction(actionName)
-  console.log('typed should split by newline character');
-
-}
 
 // document.getElementById('next').addEventListener('click', () => {
 //   params.messageNumber += 1;
@@ -710,10 +716,16 @@ window.onload = () => {
           params.messageEmpty = true
           messageContainer.classList.remove('fadeout')
         }, 1000);
+        setTimeout(() => {
+          if (params.messageEmpty == true) randomMessage()
+        }, 8000);
       }
     },
     onComplete: () => {
       params.messageEmpty = true
+      setTimeout(() => {
+        if (params.messageEmpty == true) randomMessage()
+      }, 8000);
     }
   });
 }
