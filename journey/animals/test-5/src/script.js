@@ -419,7 +419,7 @@ function checkKey(e) {
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.set(8, 2, 0)
+camera.position.set(8, 3, 0)
 camera.lookAt(0, 2, 0)
 scene.add(camera)
 
