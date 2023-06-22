@@ -35,7 +35,7 @@ let params = {
   heldKeys: [],
   modelPosition: {},
   limits: {
-    x: [-35, 10],
+    x: [-35, 12],
     z: [-10, 10]
   },
   diagonalRotations: {
@@ -56,7 +56,7 @@ scene.background = new THREE.Color(params.background)
 
 // Fog
 const fog = new THREE.Fog(params.background, 1, 10)
-scene.fog = fog
+// scene.fog = fog
 
 
 /**
@@ -361,10 +361,12 @@ const addPortfolioItem = (image, name, url, position, alpha = false) => {
 //   }
 // }
 
-addPortfolioItem('Moss.jpeg', 'moss', 'https://www.mossradio.live/users/sign_in', [2, 1, 5])
-addPortfolioItem('api.jpeg', 'api', 'https://www.mossradio.live/users/sign_in', [-5, 1, 0])
-addPortfolioItem('pomodoro.png', 'widgets', 'https://www.mossradio.live/users/sign_in', [5, 1, 0], true)
-addPortfolioItem('pomodoro.png', 'info', 'https://www.mossradio.live/users/sign_in', [0, 1, -5])
+addPortfolioItem('Moss.jpeg', 'moss', 'https://www.mossradio.live/users/sign_in', [1, 1, 4])
+addPortfolioItem('api.jpeg', 'api', 'https://www.mossradio.live/users/sign_in', [-6, 1, -4])
+addPortfolioItem('pomodoro.png', 'widgets', 'https://www.mossradio.live/users/sign_in', [-13, 1, 4], true)
+addPortfolioItem('pomodoro.png', 'info', 'https://www.mossradio.live/users/sign_in', [-20, 1, -4])
+addPortfolioItem('pomodoro.png', 'info', 'https://www.mossradio.live/users/sign_in', [-27, 1, 4])
+addPortfolioItem('pomodoro.png', 'info', 'https://www.mossradio.live/users/sign_in', [-35, 1, 4])
 // console.log(portfolioItems);
 portfolioItems.forEach(i => scene.add(i))
 // document.addEventListener('click', onClick);
