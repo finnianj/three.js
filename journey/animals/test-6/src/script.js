@@ -140,19 +140,17 @@ const generateParticles = () => {
   const points = new THREE.Points(geometry, material)
   // console.log(points);
 
-  for (let i = 0; i < params.count; i++) {
+  for (let i = 0; i < params.particleCount; i++) {
     const i3 = i * 3
-    vertices[i3 + 0] = (Math.random() * 20) - 10
-    vertices[i3 + 1] = (Math.random() * 20) - 10
+    vertices[i3 + 0] = (Math.random() * 45) - 35
+    vertices[i3 + 1] = (Math.random() * 5)
     vertices[i3 + 2] = (Math.random() * 20) - 10
 
   }
-
   geometry.setAttribute(
     'position',
     new THREE.BufferAttribute(vertices, 3)
   )
-
   scene.add(points)
 }
 generateParticles()
