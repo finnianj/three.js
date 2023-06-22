@@ -39,27 +39,7 @@ window.addEventListener('mousemove', (e) => {
 
 // GLTF
 const gltfLoader = new GLTFLoader()
-// gltfLoader.load('/models/Duck/glTF/Duck.gltf',
-//   (gltf) => {
-//     console.log('success');
-//     const duck = gltf.scene.children[0]
-//     scene.add(duck)
-//     objectsToAnimate.push(duck)
-//   }
-// )
-// gltfLoader.load('/models/FlightHelmet/glTF/FlightHelmet.gltf',
-//   (gltf) => {
-//     console.log('success');
-//     const children = [...gltf.scene.children]
-//     for (const item of children) {
-//       console.log(item);
-//       item.position.z = 2
-//       item.rotation.y = Math.PI * 0.5
-//       scene.add(item)
-//       objectsToAnimate.push(item)
-//     }
-//   }
-// )
+
 
 let mixer = null
 
@@ -81,96 +61,10 @@ scene.background = new THREE.Color(params.background)
 const fog = new THREE.Fog(params.background, 1, 10)
 // scene.fog = fog
 
-// gltfLoader.load('/models/Omabuarts/models/herring.glb',
-//   (gltf) => {
-//     console.log('Model successfully loaded');
-//     console.log(gltf.scene);
-
-//     // Cast shadow?
-//     gltf.scene.children[0].children[0].castShadow = true;
-//     gltf.scene.position.y = 1
-//     // params.model = gltf.scene
-//     scene.add(gltf.scene)
-//     // objectsToAnimate.push(fox)
-//     mixer = new THREE.AnimationMixer(gltf.scene)
-//     params.mixer = mixer;
-
-//     gltfLoader.load('/models/Omabuarts/animations/herring_animations.glb',
-//     (anim) => {
-//         console.log(anim);
-//         console.log('Successfully loaded animation folder');
-//         params.animations = anim.animations;
-//         for (let i = 0; i < anim.animations.length; i++) {
-//           params.catalogue[anim.animations[i].name] = i + 1;
-//         }
-//         walk()
-//         gui.add(params, 'number', params.catalogue).name('Animation').onFinishChange(playAction)
-//         gui.add(params, 'duration').min(0.3).max(2).step(0.1).onFinishChange(playAction)
-//         gui.add(params, 'loop').min(0).max(10).step(1).name('No. of Loops. (0 = inifinite)').onFinishChange(playAction)
-//       }
-//       )
-//   }
-// )
-
-// gltfLoader.load('/models/stone/scene.gltf',
-//   (gltf) => {
-//     console.log('Model successfully loaded');
-//     console.log(gltf);
-
-//     // // Cast shadow?
-//     // gltf.scene.children[0].children[0].castShadow = true;
-//     // gltf.scene.position.y = 1
-//     // params.model = gltf.scene
-//     scene.add(gltf.scene)
-
-//   }
-// )
-
-// const playAction = () => {
-//   console.log(params.number);
-//   if (params.previousClip != null) {
-//     console.log('Uncaching previous clip from mixer...');
-//     params.mixer.stopAllAction()
-//     params.mixer.uncacheClip(params.animations[params.previousClip])
-//   }
-
-//   if (params.number != 0) {
-//     const action = params.mixer.clipAction(params.animations[params.number - 1])
-//     // if (params.loop == 0) action.setLoop(THREE.LoopRepeat)
-//     if (params.loop == 0) params.loop = 'Infinity'
-//     action.setLoop(THREE.LoopRepeat, params.loop)
-//     action.setDuration(params.duration)
-//     console.log('New clip animation assigned to mixer.');
-//     console.log(params.mixer);
-//     action.play()
-//     // Changing the value of params.previousClip so that it will delete the current animation on the next change
-//     params.previousClip = params.number - 1
-//   }
-// }
 
 // const walk = () => {
 //   const action = params.mixer.clipAction(params.animations[16])
 //   action.play()
-// }
-
-// const doOnceThenWalk = (newAction) => {
-
-//   const action = params.mixer.clipAction(newAction)
-//   action.setLoop(THREE.LoopRepeat, 2)
-//   action.setDuration(0.5)
-
-//   console.log(params.mixer);
-//   // params.number = (params.animations.indexOf(newAction) + 1)
-
-//   params.mixer._actions[0].stop()
-//   action.play()
-
-//   params.mixer.addEventListener( 'finished', function( e	) {
-//     console.log("Action finished. Uncaching...");
-//     params.mixer.uncacheClip(newAction)
-//     params.mixer._actions[0].play()
-//     console.log(params.mixer);
-//   } )
 // }
 
 
@@ -188,22 +82,6 @@ const floor = new THREE.Mesh(
 )
 floor.rotation.x = - Math.PI * 0.5
 scene.add(floor)
-
-const updateFloor = () => {
-  const newColor = new THREE.Color(params.color)
-  floor.material.color = newColor
-}
-const updateBackground = () => {
-  const newColor = new THREE.Color(params.background)
-  scene.background = newColor;
-  // Fog
-  const fog = new THREE.Fog(params.background, 1, 10)
-  scene.fog = fog
-}
-
-gui.addColor(params, 'color').onFinishChange(updateFloor)
-gui.addColor(params, 'background').onFinishChange(updateBackground)
-
 
 // Portfolio items
 
@@ -253,9 +131,6 @@ scene.add(directionalLight)
 const dhelper = new THREE.DirectionalLightHelper(directionalLight)
 // scene.add(dhelper)
 
-const pointLight = new THREE.PointLight('#ffffff', 8, 3)
-pointLight.position.y = 2
-// scene.add(pointLight)
 
 
 window.addEventListener('resize', () =>
@@ -306,18 +181,14 @@ directionalLight.castShadow = true
 directionalLight.shadow.camera.far = 25
 directionalLight.shadow.mapSize.set(1024, 1024)
 
-pointLight.castShadow = true
-pointLight.shadow.mapSize.width = 256
-pointLight.shadow.mapSize.height = 256
-pointLight.shadow.camera.far = 7
-
-console.log(directionalLight);
-
 /**
  * Animate
  */
 const clock = new THREE.Clock()
 let previousTime = 0
+
+
+// Item click redirect function
 
 function onClick() {
   // Check for intersections when the mouse is clicked
@@ -337,7 +208,7 @@ function onClick() {
   }
 }
 
-document.addEventListener('click', onClick, false);
+document.addEventListener('click', onClick);
 
 let currentIntersect = null
 
