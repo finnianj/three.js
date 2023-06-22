@@ -509,8 +509,8 @@ let previousTime = 0
 let currentIntersect = null
 let movementValue = 0
 
-const tick = () =>
-{
+const tick = () => {
+
     const elapsedTime = clock.getElapsedTime()
     const deltaTime = elapsedTime - previousTime
     previousTime = elapsedTime
@@ -536,64 +536,18 @@ const tick = () =>
         controls.target.set(p.x, p.y + 1, p.z)
       }
 
-    //   // switch (params.heldKeys.join('')) {
-    //   //   case 'upleft':
-    //   //   case 'leftup':
-    //   //     if (!validateMove('z', 1)) break;
-    //   //     if (!validateMove('x', 0)) break;
-    //   //     params.model.position.z += speed
-    //   //     camera.position.z += speed
-    //   //     params.model.position.x -= speed
-    //   //     camera.position.x -= speed
-    //   //     rotate(Math.PI * 1.75)
-    //   //     console.log('upleft/leftup');
-    //   //     break;
-    //   //   case 'upright':
-    //   //   case 'rightup':
-    //   //     if (!validateMove('z', 0)) break;
-    //   //     if (!validateMove('x', 0)) break;
-    //   //     params.model.position.z -= speed
-    //   //     camera.position.z -= speed
-    //   //     params.model.position.x -= speed
-    //   //     camera.position.x -= speed
-    //   //     rotate(Math.PI * 1.25)
-    //   //     console.log('upright');
-    //   //     break;
-    //   //   case 'downleft':
-    //   //   case 'leftdown':
-    //   //     if (!validateMove('z', 1)) break;
-    //   //     if (!validateMove('x', 1)) break;
-    //   //     params.model.position.z += speed
-    //   //     camera.position.z += speed
-    //   //     params.model.position.x += speed
-    //   //     camera.position.x += speed
-    //   //     rotate(Math.PI * 0.25)
-    //   //     console.log('downleft');
-    //   //     break;
-    //   //   case 'downright':
-    //   //   case 'rightdown':
-    //   //     if (!validateMove('z', 0)) break;
-    //   //     if (!validateMove('x', 1)) break;
-    //   //     params.model.position.z -= speed
-    //   //     camera.position.z -= speed
-    //   //     params.model.position.x += speed
-    //   //     camera.position.x += speed
-    //   //     rotate(Math.PI * 0.75)
-    //   //     console.log('downright');
-    //   //     break;
-    //   //   default:
-    //   //     break;
-    //   }
       let p = params.model.position
       controls.target.set(p.x, p.y + 1, p.z)
     }
 
     if (params.heldKeys.length == 1) {
+      let axis = params.heldKeys[0][0]
+      let axisDir = params.heldKeys[0][1]
 
-      if (validateMove(params.heldKeys[0][0], params.heldKeys[0][1])) {
+      if (validateMove(axis, axisDir)) {
 
-        params.model.position[params.heldKeys[0][0]] += speed * params.heldKeys[0][1]
-        camera.position[params.heldKeys[0][0]] += speed * params.heldKeys[0][1]
+        params.model.position[axis] += speed * axisDir
+        camera.position[axis] += speed * axisDir
         rotate(params.heldKeys[0][2])
 
         let p = params.model.position || {x: 0, y: 2, z: 0}
