@@ -126,7 +126,8 @@ const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6)
 directionalLight.position.set(5, 5, 5)
 scene.add(directionalLight)
 
-
+const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight)
+scene.add(directionalLightHelper)
 
 
 
@@ -186,10 +187,10 @@ gltfLoader.load('/models/1.glb',
 gltfLoader.load('/models/Omabuarts/animals/inkfish.glb', (gltf) => {
   gltf.scene.children[0].children[0].castShadow = true;
   gltf.scene.position.y = 1
-  gltf.scene.position.x = 6
+  gltf.scene.position.x = 8
   params.model = gltf.scene
   scene.add(gltf.scene)
-  controls.target.set(6, 2, 0)
+  controls.target.set(8, 2, 0)
   mixer = new THREE.AnimationMixer(gltf.scene)
   params.mixer = mixer;
 
@@ -312,35 +313,35 @@ loadPlants('Starfish_01_LOD3', 10, 0.1, 20)
  * Portfolio Items
 */
 
-// const circleGeometry = new THREE.CircleGeometry( 1, 32 );
-// const torusGeometry = new THREE.TorusGeometry( 1, 0.05, 10, 100 );
-// const torusMaterial = new THREE.MeshStandardMaterial( { color: '#ff7f50' } );
-// const portfolioItems = []
+const circleGeometry = new THREE.CircleGeometry( 1, 32 );
+const torusGeometry = new THREE.TorusGeometry( 1, 0.05, 10, 100 );
+const torusMaterial = new THREE.MeshStandardMaterial( { color: '#ff7f50' } );
+const portfolioItems = []
 
-// const addPortfolioItem = (image, name, url, position, rotation, alpha = false) => {
-//   const circleMaterial = new THREE.MeshStandardMaterial();
-//   let texture = textureLoader.load(image);
-//   circleMaterial.map = texture
-//   if (alpha) {
-//     circleMaterial.alphaMap = textureLoader.load('alpha.png')
-//     circleMaterial.transparent = true;
-//   }
-//   console.log(circleMaterial);
-//   const circle = new THREE.Mesh( circleGeometry, circleMaterial );
-//   circle.position.y = 1.5
-//   circle.userData = { name: name, url: url };
-//   const circle2 = circle.clone()
-//   circle2.rotation.y = Math.PI
-//   const torus = new THREE.Mesh( torusGeometry, torusMaterial );
-//   torus.position.y = 1.5;
-//   torus.position.z = 0.001;
+const addPortfolioItem = (image, name, url, position, alpha = false) => {
+  const circleMaterial = new THREE.MeshStandardMaterial();
+  let texture = textureLoader.load(image);
+  circleMaterial.map = texture
+  if (alpha) {
+    circleMaterial.alphaMap = textureLoader.load('alpha.png')
+    circleMaterial.transparent = true;
+  }
+  console.log(circleMaterial);
+  const circle = new THREE.Mesh( circleGeometry, circleMaterial );
+  circle.position.y = 1.5
+  circle.userData = { name: name, url: url };
+  const circle2 = circle.clone()
+  circle2.rotation.y = Math.PI
+  const torus = new THREE.Mesh( torusGeometry, torusMaterial );
+  torus.position.y = 1.5;
+  torus.position.z = 0.001;
 
-//   const group = new THREE.Group();
-//   group.add(circle, circle2, torus)
-//   group.position.set(position[0], position[1], position[2])
-//   group.rotation.y = rotation
-//   portfolioItems.push(group)
-// }
+  const group = new THREE.Group();
+  group.add(circle, circle2, torus)
+  group.position.set(position[0], position[1], position[2])
+  group.rotation.y = Math.PI * 0.5
+  portfolioItems.push(group)
+}
 
 // function onClick() {
 //   // Check for intersections when the mouse is clicked
@@ -360,12 +361,12 @@ loadPlants('Starfish_01_LOD3', 10, 0.1, 20)
 //   }
 // }
 
-// addPortfolioItem('Moss.jpeg', 'moss', 'https://www.mossradio.live/users/sign_in', [0, 1, 5], 0)
-// addPortfolioItem('api.jpeg', 'api', 'https://www.mossradio.live/users/sign_in', [-5, 1, 0], (Math.PI * 0.5))
-// addPortfolioItem('pomodoro.png', 'widgets', 'https://www.mossradio.live/users/sign_in', [5, 1, 0], (Math.PI * 0.5), true)
-// addPortfolioItem('pomodoro.png', 'info', 'https://www.mossradio.live/users/sign_in', [0, 1, -5], 0)
+addPortfolioItem('Moss.jpeg', 'moss', 'https://www.mossradio.live/users/sign_in', [2, 1, 5])
+addPortfolioItem('api.jpeg', 'api', 'https://www.mossradio.live/users/sign_in', [-5, 1, 0])
+addPortfolioItem('pomodoro.png', 'widgets', 'https://www.mossradio.live/users/sign_in', [5, 1, 0], true)
+addPortfolioItem('pomodoro.png', 'info', 'https://www.mossradio.live/users/sign_in', [0, 1, -5])
 // console.log(portfolioItems);
-// portfolioItems.forEach(i => scene.add(i))
+portfolioItems.forEach(i => scene.add(i))
 // document.addEventListener('click', onClick);
 
 
@@ -466,7 +467,7 @@ const rotate = (targetRotation) => {
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.set(8, 3, 0)
+camera.position.set(10, 3, 0)
 camera.lookAt(0, 2, 0)
 scene.add(camera)
 
