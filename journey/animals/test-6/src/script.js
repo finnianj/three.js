@@ -27,7 +27,7 @@ let params = {
   keyCodes: {
     // In tick function:
     // 1 is used for positive movement along axis, -1 for negative
-    '37': ['z', 1, 0, 0],
+    '37': ['z', 1, 0],
     '38': ['x', -1, Math.PI * 1.5],
     '39': ['z', -1, Math.PI],
     '40': ['x', 1, Math.PI * 0.5]
@@ -38,6 +38,16 @@ let params = {
     x: [-35, 10],
     z: [-10, 10]
   },
+  diagonalRotations: {
+    'z1x1': Math.PI * 0.25,
+    'x1z1': Math.PI * 0.25,
+    'z-1x1': Math.PI * 0.75,
+    'x1z-1': Math.PI * 0.75,
+    'z-1x-1': Math.PI * 1.25,
+    'x-1z-1': Math.PI * 1.25,
+    'x-1z1': Math.PI * 1.75,
+    'z1x-1': Math.PI * 1.75,
+  }
 }
 
 const speed = 0.05
@@ -505,7 +515,26 @@ const tick = () =>
     const deltaTime = elapsedTime - previousTime
     previousTime = elapsedTime
 
-    // if (params.heldKeys.length == 2) {
+    if (params.heldKeys.length == 2) {
+      let axis1 = params.heldKeys[0][0]
+      let axis2 = params.heldKeys[1][0]
+
+      let axisDir1 = params.heldKeys[0][1]
+      let axisDir2 = params.heldKeys[1][1]
+
+      if (validateMove(axis1, axisDir1) && validateMove(axis2, axisDir2)) {
+
+        params.model.position[axis1] += speed * axisDir1
+        camera.position[axis1] += speed * axisDir1
+        params.model.position[axis2] += speed * axisDir2
+        camera.position[axis2] += speed * axisDir2
+
+        let i = `${axis1}${axisDir1}${axis2}${axisDir2}`
+        rotate(params.diagonalRotations[i])
+
+        let p = params.model.position || {x: 0, y: 2, z: 0}
+        controls.target.set(p.x, p.y + 1, p.z)
+      }
 
     //   // switch (params.heldKeys.join('')) {
     //   //   case 'upleft':
@@ -555,9 +584,9 @@ const tick = () =>
     //   //   default:
     //   //     break;
     //   }
-    //   let p = params.model.position
-    //   controls.target.set(p.x, p.y + 1, p.z)
-    // }
+      let p = params.model.position
+      controls.target.set(p.x, p.y + 1, p.z)
+    }
 
     if (params.heldKeys.length == 1) {
 
