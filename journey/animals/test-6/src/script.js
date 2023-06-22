@@ -327,7 +327,6 @@ const addPortfolioItem = (image, name, info, url, position, alpha = false) => {
     circleMaterial.alphaMap = textureLoader.load('alpha.png')
     circleMaterial.transparent = true;
   }
-  console.log(circleMaterial);
   const circle = new THREE.Mesh( circleGeometry, circleMaterial );
   circle.position.y = 1.5
   circle.userData = { name: name, url: url, info: info };
@@ -362,8 +361,8 @@ const addPortfolioItem = (image, name, info, url, position, alpha = false) => {
 //   }
 // }
 
-addPortfolioItem('Moss.jpeg', 'moss', 'Moss Radio. Built using Ruby on Rails. It features a live chat, live music stream, and beautiful smooth front end.', 'https://www.mossradio.live/users/sign_in', [1, 1, 4])
-addPortfolioItem('api.jpeg', 'api', 'info about API', 'https://www.mossradio.live/users/sign_in', [-6, 1, -4])
+addPortfolioItem('Moss.jpeg', 'moss', 'Moss Radio.. Ruby on Rails, PostgreSQL, Stimulus.js.. Features: \nlive chat, live music stream, and beautifully smooth front end..', 'https://www.mossradio.live/users/sign_in', [1, 1, 4])
+addPortfolioItem('api.jpeg', 'api', 'My API!.. Built with Node.js and MongoDB.. Features several microservices, including a community music playlist', 'https://www.mossradio.live/users/sign_in', [-6, 1, -4])
 addPortfolioItem('pomodoro.png', 'widgets', 'info about widgets', 'https://www.mossradio.live/users/sign_in', [-13, 1, 4], true)
 addPortfolioItem('pomodoro.png', 'info', 'info about D3', 'https://www.mossradio.live/users/sign_in', [-20, 1, -4])
 addPortfolioItem('pomodoro.png', 'info', 'info for certs skills about', 'https://www.mossradio.live/users/sign_in', [-27, 1, 4])
@@ -460,30 +459,40 @@ const rotate = (targetRotation) => {
 }
 
 const checkDistances = () => {
-  portfolioItems.forEach((i)  => {
-    if (params.model.position.distanceTo(i.position) < 2) {
+  portfolioItems.forEach((item)  => {
+    if (params.model.position.distanceTo(item.position) < 2) {
       params.messageEmpty = false
-      var typed = new Typed(messageContainer, {
-        strings: i.children[0].userData.info.split("."),
-        typeSpeed: 50,
-        startDelay: 500,
-        backDelay: 1000,
-        fadeOut: true,
-        fadeOutDelay: 1000,
-        showCursor: false,
-        preStringTyped: (_a, _s) => {
-          console.log("hi");
-          // if (!model.position.x == 8 && !model.position.z == 0) typed.stop()
-        },
-        onComplete: () => {
-          setTimeout(() => {
-            params.messageEmpty = true
-          }, 5000);
-        }
-      });
-
+      typeInfo(item)
     }
   })
+}
+
+const typeInfo = (item) => {
+  let typed = new Typed(messageContainer, {
+    strings: item.children[0].userData.info.split(".."),
+    typeSpeed: 50,
+    startDelay: 0,
+    backDelay: 1000,
+    fadeOut: true,
+    fadeOutDelay: 1000,
+    showCursor: false,
+    onStringTyped: () => {
+      if (params.model.position.distanceTo(item.position) > 2) {
+        messageContainer.classList.add('fadeout')
+        setTimeout(() => {
+          typed.stop()
+          messageContainer.innerText = ""
+          params.messageEmpty = true
+          messageContainer.classList.remove('fadeout')
+        }, 1000);
+      }
+    },
+    onComplete: () => {
+      setTimeout(() => {
+        params.messageEmpty = true
+      }, 3000);
+    }
+  });
 }
 
 
@@ -670,7 +679,7 @@ const update = () => {
 // })
 
 window.onload = () => {
-  var typed = new Typed(messageContainer, {
+  let typed = new Typed(messageContainer, {
     strings: ["Oh, it's you!", "I'm glad you made it", " Let's have a look around, shall we?", " Use the arrow keys to move", ""],
     typeSpeed: 50,
     startDelay: 500,
@@ -686,7 +695,6 @@ window.onload = () => {
           messageContainer.innerText = ""
           params.messageEmpty = true
           messageContainer.classList.remove('fadeout')
-          messageContainer.classList.add('fadein')
         }, 1000);
       }
     },

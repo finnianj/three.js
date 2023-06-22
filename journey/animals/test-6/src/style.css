@@ -30,20 +30,9 @@ body
   cursor: pointer;
 }
 
-#info{
-  position: fixed;
-  font-size: 4vw;
-  color: white;
-  visibility: hidden;
-}
-
-.show-info{
-  visibility: visible !important;
-}
-
 .fadeout{
   animation-name: fadeOut;
-  animation-duration: 1s;
+  animation-duration: 1.5s;
 }
 .fadein{
   animation-name: fadeIn;
@@ -53,6 +42,7 @@ body
 #text{
   font-family: cherry;
   position: fixed;
+  max-width: 40vw;
   top: 24vh;
   left: 19vw;
   font-size: 4vw;
