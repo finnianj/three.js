@@ -31,7 +31,11 @@ let params = {
     '40':'down'
   },
   heldKeys: [],
-  modelPosition: {}
+  modelPosition: {},
+  limits: {
+    x: [-20, 10],
+    z: [10, 10]
+  }
 }
 
 const speed = 0.05
@@ -396,20 +400,29 @@ let illegalKeys = [
 
 
 function checkKey(e) {
-    if (e.repeat) { return }
-    e = e || window.event;
-    swim()
+
+  if (e.repeat) { return }
+  e = e || window.event;
+  swim()
+
+  let key = e.keyCode
 
     //Double movement directions
-    if (illegalKeys.includes(`${params.heldKeys[0]}${e.keyCode}`)) {
+    if (illegalKeys.includes(`${params.heldKeys[0]}${key}`)) {
       return
     }
 
-    if (params.keyCodes[e.keyCode]) {
-      params.heldKeys.push(params.keyCodes[e.keyCode])
+    // check it's an arrow
+    if (params.keyCodes[key]) {
+
+      params.heldKeys.push(params.keyCodes[key])
       // controls.reset()
     }
 
+}
+
+const validateMove = (axis) => {
+  return (camera.position[axis] >= params.limits[axis][0] && camera.position[axis] <= params.limits[axis][1])
 }
 
 
@@ -542,9 +555,11 @@ const tick = () =>
           params.model.rotation.y = Math.PI
           break;
         case 'down':
-          params.model.position.x += speed
-        camera.position.x += speed
-        params.model.rotation.y = Math.PI * 0.5
+          if (validateMove('x', 1)) {
+            params.model.position.x += speed
+            camera.position.x += speed
+            // params.model.rotation.y = Math.PI * 0.5
+          }
           break;
       }
       let p = params.model.position || {x: 0, y: 2, z: 0}
