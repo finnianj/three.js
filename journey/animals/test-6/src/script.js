@@ -468,6 +468,13 @@ const typeInfo = (item) => {
   const info = infoHash[item.children[0].userData.name]
   infoContainer.innerHTML = info;
   infoContainer.classList.add('show')
+  setTimeout(() => {
+    infoContainer.classList.remove('show')
+    params.messageEmpty = true;
+    setTimeout(() => {
+      if (params.messageEmpty == true) randomMessage()
+    }, 5000);
+  }, 5000);
 }
 
 const randomMessage = () => {
