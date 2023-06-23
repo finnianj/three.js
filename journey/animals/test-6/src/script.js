@@ -560,7 +560,7 @@ const randomMessage = () => {
 
 const completed = () => {
   console.log('You completed it!');
-  infoContainer.innerHTML = '<h2 class="highlight">Yazoo!</h2> <p>You visited all the hoops, congratulations!</p><h3 class="highlight">Unlocked:</h3><p> Galaxy Mode </p>'
+  infoContainer.innerHTML = '<h2 class="completed-text">Yazoo!</h2> <p>You visited all the hoops, congratulations!</p><h3 class="completed-text">Unlocked:</h3><p> Galaxy Mode </p>'
   infoContainer.classList.add('completed')
   setTimeout(() => {
     infoContainer.classList.remove('completed')
