@@ -64,7 +64,7 @@ scene.background = new THREE.Color(params.background)
 
 // Fog
 const fog = new THREE.Fog(params.background, 1, 10)
-// scene.fog = fog
+scene.fog = fog
 
 
 /**
@@ -200,39 +200,18 @@ gltfLoader.load('/models/Omabuarts/animals/inkfish.glb', (gltf) => {
   }
   )
 })
-let newMixer;
+
 gltfLoader.load('/models/Omabuarts/animals/herring.glb', (gltf) => {
   gltf.scene.children[0].children[0].castShadow = true;
-  gltf.scene.position.y = 1
-  gltf.scene.position.x = 8
+  gltf.scene.position.y = 0.5
+  gltf.scene.position.x = 7
   params.herring = gltf.scene
   scene.add(gltf.scene)
-  newMixer = new THREE.AnimationMixer(params.herring)
-  params.herringMixer = newMixer;
-
-  gltfLoader.load('/models/Omabuarts/animals/animations/herring_animations.glb',
-  (anim) => {
-    params.herringAnimations = anim.animations;
-    loadHerringActions()
-    animateHerring()
-  }
-  )
 })
 
 // --------------------
 // Squid Animations
 // --------------------
-
-const animateHerring = () => {
-  params.herringMixer._actions.find(a => a._clip.name == 'Swim').play()
-  params.herringMixer
-}
-
-const loadHerringActions = () => {
-  const action1 = params.herringMixer.clipAction(params.herringAnimations[16])
-  action1.setDuration(1.5)
-  console.log(params.herringMixer);
-}
 
 const loadActions = () => {
   const action1 = params.mixer.clipAction(params.animations[8])
@@ -646,7 +625,7 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
-// floor.receiveShadow = true
+floor.receiveShadow = true
 directionalLight.castShadow = true
 directionalLight.shadow.camera.far = 25
 directionalLight.shadow.mapSize.set(1024, 1024)
@@ -711,11 +690,11 @@ const tick = () => {
       checkDistances()
     }
 
-    // if (params.herring) {
-    //   params.herring.position.x = Math.cos(elapsedTime * 0.1) * 10 - 10
-    //   params.herring.position.z = Math.sin(elapsedTime * 0.1) * 10
-    //   params.herring.rotation.y = elapsedTime * -0.1
-    // }
+    if (params.herring) {
+      params.herring.position.x = Math.cos(elapsedTime * 0.1) * 10 - 10
+      params.herring.position.z = Math.sin(elapsedTime * 0.1) * 10
+      params.herring.rotation.y = elapsedTime * -0.1
+    }
 
 
 
