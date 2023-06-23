@@ -754,7 +754,7 @@ const ouch = [
   "hhhhHHHHHUUUUUUAAAAAAAA!",
   "AAAAARRRRRRRR!",
   "fffffffFFFAAAA!",
-  "GLEICH KRIEGSTE EINS RICHTIG AUF DIE FRESSE!!!",
+  "GLEICH KRIEGSTE EINS RICHTIG DOLL AUF DIE FRESSE!!!",
   "...",
   "...",
   "...",
