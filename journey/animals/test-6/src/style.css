@@ -42,7 +42,7 @@ body
   max-width: 40vw;
   top: 24vh;
   left: 19vw;
-  font-size: 4vw;
+  font-size: 30px;
   color: white;
   opacity: 0;
   transition: 1s;
@@ -75,4 +75,18 @@ body
 
 .highlight {
   color: rgb(4, 253, 58);
+}
+
+@media (max-width:480px)  {
+  /* smartphones, Android phones, landscape iPhone */
+  #info{
+    font-size: 10px;
+  }
+  #text{
+    font-size: 20px;
+  }
+}
+@media (min-width:801px)  {
+  /* tablet, landscape iPad, lo-res laptops ands desktops */
+  /* give option for arrow movement on screen */
 }

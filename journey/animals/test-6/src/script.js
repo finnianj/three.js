@@ -680,8 +680,8 @@ const messages = [
 const infoHash = {
   'moss': '<h2 class="highlight">Moss Radio</h2> <p>Ruby on Rails, PostgreSQL, Stimulus.js.</p><h3 class="highlight">Features:</h3><p> Live chat, live music stream, and beautifully smooth front end.</p>',
   'api': '<h2 class="highlight">My API</h2> <p>Node.js, MongoDB, Express.js</p><h3 class="highlight">Features:</h3><p> 4 different API Microservices, including a community playlist - submit your favourite song!</p>',
-  'widgets': 'These are some widgets',
-  'info': 'This is a clock',
+  'widgets': '<h2 class="highlight">Widgets</h2><h3 class="highlight">Features:</h3><p>React, Typescript, JQuery</p><h3 class="highlight">Features:</h3><p>Some simple widgets I made while exploring front-end libraries</p>',
+  'info': '<h2 class="highlight">Certifications, Skills, About.</h2><p>Here you can see all the certifications I have completed, as well as a full list of coding skills and a short bio.</p>',
 }
 
 const triggerAction = (actionName) => {
