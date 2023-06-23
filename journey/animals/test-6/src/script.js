@@ -700,23 +700,23 @@ window.onload = () => {
   let typed = new Typed(messageContainer, {
     strings: ["Oh, it's you!", "I'm glad you made it", " Let's have a look around, shall we?", " Use the arrow keys to move", ""],
     typeSpeed: 50,
-    startDelay: 500,
+    startDelay: 1000,
     backDelay: 2000,
     fadeOut: true,
     fadeOutDelay: 2000,
     showCursor: false,
     onStringTyped: () => {
       if (params.model.position.x != 8 || params.model.position.z != 0) {
-        messageContainer.classList.add('fadeout')
-        setTimeout(() => {
-          typed.stop()
-          messageContainer.innerText = ""
-          params.messageEmpty = true
-          messageContainer.classList.remove('fadeout')
-        }, 1000);
-        setTimeout(() => {
-          if (params.messageEmpty == true) randomMessage()
-        }, 8000);
+        messageContainer.classList.remove('show')
+        typed.stop()
+        endTyped()
+      }
+    },
+    preStringTyped: () => {
+      if (params.model.position.x != 8 || params.model.position.z != 0) {
+        messageContainer.classList.remove('show')
+        typed.stop()
+        endTyped()
       }
     },
     onComplete: () => {
@@ -726,6 +726,17 @@ window.onload = () => {
       }, 8000);
     }
   });
+}
+
+const endTyped = () => {
+  setTimeout(() => {
+    messageContainer.innerText = ""
+    messageContainer.classList.add('show')
+    params.messageEmpty = true
+  }, 1000);
+  setTimeout(() => {
+    if (params.messageEmpty == true) randomMessage()
+  }, 8000);
 }
 
 tick()

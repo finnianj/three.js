@@ -48,6 +48,8 @@ body
   left: 19vw;
   font-size: 4vw;
   color: white;
+  opacity: 0;
+  transition: 1s;
 }
 
 #info{
@@ -72,21 +74,4 @@ body
 
 .highlight {
   color: rgb(4, 253, 58);
-}
-
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
 }
