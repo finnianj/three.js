@@ -73,6 +73,17 @@ body
   transition: 1s;
 }
 
+.completed {
+  opacity: 1 !important;
+  transition: 1s;
+  background-color: gold !important;
+  color: black !important;
+}
+
+.completed h2, h4 {
+  color:rgb(132, 0, 255) !important;
+}
+
 .highlight {
   color: rgb(4, 253, 58);
 }

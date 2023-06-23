@@ -52,7 +52,7 @@ let params = {
   outOfBounds: false,
   floorLength: 100,
   floorWidth: 70,
-  offset: 4
+  completed: 0
 }
 
 const speed = 0.05
@@ -297,6 +297,7 @@ const loadPlants = (path, number, maxScaleDifference, minScale, specifiedPositio
         } else {
           clone.position.z = Math.random() * zArea - (zArea / 2)
           clone.position.x = Math.random() * xArea - (xArea / 1.5)
+          clone.rotation.y = Math.random() * 6
         }
         scene.add(clone)
       }
@@ -305,7 +306,6 @@ const loadPlants = (path, number, maxScaleDifference, minScale, specifiedPositio
 }
 
 // path, number, max scale difference, min scale, specific position(z axis)
-
 
 // Seaweed
 loadPlants('Seaweed_A_01_LOD2', 30, 0.05, 0.2, "curve")
@@ -339,10 +339,10 @@ loadPlants('Starfish_01_LOD3', 40, 0.1, 0.2)
 
 const circleGeometry = new THREE.CircleGeometry( 1, 32 );
 const torusGeometry = new THREE.TorusGeometry( 1, 0.05, 10, 100 );
-const torusMaterial = new THREE.MeshStandardMaterial( { color: '#ff7f50' } );
 const portfolioItems = []
 
 const addPortfolioItem = (image, name, info, url, position, alpha = false) => {
+  const torusMaterial = new THREE.MeshStandardMaterial( { color: '#ff7f50' } );
   const circleMaterial = new THREE.MeshStandardMaterial();
   let texture = textureLoader.load(image);
   circleMaterial.map = texture
@@ -431,7 +431,10 @@ let illegalKeys = [
 
 
 function checkKey(e) {
-  if (controls.autoRotate) setControls()
+  if (controls.autoRotate) {
+    console.log('Resetting controls after autorotate');
+    setControls()
+  }
   if (e.repeat) { return }
   e = e || window.event;
   swim()
@@ -510,16 +513,25 @@ const checkDistances = () => {
 }
 
 const typeInfo = (item) => {
+  clearTimeout(params.messageTimeout)
+  if (item.children[2].material.color.b != 0) {
+    item.children[2].material.color = new THREE.Color('gold')
+    params.completed += 1
+  }
   const info = infoHash[item.children[0].userData.name]
   infoContainer.innerHTML = info;
   infoContainer.classList.add('show')
+
   setTimeout(() => {
     infoContainer.classList.remove('show')
     params.messageEmpty = true;
-    setTimeout(() => {
+    if (params.completed >= 5) completed()
+
+    params.messageTimeout = setTimeout(() => {
       if (params.messageEmpty == true) randomMessage()
     }, 5000);
-  }, 5000);
+
+  }, 1000);
 }
 
 const randomMessage = () => {
@@ -536,7 +548,7 @@ const randomMessage = () => {
         messageContainer.classList.remove('show')
         params.messageEmpty = true
       }, 2000)
-      setTimeout(() => {
+      params.messageTimeout = setTimeout(() => {
         if (params.messageEmpty == true) {
           randomMessage()
         }
@@ -544,6 +556,15 @@ const randomMessage = () => {
     }
   });
 
+}
+
+const completed = () => {
+  console.log('You completed it!');
+  infoContainer.innerHTML = '<h2 class="highlight">Yazoo!</h2> <p>You visited all the hoops, congratulations!</p><h3 class="highlight">Unlocked:</h3><p> Galaxy Mode </p>'
+  infoContainer.classList.add('completed')
+  setTimeout(() => {
+    infoContainer.classList.remove('completed')
+  }, 5000);
 }
 
 
@@ -565,7 +586,7 @@ scene.add(camera)
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
 controls.enablePan = false
-// controls.autoRotate = true;
+controls.autoRotate = true;
 controls.enableZoom = false
 controls.maxPolarAngle = 2.3
 
@@ -706,7 +727,7 @@ const infoHash = {
   'moss': '<h2 class="highlight">Moss Radio</h2> <p>Ruby on Rails, PostgreSQL, Stimulus.js.</p><h3 class="highlight">Features:</h3><p> Live chat, live music stream, and beautifully smooth front end.</p>',
   'api': '<h2 class="highlight">My API</h2> <p>Node.js, MongoDB, Express.js</p><h3 class="highlight">Features:</h3><p> 4 different API Microservices, including a community playlist - submit your favourite song!</p>',
   'widgets': '<h2 class="highlight">Widgets</h2><h3 class="highlight">Features:</h3><p>React, Typescript, JQuery</p><h3 class="highlight">Features:</h3><p>Some simple widgets I made while exploring front-end libraries</p>',
-  'info': '<h2 class="highlight">Certifications, Skills, About.</h2><p>Here you can see all the certifications I have completed, as well as a full list of coding skills and a short bio.</p>',
+  'info': '<h2 class="highlight">Certifications, Skills, About</h2><p>Here you can see all the certifications I have completed, as well as a full list of coding skills and a short bio.</p>',
 }
 
 const triggerAction = (actionName) => {
@@ -745,6 +766,7 @@ window.onload = () => {
     },
     onComplete: () => {
       params.messageEmpty = true
+      console.log('Resetting controls after completed typing');
       setControls()
       setTimeout(() => {
         if (params.messageEmpty == true) randomMessage()
@@ -754,13 +776,15 @@ window.onload = () => {
 }
 
 const endTyped = () => {
-  controls.autoRotate = false
-  setControls()
+  if (controls.autoRotate == true) {
+    controls.autoRotate = false
+    setControls()
+  }
   setTimeout(() => {
     messageContainer.innerText = ""
     params.messageEmpty = true
   }, 1000);
-  setTimeout(() => {
+  params.messageTimeout = setTimeout(() => {
     if (params.messageEmpty == true) randomMessage()
   }, 8000);
 }
