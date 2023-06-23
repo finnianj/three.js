@@ -52,7 +52,9 @@ let params = {
   outOfBounds: false,
   floorLength: 100,
   floorWidth: 70,
-  completed: 0
+  completed: 0,
+  idle: true,
+  squashable: true
 }
 
 const speed = 0.05
@@ -192,6 +194,7 @@ gltfLoader.load('/models/Omabuarts/animals/inkfish.glb', (gltf) => {
   gltfLoader.load('/models/Omabuarts/animals/animations/inkfish_animations.glb',
   (anim) => {
     params.animations = anim.animations;
+    console.log(params.animations);
     loadActions()
     idle()
   }
@@ -216,7 +219,9 @@ const swim = () => {
   params.mixer._actions.find(a => a._clip.name == 'Swim').play()
 }
 const idle = () => {
+  console.log('idling');
   params.idle = true;
+  console.log(params.idle);
   params.mixer._actions.find(a => a._clip.name == 'Swim').stop()
   params.mixer._actions.find(a => a._clip.name == 'Idle_A').play()
   params.idleTimeout = setTimeout(() => {
@@ -234,25 +239,24 @@ const idle = () => {
   // params.mixer.existingAction('Idle A').play()
 }
 
-// const doOnceThenIdle = (newAction) => {
+const squash = () => {
+  randomMessage(true)
+  const action = params.mixer.clipAction(params.animations[2])
+  action.setLoop(THREE.LoopRepeat, 1)
+  action.setDuration(0.5)
 
-//   const action = params.mixer.clipAction(newAction)
-//   action.setLoop(THREE.LoopRepeat, 2)
-//   action.setDuration(0.5)
+  // params.number = (params.animations.indexOf(newAction) + 1)
 
-//   // console.log(params.mixer);
-//   // params.number = (params.animations.indexOf(newAction) + 1)
+  params.mixer.stopAllAction()
+  action.play()
 
-//   params.mixer._actions[0].stop()
-//   action.play()
-
-//   params.mixer.addEventListener( 'finished', function( e	) {
-//     // console.log("Action finished. Uncaching...");
-//     params.mixer.uncacheClip(newAction)
-//     params.mixer._actions[0].play()
-//     // console.log(params.mixer);
-//   } )
-// }
+  params.mixer.addEventListener( 'finished', function( e	) {
+    // console.log("Action finished. Uncaching...");
+    params.mixer.uncacheClip(action)
+    params.mixer._actions.find(a => a._clip.name == 'Idle_A').play()
+    // console.log(params.mixer);
+  } )
+}
 
 
 
@@ -420,6 +424,9 @@ document.onkeyup = ((e) => {
     params.heldKeys.splice(i, 1)
     if (params.heldKeys.length == 0) idle()
   }
+  if (e.keyCode == '32' && params.idle == true && params.squashable) {
+    squash()
+  }
 })
 
 let illegalKeys = [
@@ -437,7 +444,6 @@ function checkKey(e) {
   }
   if (e.repeat) { return }
   e = e || window.event;
-  swim()
 
   let key = e.keyCode
 
@@ -448,6 +454,7 @@ function checkKey(e) {
 
     // check it's an arrow
     if (params.keyCodes[key]) {
+      swim()
       params.heldKeys.push(params.keyCodes[key])
       // controls.reset()
     }
@@ -534,12 +541,14 @@ const typeInfo = (item) => {
   }, 1000);
 }
 
-const randomMessage = () => {
+const randomMessage = (squash = false) => {
+  if (squash) params.squashable = false
   messageContainer.innerText = ""
   messageContainer.classList.add('show')
   params.messageEmpty = false;
+  let message = squash ? ouch[Math.floor(Math.random() * ouch.length)] : messages[Math.floor(Math.random() * messages.length)]
   let typed = new Typed(messageContainer, {
-    strings: [messages[Math.floor(Math.random() * messages.length)]],
+    strings: [message],
     typeSpeed: 50,
     startDelay: 0,
     showCursor: false,
@@ -547,9 +556,10 @@ const randomMessage = () => {
       setTimeout(() => {
         messageContainer.classList.remove('show')
         params.messageEmpty = true
+        params.squashable = true
       }, 2000)
       params.messageTimeout = setTimeout(() => {
-        if (params.messageEmpty == true) {
+        if (params.messageEmpty == true && squashable == true) {
           randomMessage()
         }
       }, 10000);
@@ -721,6 +731,15 @@ const messages = [
   "My friend showed me a multicolored shell today. Isn't that nice?",
   "🎵 A B C D E F G... 🎵 ",
   "Ha! You're feet are covered in sand!"
+]
+
+const ouch = [
+  "Oof!",
+  "Ow!",
+  "Eee!",
+  "Bonk! Haha",
+  "That one felt good...",
+  "If you keep doing that, you're gonna be in a world of pain"
 ]
 
 const infoHash = {
