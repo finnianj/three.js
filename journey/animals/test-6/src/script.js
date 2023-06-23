@@ -705,6 +705,7 @@ window.onload = () => {
     },
     onComplete: () => {
       params.messageEmpty = true
+      setControls()
       setTimeout(() => {
         if (params.messageEmpty == true) randomMessage()
       }, 8000);
@@ -728,10 +729,10 @@ const endTyped = () => {
 const setControls = () => {
   canvas.classList.remove('show')
   let p = params.model.position
-  controls.autoRotate = false;
-  camera.position.set(p.x + 2, 3, p.z)
-  controls.target.set(p.x, p.y + 1, p.z)
   setTimeout(() => {
+    controls.target.set(p.x, p.y + 1, p.z)
+    camera.position.set(p.x + 2, 3, p.z)
+    controls.autoRotate = false;
     canvas.classList.add('show')
   }, 1000);
 
