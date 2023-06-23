@@ -230,7 +230,7 @@ const idle = () => {
       controls.minAzimuthAngle = 'Infinity'
       controls.autoRotate = true
     }
-  }, 15000);
+  }, 20000);
   // console.log(params.mixer._actions[1]._clip.name);
   // console.log('idling');
   // console.log(params.mixer.existingAction('Idle A'));
@@ -424,7 +424,7 @@ document.onkeyup = ((e) => {
     params.heldKeys.splice(i, 1)
     if (params.heldKeys.length == 0) idle()
   }
-  if (e.keyCode == '32' && params.idle == true && params.squashable) {
+  if (e.keyCode == '32' && params.idle == true && params.squashable && params.messageEmpty == true) {
     squash()
   }
 })
@@ -438,7 +438,7 @@ let illegalKeys = [
 
 
 function checkKey(e) {
-  if (controls.autoRotate) {
+  if (controls.autoRotate && e.keyCode != '32') {
     console.log('Resetting controls after autorotate');
     setControls()
   }
@@ -559,7 +559,7 @@ const randomMessage = (squash = false) => {
         params.squashable = true
       }, 2000)
       params.messageTimeout = setTimeout(() => {
-        if (params.messageEmpty == true && squashable == true) {
+        if (params.messageEmpty == true && params.squashable == true) {
           randomMessage()
         }
       }, 10000);
