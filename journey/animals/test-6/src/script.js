@@ -217,6 +217,8 @@ const loadActions = () => {
 }
 
 const swim = () => {
+  params.idle = false;
+  clearTimeout(params.idleTimeout)
   // console.log(params.mixer._actions[0]._clip.name);
   params.mixer._actions.find(a => a._clip.name == 'Idle_A').stop()
   params.mixer._actions.find(a => a._clip.name == 'Swim').play()
@@ -224,8 +226,14 @@ const swim = () => {
   // params.mixer.existingAction('Swim').play()
 }
 const idle = () => {
+  params.idle = true;
   params.mixer._actions.find(a => a._clip.name == 'Swim').stop()
   params.mixer._actions.find(a => a._clip.name == 'Idle_A').play()
+  params.idleTimeout = setTimeout(() => {
+    if (params.idle == true) {
+      controls.autoRotate = true
+    }
+  }, 10000);
   // console.log(params.mixer._actions[1]._clip.name);
   // console.log('idling');
   // console.log(params.mixer.existingAction('Idle A'));
@@ -409,7 +417,7 @@ let illegalKeys = [
 
 
 function checkKey(e) {
-
+  if (controls.autoRotate) setControls()
   if (e.repeat) { return }
   e = e || window.event;
   swim()
