@@ -49,38 +49,21 @@ body
   color: white;
 }
 
-/* #speech-bubble{
+#info{
   position: fixed;
-  width: 34vw;
-  height: 30vw;
-  background-image: url("bubble.png");
-  background-size: cover;
-} */
-
-
-#next{
-  position: fixed;
-  top: 80vh;
-  left: 70vw;
-}
-#previous{
-  position: fixed;
-  top: 80vh;
-  left: 30vw;
+  top: 0;
+  width: 100%;
+  margin: 0 auto;
+  height: 10vh;
+  visibility: visible;
+  background-color: rgba(255, 127, 80, 0.515);
+  padding: 10px;
+  color: white;
+  font-size: 4vw;
 }
 
-.button{
-  font-family: cherry;
-  font-size: 2vw;
-  border: 2px solid black;
-  border-radius: 5px;
-  background-color: gold;
-  padding: 1vw;
-}
-
-.button:hover{
-  cursor: pointer;
-  opacity: 80%;
+#info .show{
+  visibility: visible;
 }
 
 @keyframes fadeOut {

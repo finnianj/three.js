@@ -362,7 +362,7 @@ const addPortfolioItem = (image, name, info, url, position, alpha = false) => {
 //   }
 // }
 
-addPortfolioItem('Moss.jpeg', 'moss', 'Moss Radio.. Ruby on Rails, PostgreSQL, Stimulus.js.. Features: \nlive chat, live music stream, and beautifully smooth front end..', 'https://www.mossradio.live/users/sign_in', [1, 1, 4])
+addPortfolioItem('Moss.jpeg', 'moss', '', 'https://www.mossradio.live/users/sign_in', [1, 1, 4])
 addPortfolioItem('api.jpeg', 'api', 'My API!.. Built with Node.js and MongoDB.. Features several microservices, including a community music playlist', 'https://www.mossradio.live/users/sign_in', [-6, 1, -4])
 addPortfolioItem('pomodoro.png', 'widgets', 'info about widgets', 'https://www.mossradio.live/users/sign_in', [-13, 1, 4], true)
 addPortfolioItem('pomodoro.png', 'info', 'info about D3', 'https://www.mossradio.live/users/sign_in', [-20, 1, -4])
@@ -379,12 +379,12 @@ portfolioItems.forEach(i => scene.add(i))
 // testing area
 // testing area
 // testing area
-// const infoHash = {
-//   'moss': 'This is Moss Radio',
-//   'api': 'This is my API',
-//   'widgets': 'These are some widgets',
-//   'info': 'This is a clock',
-// }
+const infoHash = {
+  'moss': '<h2>Moss Radio</h2> <p>Ruby on Rails, PostgreSQL, Stimulus.js.</p><p>Features: live chat, live music stream, and beautifully smooth front end.</p>',
+  'api': 'This is my API',
+  'widgets': 'These are some widgets',
+  'info': 'This is a clock',
+}
 // const info = document.getElementById('info')
 // const showInfo = (item) => {
 //   const text = infoHash[item.object.userData.name]
@@ -470,37 +470,8 @@ const checkDistances = () => {
 }
 
 const typeInfo = (item) => {
-  let typed = new Typed(messageContainer, {
-    strings: item.children[0].userData.info.split(".."),
-    typeSpeed: 50,
-    startDelay: 0,
-    backDelay: 1000,
-    fadeOut: true,
-    fadeOutDelay: 1000,
-    showCursor: false,
-    onStringTyped: () => {
-      if (params.model.position.distanceTo(item.position) > 2) {
-        messageContainer.classList.add('fadeout')
-        setTimeout(() => {
-          typed.stop()
-          messageContainer.innerText = ""
-          params.messageEmpty = true
-          messageContainer.classList.remove('fadeout')
-        }, 1000);
-        setTimeout(() => {
-          if (params.messageEmpty == true) randomMessage()
-        }, 8000);
-      }
-    },
-    onComplete: () => {
-      setTimeout(() => {
-        params.messageEmpty = true
-      }, 3000);
-      setTimeout(() => {
-        if (params.messageEmpty == true) randomMessage()
-      }, 8000);
-    }
-  });
+  const info = infohash[item.children[0].userData.name]
+  infoContainer.innerHTML = info;
 }
 
 const randomMessage = () => {
@@ -698,7 +669,7 @@ const triggerAction = (actionName) => {
 }
 
 const messageContainer = document.getElementById('text')
-
+const infoContainer = document.getElementById('info')
 
 // document.getElementById('next').addEventListener('click', () => {
 //   params.messageNumber += 1;
