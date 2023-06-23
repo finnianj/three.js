@@ -271,7 +271,7 @@ const loadPlants = (path, number, maxScaleDifference, minScale, specifiedPositio
     materials.preload();
 
     objLoader.setMaterials(materials).load(`${plantsDirectory}${path}.obj`, function (object) {
-
+      // object.children[0].material.shininess = 10
       let zArea= params.floorWidth;
       let xArea = params.floorLength;
 
@@ -295,54 +295,51 @@ const loadPlants = (path, number, maxScaleDifference, minScale, specifiedPositio
       for(let i = 1; i < number; i++) {
 
         let clone = object.clone()
-        // let scale = maxScale
         let scale = (Math.random() * maxScaleDifference + minScale)
         clone.scale.set(scale, scale, scale)
         if (specifiedPosition == 'curve') {
           clone.position.z = Math.sin(i * 0.5) * 6
           clone.position.x = -i
-          console.log(Math.sin(number / i));
         } else if (specifiedPosition) {
           clone.position.z = specifiedPosition
+          clone.position.x = Math.random() * xArea - (xArea / 1.5)
         } else {
           clone.position.z = Math.random() * zArea - (zArea / 2)
+          clone.position.x = Math.random() * xArea - (xArea / 1.5)
         }
-
-        // clone.position.x = Math.random() * xArea - (xArea / 1.5)
-
-        // // scale = Math.random() * scale + 0.3
         scene.add(clone)
       }
     });
   });
 }
 
-// path, number, max scale, min scale, specific position(z axis)
+// path, number, max scale difference, min scale, specific position(z axis)
+
 // loadPlants('Coral_C_03_LOD3', 10, 0.5, 0.2)
 // // console.log('check out other anemone/rocks(?)');
-loadPlants('Seaweed_A_01_LOD2', 50, 0.05, 0.2, "curve")
 
+// Seaweed
+loadPlants('Seaweed_A_01_LOD2', 30, 0.05, 0.2, "curve")
+loadPlants('Seaweed_A_02_LOD2', 50, 0.02, 0.1)
+loadPlants('Seaweed_A_03_LOD2', 50, 0.02, 0.2)
 
-// loadPlants('Seaweed_A_02_LOD2', 5, 0.2, 30)
-// loadPlants('Seaweed_A_03_LOD2', 5, 0.2, 30)
-// loadPlants('Coral_D_03_LOD3', 100, 0.2)
-// loadPlants('Coral_C_03_LOD3', 10, 1.5, params.floorWidth * 0.35)
-// loadPlants('Coral_C_03_LOD3', 10, 1.5, -params.floorWidth * 0.35)
-// loadPlants('Coral_C_03_LOD3', 10, 3, 30)
-// loadPlants('Coral_C_03_LOD3', 10, 3.5, 30)
+// Purple coral
+loadPlants('Coral_D_03_LOD3', 10, 0.2, 0.2)
+// Red Coral
+loadPlants('Coral_C_03_LOD3', 10, 0.1, 0.2 )
+loadPlants('Coral_C_03_LOD3', 5, 0.3, 0.8, -10 )
+loadPlants('Coral_C_03_LOD3', 5, 0.3, 0.8, 30 )
 
-// loadPlants('Coral_A_03_LOD2', 10, 0.1)
-// loadPlants('Coral_C_03_LOD3', 3, 1.6)
-// loadPlants('Coral_B_03_LOD2', 5, 0.3)
-// loadPlants('Coral_A_03_LOD2', 5, 1.5)
-// loadPlants('Coral_A_03_LOD2', 5, 1.5)
-// loadPlants('Rock_A_01_LOD3', 20, 0.1, 30)
-// // loadPlants('Sponge_A_02_LOD0', 1, 0.1, 5)
-// // loadPlants('Sponge_A_03_LOD0', 1, 0.1, 5)
-// // loadPlants('Sponge_B_01_LOD0', 6, 0.1, 20)
-// // loadPlants('Sponge_B_02_LOD0', 6, 0.1, 20)
-// loadPlants('Sponge_B_03_LOD2', 6, 0.1, 20) // the coolest
-// loadPlants('Starfish_01_LOD3', 10, 0.1, 20)
+// Spikey coral
+loadPlants('Coral_A_03_LOD2', 10, 0.1, 0.2)
+loadPlants('Coral_B_03_LOD2', 10, 0.1, 0.1)
+
+// Sponges
+loadPlants('Sponge_A_03_LOD2', 10, 0.1, 0.2)
+loadPlants('Sponge_B_03_LOD2', 10, 0.1, 0.2) // the coolest
+
+// Starfish
+loadPlants('Starfish_01_LOD3', 40, 0.1, 0.2)
 
 
 
