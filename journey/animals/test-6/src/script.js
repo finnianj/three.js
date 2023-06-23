@@ -49,7 +49,10 @@ let params = {
     'z1x-1': Math.PI * 1.75,
   },
   messageEmpty: false,
-  outOfBounds: false
+  outOfBounds: false,
+  floorLength: 100,
+  floorWidth: 70,
+  offset: 4
 }
 
 const speed = 0.05
@@ -58,7 +61,7 @@ scene.background = new THREE.Color(params.background)
 
 // Fog
 const fog = new THREE.Fog(params.background, 1, 10)
-scene.fog = fog
+// scene.fog = fog
 
 
 /**
@@ -104,7 +107,7 @@ window.addEventListener('mousemove', (e) => {
  * Floor
  */
 const floor = new THREE.Mesh(
-  new THREE.PlaneGeometry(100, 70),
+  new THREE.PlaneGeometry(params.floorLength, params.floorWidth),
   new THREE.MeshStandardMaterial({
       color: params.color,
       metalness: 0,
@@ -262,12 +265,15 @@ const plantsDirectory = '/models/Omabuarts/models/nature/3d/OBJ/'
 const mtlLoader = new MTLLoader()
 const objLoader = new OBJLoader()
 
-const loadPlants = (path, number, scale, area) => {
+const loadPlants = (path, number, maxScaleDifference, minScale, specifiedPosition = undefined) => {
 
   mtlLoader.load( `${plantsDirectory}${path}.mtl`, function (materials) {
     materials.preload();
 
     objLoader.setMaterials(materials).load(`${plantsDirectory}${path}.obj`, function (object) {
+
+      let zArea= params.floorWidth;
+      let xArea = params.floorLength;
 
       object.traverse( function ( child ) {
         if ( child.isMesh ) {
@@ -276,34 +282,67 @@ const loadPlants = (path, number, scale, area) => {
         }
       } );
 
-      object.scale.set(scale, scale, scale)
-      scene.add(object);
+
+      // object.position.z = specifiedPosition ? specifiedPosition : Math.random() * zArea - (zArea / 2)
+
+      // object.scale.set(0.2, 0.2, 0.2)
+      // scene.add(object);
+
+
+      // console.log("scale : " + scale);
+      // console.log(specifiedPosition);
 
       for(let i = 1; i < number; i++) {
+
         let clone = object.clone()
-        clone.position.z = Math.random() * area - (area / 2)
-        clone.position.x = Math.random() * area - (area / 2)
+        // let scale = maxScale
+        let scale = (Math.random() * maxScaleDifference + minScale)
+        clone.scale.set(scale, scale, scale)
+        if (specifiedPosition == 'curve') {
+          clone.position.z = Math.sin(i * 0.5) * 6
+          clone.position.x = -i
+          console.log(Math.sin(number / i));
+        } else if (specifiedPosition) {
+          clone.position.z = specifiedPosition
+        } else {
+          clone.position.z = Math.random() * zArea - (zArea / 2)
+        }
+
+        // clone.position.x = Math.random() * xArea - (xArea / 1.5)
+
+        // // scale = Math.random() * scale + 0.3
         scene.add(clone)
       }
     });
   });
 }
 
+// path, number, max scale, min scale, specific position(z axis)
+// loadPlants('Coral_C_03_LOD3', 10, 0.5, 0.2)
 // // console.log('check out other anemone/rocks(?)');
-loadPlants('Seaweed_A_01_LOD2', 5, 0.2, 30)
-loadPlants('Seaweed_A_02_LOD2', 5, 0.2, 30)
-loadPlants('Seaweed_A_03_LOD2', 5, 0.2, 30)
-loadPlants('Coral_D_03_LOD3', 1, 0.2, 50)
-loadPlants('Coral_C_03_LOD3', 1, 0.6, 50)
-loadPlants('Coral_B_03_LOD2', 1, 0.3, 50)
-loadPlants('Coral_A_03_LOD2', 1, 0.5, 50)
-loadPlants('Rock_A_01_LOD3', 20, 0.1, 30)
-// loadPlants('Sponge_A_02_LOD0', 1, 0.1, 5)
-// loadPlants('Sponge_A_03_LOD0', 1, 0.1, 5)
-// loadPlants('Sponge_B_01_LOD0', 6, 0.1, 20)
-// loadPlants('Sponge_B_02_LOD0', 6, 0.1, 20)
-loadPlants('Sponge_B_03_LOD2', 6, 0.1, 20) // the coolest
-loadPlants('Starfish_01_LOD3', 10, 0.1, 20)
+loadPlants('Seaweed_A_01_LOD2', 50, 0.05, 0.2, "curve")
+
+
+// loadPlants('Seaweed_A_02_LOD2', 5, 0.2, 30)
+// loadPlants('Seaweed_A_03_LOD2', 5, 0.2, 30)
+// loadPlants('Coral_D_03_LOD3', 100, 0.2)
+// loadPlants('Coral_C_03_LOD3', 10, 1.5, params.floorWidth * 0.35)
+// loadPlants('Coral_C_03_LOD3', 10, 1.5, -params.floorWidth * 0.35)
+// loadPlants('Coral_C_03_LOD3', 10, 3, 30)
+// loadPlants('Coral_C_03_LOD3', 10, 3.5, 30)
+
+// loadPlants('Coral_A_03_LOD2', 10, 0.1)
+// loadPlants('Coral_C_03_LOD3', 3, 1.6)
+// loadPlants('Coral_B_03_LOD2', 5, 0.3)
+// loadPlants('Coral_A_03_LOD2', 5, 1.5)
+// loadPlants('Coral_A_03_LOD2', 5, 1.5)
+// loadPlants('Rock_A_01_LOD3', 20, 0.1, 30)
+// // loadPlants('Sponge_A_02_LOD0', 1, 0.1, 5)
+// // loadPlants('Sponge_A_03_LOD0', 1, 0.1, 5)
+// // loadPlants('Sponge_B_01_LOD0', 6, 0.1, 20)
+// // loadPlants('Sponge_B_02_LOD0', 6, 0.1, 20)
+// loadPlants('Sponge_B_03_LOD2', 6, 0.1, 20) // the coolest
+// loadPlants('Starfish_01_LOD3', 10, 0.1, 20)
 
 
 
@@ -540,7 +579,7 @@ scene.add(camera)
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
 controls.enablePan = false
-controls.autoRotate = true;
+// controls.autoRotate = true;
 controls.enableZoom = false
 controls.maxPolarAngle = 2.3
 
