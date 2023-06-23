@@ -36,7 +36,7 @@ let params = {
   modelPosition: {},
   limits: {
     x: [-35, 12],
-    z: [-10, 10]
+    z: [-20, 20]
   },
   diagonalRotations: {
     'z1x1': Math.PI * 0.25,
@@ -103,16 +103,17 @@ window.addEventListener('mousemove', (e) => {
 /**
  * Floor
  */
-// const floor = new THREE.Mesh(
-//   new THREE.PlaneGeometry(500, 500),
-//   new THREE.MeshStandardMaterial({
-//       color: params.color,
-//       metalness: 0,
-//       roughness: 0.5
-//   })
-// )
-// floor.rotation.x = - Math.PI * 0.5
-// scene.add(floor)
+const floor = new THREE.Mesh(
+  new THREE.PlaneGeometry(100, 70),
+  new THREE.MeshStandardMaterial({
+      color: params.color,
+      metalness: 0,
+      roughness: 0.5
+  })
+)
+floor.rotation.x = - Math.PI * 0.5
+floor.position.x = -15
+scene.add(floor)
 
 /**
  * Lights
@@ -171,17 +172,6 @@ const generateParticles = () => {
 generateParticles()
 
 
-gltfLoader.load('/models/1.glb',
-  (floor) => {
-    console.log(floor);
-    floor.scene.children[0].receiveShadow = true
-    floor.scene.position.x = -15
-    // floor.scene.children[0].material.roughness = 5
-    scene.add(floor.scene)
-  })
-
-
-
 // --------------------
 // Import Squid Model
 // --------------------
@@ -228,6 +218,8 @@ const idle = () => {
   params.mixer._actions.find(a => a._clip.name == 'Idle_A').play()
   params.idleTimeout = setTimeout(() => {
     if (params.idle == true) {
+      controls.maxAzimuthAngle = 'Infinity'
+      controls.minAzimuthAngle = 'Infinity'
       controls.autoRotate = true
     }
   }, 15000);
@@ -550,8 +542,6 @@ controls.enableDamping = true
 controls.enablePan = false
 controls.autoRotate = true;
 controls.enableZoom = false
-controls.maxAzimuthAngle = 1.8
-controls.minAzimuthAngle = 1.2
 controls.maxPolarAngle = 2.3
 
 /**
@@ -751,12 +741,14 @@ const endTyped = () => {
 }
 
 const setControls = () => {
+  controls.autoRotate = false;
   canvas.classList.remove('show')
   let p = params.model.position
   setTimeout(() => {
     controls.target.set(p.x, p.y + 1, p.z)
     camera.position.set(p.x + 2, 3, p.z)
-    controls.autoRotate = false;
+    controls.maxAzimuthAngle = 1.8
+    controls.minAzimuthAngle = 1.2
     canvas.classList.add('show')
   }, 1000);
 
