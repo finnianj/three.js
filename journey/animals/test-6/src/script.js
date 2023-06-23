@@ -64,7 +64,7 @@ scene.background = new THREE.Color(params.background)
 
 // Fog
 const fog = new THREE.Fog(params.background, 1, 10)
-scene.fog = fog
+// scene.fog = fog
 
 
 /**
@@ -195,9 +195,24 @@ gltfLoader.load('/models/Omabuarts/animals/inkfish.glb', (gltf) => {
   gltfLoader.load('/models/Omabuarts/animals/animations/inkfish_animations.glb',
   (anim) => {
     params.animations = anim.animations;
-    console.log(params.animations);
     loadActions()
     idle()
+  }
+  )
+})
+gltfLoader.load('/models/Omabuarts/animals/herring.glb', (gltf) => {
+  gltf.scene.children[0].children[0].castShadow = true;
+  gltf.scene.position.y = 1
+  gltf.scene.position.x = 8
+  params.herring = gltf.scene
+  scene.add(gltf.scene)
+  let newMixer = new THREE.AnimationMixer(params.herring)
+  params.herringMixer = newMixer;
+
+  gltfLoader.load('/models/Omabuarts/animals/animations/herring_animations.glb',
+  (anim) => {
+    params.herringAnimations = anim.animations;
+    animateHerring()
   }
   )
 })
@@ -205,6 +220,13 @@ gltfLoader.load('/models/Omabuarts/animals/inkfish.glb', (gltf) => {
 // --------------------
 // Squid Animations
 // --------------------
+
+const animateHerring = () => {
+  const action = params.herringMixer.clipAction(params.herringAnimations[2])
+  action.setDuration(0.5)
+  console.log(action);
+  action.play()
+}
 
 const loadActions = () => {
   const action1 = params.mixer.clipAction(params.animations[8])
@@ -222,7 +244,6 @@ const swim = () => {
 const idle = () => {
   console.log('idling');
   params.idle = true;
-  console.log(params.idle);
   params.mixer._actions.find(a => a._clip.name == 'Swim').stop()
   params.mixer._actions.find(a => a._clip.name == 'Idle_A').play()
   params.idleTimeout = setTimeout(() => {
@@ -638,6 +659,7 @@ const tick = () => {
     const deltaTime = elapsedTime - previousTime
     previousTime = elapsedTime
 
+
     if (params.heldKeys.length == 2) {
       let axis1 = params.heldKeys[0][0]
       let axis2 = params.heldKeys[1][0]
@@ -682,6 +704,12 @@ const tick = () => {
     if (params.messageEmpty) {
       checkDistances()
     }
+
+    // if (params.herring) {
+    //   params.herring.position.x = Math.cos(elapsedTime * 0.1) * 10 - 10
+    //   params.herring.position.z = Math.sin(elapsedTime * 0.1) * 10
+    //   params.herring.rotation.y = elapsedTime * -0.1
+    // }
 
 
 
