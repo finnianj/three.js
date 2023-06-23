@@ -54,7 +54,8 @@ let params = {
   floorWidth: 70,
   completed: 0,
   idle: true,
-  squashable: true
+  squashable: true,
+  squashCount: -1
 }
 
 const speed = 0.05
@@ -542,11 +543,14 @@ const typeInfo = (item) => {
 }
 
 const randomMessage = (squash = false) => {
-  if (squash) params.squashable = false
+  if (squash) {
+    params.squashable = false
+    params.squashCount += 1
+  }
   messageContainer.innerText = ""
   messageContainer.classList.add('show')
   params.messageEmpty = false;
-  let message = squash ? ouch[Math.floor(Math.random() * ouch.length)] : messages[Math.floor(Math.random() * messages.length)]
+  let message = squash ? ouch[params.squashCount] : messages[Math.floor(Math.random() * messages.length)]
   let typed = new Typed(messageContainer, {
     strings: [message],
     typeSpeed: 50,
@@ -734,12 +738,28 @@ const messages = [
 ]
 
 const ouch = [
-  "Oof!",
-  "Ow!",
-  "Eee!",
   "Bonk! Haha",
-  "That one felt good...",
-  "If you keep doing that, you're gonna be in a world of pain"
+  "I have a squishy head!",
+  "Oof!",
+  "Eee!",
+  "...",
+  "Yes, yes, okay...",
+  "Ow!",
+  "Stop it now",
+  "I mean it",
+  "Okay, last warning!",
+  "...",
+  "hhhhHHHHHUUUUUUAAAAAAAA",
+  "AAAAARRRRRRRR",
+  "fffffffFFFAAAA",
+  "...",
+  "...",
+  "...",
+  "...grrr....",
+  "If you keep doing that, you're gonna be in a world of pain",
+  "No more Mr. Nice Squid",
+  "You ugly b*stard",
+  "Say, what's your address?"
 ]
 
 const infoHash = {
