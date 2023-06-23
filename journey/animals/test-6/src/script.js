@@ -61,7 +61,7 @@ scene.background = new THREE.Color(params.background)
 
 // Fog
 const fog = new THREE.Fog(params.background, 1, 10)
-// scene.fog = fog
+scene.fog = fog
 
 
 /**
@@ -282,21 +282,12 @@ const loadPlants = (path, number, maxScaleDifference, minScale, specifiedPositio
         }
       } );
 
-
-      // object.position.z = specifiedPosition ? specifiedPosition : Math.random() * zArea - (zArea / 2)
-
-      // object.scale.set(0.2, 0.2, 0.2)
-      // scene.add(object);
-
-
-      // console.log("scale : " + scale);
-      // console.log(specifiedPosition);
-
       for(let i = 1; i < number; i++) {
 
         let clone = object.clone()
         let scale = (Math.random() * maxScaleDifference + minScale)
         clone.scale.set(scale, scale, scale)
+
         if (specifiedPosition == 'curve') {
           clone.position.z = Math.sin(i * 0.5) * 6
           clone.position.x = -i
@@ -315,8 +306,6 @@ const loadPlants = (path, number, maxScaleDifference, minScale, specifiedPositio
 
 // path, number, max scale difference, min scale, specific position(z axis)
 
-// loadPlants('Coral_C_03_LOD3', 10, 0.5, 0.2)
-// // console.log('check out other anemone/rocks(?)');
 
 // Seaweed
 loadPlants('Seaweed_A_01_LOD2', 30, 0.05, 0.2, "curve")
