@@ -543,6 +543,7 @@ const typeInfo = (item) => {
 }
 
 const randomMessage = (squash = false) => {
+  clearTimeout(params.messageTimeout)
   if (squash) {
     params.squashable = false
     params.squashCount += 1
@@ -550,7 +551,7 @@ const randomMessage = (squash = false) => {
   messageContainer.innerText = ""
   messageContainer.classList.add('show')
   params.messageEmpty = false;
-  let message = squash ? ouch[params.squashCount] : messages[Math.floor(Math.random() * messages.length)]
+  let message = squash ? ouch[params.squashCount] || "" : messages[Math.floor(Math.random() * messages.length)]
   let typed = new Typed(messageContainer, {
     strings: [message],
     typeSpeed: 50,
@@ -738,28 +739,30 @@ const messages = [
 ]
 
 const ouch = [
-  "Bonk! Haha",
+  "Bonk! Haha.",
   "I have a squishy head!",
   "Oof!",
   "Eee!",
   "...",
   "Yes, yes, okay...",
   "Ow!",
-  "Stop it now",
-  "I mean it",
+  "Stop it now.",
+  "I mean it.",
+  "I have ink, you know?",
   "Okay, last warning!",
   "...",
-  "hhhhHHHHHUUUUUUAAAAAAAA",
-  "AAAAARRRRRRRR",
-  "fffffffFFFAAAA",
+  "hhhhHHHHHUUUUUUAAAAAAAA!",
+  "AAAAARRRRRRRR!",
+  "fffffffFFFAAAA!",
+  "GLEICH KRIEGSTE EINS RICHTIG AUF DIE FRESSE!!!",
   "...",
   "...",
   "...",
   "...grrr....",
-  "If you keep doing that, you're gonna be in a world of pain",
-  "No more Mr. Nice Squid",
-  "You ugly b*stard",
-  "Say, what's your address?"
+  "If you keep doing that, you're gonna be in a world of pain!",
+  "No more Mr. Nice Squid!",
+  "You ugly b*stard!",
+  "Ok, what's your address?"
 ]
 
 const infoHash = {
