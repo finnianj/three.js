@@ -864,3 +864,4 @@ tick()
 // Todo: Add larger shadowed area
 // possibly add normal map to floor
 // Separate widgets and d3 into their own hoops?
+// Add sound: visiting hoop, all hoops visited, secret song, default song
