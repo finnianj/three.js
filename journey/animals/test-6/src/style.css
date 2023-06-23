@@ -58,7 +58,7 @@ body
   background-color: rgba(80, 86, 255, 0.515);
   padding: 10px;
   color: white;
-  font-size: 2vw;
+  font-size: 20px;
   opacity: 0;
   transition: 1s;
 }

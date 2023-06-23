@@ -394,9 +394,9 @@ portfolioItems.forEach(i => scene.add(i))
 document.onkeydown = checkKey;
 document.onkeyup = ((e) => {
   if (params.keyCodes[e.keyCode]) {
-    idle()
     let i = params.heldKeys.indexOf(params.keyCodes[e.keyCode])
     params.heldKeys.splice(i, 1)
+    if (params.heldKeys.length == 0) idle()
   }
 })
 
@@ -478,26 +478,24 @@ const typeInfo = (item) => {
 }
 
 const randomMessage = () => {
+  messageContainer.innerText = ""
+  messageContainer.classList.add('show')
   params.messageEmpty = false;
   let typed = new Typed(messageContainer, {
-    strings: [messages[Math.floor(Math.random() * messages.length)], ""],
+    strings: [messages[Math.floor(Math.random() * messages.length)]],
     typeSpeed: 50,
     startDelay: 0,
-    backDelay: 2000,
-    fadeOut: true,
-    fadeOutDelay: 1000,
     showCursor: false,
     onComplete: () => {
       setTimeout(() => {
-        console.log("completed random message");
+        messageContainer.classList.remove('show')
         params.messageEmpty = true
       }, 2000)
       setTimeout(() => {
         if (params.messageEmpty == true) {
-          console.log("making another rando");
           randomMessage()
         }
-      }, 8000);
+      }, 10000);
     }
   });
 
@@ -663,8 +661,8 @@ const messages = [
 ]
 
 const infoHash = {
-  'moss': '<h2 class="highlight">Moss Radio</h2> <p>Ruby on Rails, PostgreSQL, Stimulus.js.</p><h4 class="highlight">Features:</h4><p> Live chat, live music stream, and beautifully smooth front end.</p>',
-  'api': 'This is my API',
+  'moss': '<h2 class="highlight">Moss Radio</h2> <p>Ruby on Rails, PostgreSQL, Stimulus.js.</p><h3 class="highlight">Features:</h3><p> Live chat, live music stream, and beautifully smooth front end.</p>',
+  'api': '<h2 class="highlight">My API</h2> <p>Node.js, MongoDB, Express.js</p><h3 class="highlight">Features:</h3><p> 4 different API Microservices, including a community playlist - submit your favourite song!</p>',
   'widgets': 'These are some widgets',
   'info': 'This is a clock',
 }
@@ -718,7 +716,6 @@ const endTyped = () => {
   setControls()
   setTimeout(() => {
     messageContainer.innerText = ""
-    messageContainer.classList.add('show')
     params.messageEmpty = true
   }, 1000);
   setTimeout(() => {
