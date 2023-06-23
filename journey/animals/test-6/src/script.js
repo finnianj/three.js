@@ -388,8 +388,8 @@ addPortfolioItem('Moss.jpeg', 'moss', 'https://www.mossradio.live/users/sign_in'
 addPortfolioItem('api.jpeg', 'api', '/api', [-6, 1, -4])
 addPortfolioItem('pomodoro.png', 'widgets', '/api#widgets', [-13, 1, 4], true)
 addPortfolioItem('america.png', 'd3', 'https://www.mossradio.live/users/sign_in', [-20, 1, -4], true)
-addPortfolioItem('pomodoro.png', 'info', 'https://www.mossradio.live/users/sign_in', [-27, 1, 4])
-addPortfolioItem('pomodoro.png', 'info', 'https://www.mossradio.live/users/sign_in', [-35, 1, 4])
+addPortfolioItem('finn.png', 'info', 'https://www.mossradio.live/users/sign_in', [-27, 1, 4])
+addPortfolioItem('finn.png', 'info', 'https://www.mossradio.live/users/sign_in', [-35, 1, 4])
 // console.log(portfolioItems);
 portfolioItems.forEach(i => scene.add(i))
 // document.addEventListener('click', onClick);
@@ -726,7 +726,8 @@ const messages = [
 const infoHash = {
   'moss': '<h2 class="highlight">Moss Radio</h2> <p>Ruby on Rails, PostgreSQL, Stimulus.js.</p><h3 class="highlight">Features:</h3><p> Live chat, live music stream, and beautifully smooth front end.</p>',
   'api': '<h2 class="highlight">My API</h2> <p>Node.js, MongoDB, Express.js</p><h3 class="highlight">Features:</h3><p> 4 different API Microservices, including a community playlist - submit your favourite song!</p>',
-  'widgets': '<h2 class="highlight">Widgets</h2><h3 class="highlight">Features:</h3><p>React, Typescript, JQuery</p><h3 class="highlight">Features:</h3><p>Some simple widgets I made while exploring front-end libraries</p>',
+  'widgets': '<h2 class="highlight">Widgets</h2> <p>React, Typescript, JQuery</p><h3 class="highlight">Features:</h3><p>Pomodoro Clock, React Calculator, Drum Machine, Delivery Fee Calculator</p>',
+  'd3': '<h2 class="highlight">Data Visualisation</h2> <p>D3.js</p><h3 class="highlight">Features:</h3><p>Choropleth map of US Education by County, band graph of Global Temperature Variance, tree map of Highest Grossing Films.</p',
   'info': '<h2 class="highlight">Certifications, Skills, About</h2><p>Here you can see all the certifications I have completed, as well as a full list of coding skills and a short bio.</p>',
 }
 
