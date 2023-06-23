@@ -14,8 +14,10 @@
 html,
 body
 {
-    overflow: hidden;
-    cursor: grab;
+  font-family: cherry;
+  overflow: hidden;
+  cursor: grab;
+  font-weight: 100;
 }
 
 .webgl
@@ -24,78 +26,76 @@ body
     top: 0;
     left: 0;
     outline: none;
+    opacity: 0;
+    transition: 1s;
+
 }
 
 .pointer-cursor{
   cursor: pointer;
 }
 
-.fadeout{
-  animation-name: fadeOut;
-  animation-duration: 1.5s;
-}
-.fadein{
-  animation-name: fadeIn;
-  animation-duration: 1s;
-}
+
 
 #text{
-  font-family: cherry;
   position: fixed;
   max-width: 40vw;
   top: 24vh;
   left: 19vw;
-  font-size: 4vw;
+  font-size: 30px;
   color: white;
+  opacity: 0;
+  transition: 1s;
 }
 
-/* #speech-bubble{
+#info{
+  font-family: monospace;
   position: fixed;
-  width: 34vw;
-  height: 30vw;
-  background-image: url("bubble.png");
-  background-size: cover;
-} */
-
-
-#next{
-  position: fixed;
-  top: 80vh;
-  left: 70vw;
-}
-#previous{
-  position: fixed;
-  top: 80vh;
-  left: 30vw;
+  top: 0;
+  width: 100%;
+  margin: 0 auto;
+  height: fit-content;
+  background-color: rgba(80, 86, 255, 0.515);
+  padding: 10px;
+  color: white;
+  font-size: 20px;
+  opacity: 0;
+  transition: 1s;
 }
 
-.button{
-  font-family: cherry;
-  font-size: 2vw;
-  border: 2px solid black;
-  border-radius: 5px;
-  background-color: gold;
-  padding: 1vw;
+.show{
+  opacity: 1 !important;
+  transition: 1s;
+}
+.out-of-bounds{
+  background-color: rgb(132, 0, 255) !important;
+  opacity: 1 !important;
+  transition: 1s;
 }
 
-.button:hover{
-  cursor: pointer;
-  opacity: 80%;
+.completed {
+  opacity: 1 !important;
+  transition: 1s;
 }
 
-@keyframes fadeOut {
-  from {
-    opacity: 1;
+.completed-text {
+  color:gold !important;
+}
+
+.highlight {
+  color: rgb(4, 253, 58);
+}
+
+@media (max-width:480px)  {
+  /* smartphones, Android phones, landscape iPhone */
+  #info{
+    font-size: 10px;
   }
-  to {
-    opacity: 0;
+  #text{
+    font-size: 20px;
   }
 }
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+@media (min-width:801px)  {
+  /* tablet, landscape iPad, lo-res laptops ands desktops */
+  /* give option for arrow movement on screen */
 }

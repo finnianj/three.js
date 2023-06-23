@@ -36,7 +36,7 @@ let params = {
   modelPosition: {},
   limits: {
     x: [-35, 12],
-    z: [-10, 10]
+    z: [-20, 20]
   },
   diagonalRotations: {
     'z1x1': Math.PI * 0.25,
@@ -49,7 +49,13 @@ let params = {
     'z1x-1': Math.PI * 1.75,
   },
   messageEmpty: false,
-  timeOfLastMessage: 0
+  outOfBounds: false,
+  floorLength: 100,
+  floorWidth: 70,
+  completed: 0,
+  idle: true,
+  squashable: true,
+  squashCount: -1
 }
 
 const speed = 0.05
@@ -103,16 +109,17 @@ window.addEventListener('mousemove', (e) => {
 /**
  * Floor
  */
-// const floor = new THREE.Mesh(
-//   new THREE.PlaneGeometry(500, 500),
-//   new THREE.MeshStandardMaterial({
-//       color: params.color,
-//       metalness: 0,
-//       roughness: 0.5
-//   })
-// )
-// floor.rotation.x = - Math.PI * 0.5
-// scene.add(floor)
+const floor = new THREE.Mesh(
+  new THREE.PlaneGeometry(params.floorLength, params.floorWidth),
+  new THREE.MeshStandardMaterial({
+      color: params.color,
+      metalness: 0.2,
+      roughness: 0
+  })
+)
+floor.rotation.x = - Math.PI * 0.5
+floor.position.x = -15
+scene.add(floor)
 
 /**
  * Lights
@@ -171,17 +178,6 @@ const generateParticles = () => {
 generateParticles()
 
 
-gltfLoader.load('/models/1.glb',
-  (floor) => {
-    console.log(floor);
-    floor.scene.children[0].receiveShadow = true
-    floor.scene.position.x = -15
-    // floor.scene.children[0].material.roughness = 5
-    scene.add(floor.scene)
-  })
-
-
-
 // --------------------
 // Import Squid Model
 // --------------------
@@ -205,6 +201,14 @@ gltfLoader.load('/models/Omabuarts/animals/inkfish.glb', (gltf) => {
   )
 })
 
+gltfLoader.load('/models/Omabuarts/animals/herring.glb', (gltf) => {
+  gltf.scene.children[0].children[0].castShadow = true;
+  gltf.scene.position.y = 0.5
+  gltf.scene.position.x = 7
+  params.herring = gltf.scene
+  scene.add(gltf.scene)
+})
+
 // --------------------
 // Squid Animations
 // --------------------
@@ -217,15 +221,23 @@ const loadActions = () => {
 }
 
 const swim = () => {
-  // console.log(params.mixer._actions[0]._clip.name);
+  params.idle = false;
+  clearTimeout(params.idleTimeout)
   params.mixer._actions.find(a => a._clip.name == 'Idle_A').stop()
   params.mixer._actions.find(a => a._clip.name == 'Swim').play()
-  // console.log(params.mixer.existingAction('Idle_A'));
-  // params.mixer.existingAction('Swim').play()
 }
 const idle = () => {
+  console.log('idling');
+  params.idle = true;
   params.mixer._actions.find(a => a._clip.name == 'Swim').stop()
   params.mixer._actions.find(a => a._clip.name == 'Idle_A').play()
+  params.idleTimeout = setTimeout(() => {
+    if (params.idle == true) {
+      controls.maxAzimuthAngle = 'Infinity'
+      controls.minAzimuthAngle = 'Infinity'
+      controls.autoRotate = true
+    }
+  }, 20000);
   // console.log(params.mixer._actions[1]._clip.name);
   // console.log('idling');
   // console.log(params.mixer.existingAction('Idle A'));
@@ -234,25 +246,24 @@ const idle = () => {
   // params.mixer.existingAction('Idle A').play()
 }
 
-// const doOnceThenIdle = (newAction) => {
+const squash = () => {
+  randomMessage(true)
+  const action = params.mixer.clipAction(params.animations[2])
+  action.setLoop(THREE.LoopRepeat, 1)
+  action.setDuration(0.5)
 
-//   const action = params.mixer.clipAction(newAction)
-//   action.setLoop(THREE.LoopRepeat, 2)
-//   action.setDuration(0.5)
+  // params.number = (params.animations.indexOf(newAction) + 1)
 
-//   // console.log(params.mixer);
-//   // params.number = (params.animations.indexOf(newAction) + 1)
+  params.mixer.stopAllAction()
+  action.play()
 
-//   params.mixer._actions[0].stop()
-//   action.play()
-
-//   params.mixer.addEventListener( 'finished', function( e	) {
-//     // console.log("Action finished. Uncaching...");
-//     params.mixer.uncacheClip(newAction)
-//     params.mixer._actions[0].play()
-//     // console.log(params.mixer);
-//   } )
-// }
+  params.mixer.addEventListener( 'finished', function( e	) {
+    // console.log("Action finished. Uncaching...");
+    params.mixer.uncacheClip(action)
+    params.mixer._actions.find(a => a._clip.name == 'Idle_A').play()
+    // console.log(params.mixer);
+  } )
+}
 
 
 
@@ -265,12 +276,15 @@ const plantsDirectory = '/models/Omabuarts/models/nature/3d/OBJ/'
 const mtlLoader = new MTLLoader()
 const objLoader = new OBJLoader()
 
-const loadPlants = (path, number, scale, area) => {
+const loadPlants = (path, number, maxScaleDifference, minScale, specifiedPosition = undefined) => {
 
   mtlLoader.load( `${plantsDirectory}${path}.mtl`, function (materials) {
     materials.preload();
 
     objLoader.setMaterials(materials).load(`${plantsDirectory}${path}.obj`, function (object) {
+      // object.children[0].material.shininess = 10
+      let zArea= params.floorWidth;
+      let xArea = params.floorLength;
 
       object.traverse( function ( child ) {
         if ( child.isMesh ) {
@@ -279,34 +293,53 @@ const loadPlants = (path, number, scale, area) => {
         }
       } );
 
-      object.scale.set(scale, scale, scale)
-      scene.add(object);
-
       for(let i = 1; i < number; i++) {
+
         let clone = object.clone()
-        clone.position.z = Math.random() * area - (area / 2)
-        clone.position.x = Math.random() * area - (area / 2)
+        let scale = (Math.random() * maxScaleDifference + minScale)
+        clone.scale.set(scale, scale, scale)
+
+        if (specifiedPosition == 'curve') {
+          clone.position.z = Math.sin(i * 0.5) * 6
+          clone.position.x = -i
+        } else if (specifiedPosition) {
+          clone.position.z = specifiedPosition
+          clone.position.x = Math.random() * xArea - (xArea / 1.5)
+        } else {
+          clone.position.z = Math.random() * zArea - (zArea / 2)
+          clone.position.x = Math.random() * xArea - (xArea / 1.5)
+          clone.rotation.y = Math.random() * 6
+        }
         scene.add(clone)
       }
     });
   });
 }
 
-// // console.log('check out other anemone/rocks(?)');
-loadPlants('Seaweed_A_01_LOD2', 5, 0.2, 30)
-loadPlants('Seaweed_A_02_LOD2', 5, 0.2, 30)
-loadPlants('Seaweed_A_03_LOD2', 5, 0.2, 30)
-loadPlants('Coral_D_03_LOD3', 1, 0.2, 50)
-loadPlants('Coral_C_03_LOD3', 1, 0.6, 50)
-loadPlants('Coral_B_03_LOD2', 1, 0.3, 50)
-loadPlants('Coral_A_03_LOD2', 1, 0.5, 50)
-loadPlants('Rock_A_01_LOD3', 20, 0.1, 30)
-// loadPlants('Sponge_A_02_LOD0', 1, 0.1, 5)
-// loadPlants('Sponge_A_03_LOD0', 1, 0.1, 5)
-// loadPlants('Sponge_B_01_LOD0', 6, 0.1, 20)
-// loadPlants('Sponge_B_02_LOD0', 6, 0.1, 20)
-loadPlants('Sponge_B_03_LOD2', 6, 0.1, 20) // the coolest
-loadPlants('Starfish_01_LOD3', 10, 0.1, 20)
+// path, number, max scale difference, min scale, specific position(z axis)
+
+// Seaweed
+loadPlants('Seaweed_A_01_LOD2', 30, 0.05, 0.2, "curve")
+loadPlants('Seaweed_A_02_LOD2', 50, 0.02, 0.1)
+loadPlants('Seaweed_A_03_LOD2', 50, 0.02, 0.2)
+
+// Purple coral
+loadPlants('Coral_D_03_LOD3', 10, 0.2, 0.2)
+// Red Coral
+loadPlants('Coral_C_03_LOD3', 10, 0.1, 0.2 )
+loadPlants('Coral_C_03_LOD3', 5, 0.3, 0.8, -10 )
+loadPlants('Coral_C_03_LOD3', 5, 0.3, 0.8, 30 )
+
+// Spikey coral
+loadPlants('Coral_A_03_LOD2', 10, 0.1, 0.2)
+loadPlants('Coral_B_03_LOD2', 10, 0.1, 0.1)
+
+// Sponges
+loadPlants('Sponge_A_03_LOD2', 10, 0.1, 0.2)
+loadPlants('Sponge_B_03_LOD2', 10, 0.1, 0.2) // the coolest
+
+// Starfish
+loadPlants('Starfish_01_LOD3', 40, 0.1, 0.2)
 
 
 
@@ -317,15 +350,15 @@ loadPlants('Starfish_01_LOD3', 10, 0.1, 20)
 
 const circleGeometry = new THREE.CircleGeometry( 1, 32 );
 const torusGeometry = new THREE.TorusGeometry( 1, 0.05, 10, 100 );
-const torusMaterial = new THREE.MeshStandardMaterial( { color: '#ff7f50' } );
 const portfolioItems = []
 
-const addPortfolioItem = (image, name, info, url, position, alpha = false) => {
+const addPortfolioItem = (image, name, url, position, alpha = false) => {
+  const torusMaterial = new THREE.MeshStandardMaterial( { color: '#ff7f50' } );
   const circleMaterial = new THREE.MeshStandardMaterial();
   let texture = textureLoader.load(image);
   circleMaterial.map = texture
   if (alpha) {
-    circleMaterial.alphaMap = textureLoader.load('alpha.png')
+    circleMaterial.alphaMap = textureLoader.load(`${name}Alpha.png`)
     circleMaterial.transparent = true;
   }
   const circle = new THREE.Mesh( circleGeometry, circleMaterial );
@@ -362,12 +395,12 @@ const addPortfolioItem = (image, name, info, url, position, alpha = false) => {
 //   }
 // }
 
-addPortfolioItem('Moss.jpeg', 'moss', 'Moss Radio.. Ruby on Rails, PostgreSQL, Stimulus.js.. Features: \nlive chat, live music stream, and beautifully smooth front end..', 'https://www.mossradio.live/users/sign_in', [1, 1, 4])
-addPortfolioItem('api.jpeg', 'api', 'My API!.. Built with Node.js and MongoDB.. Features several microservices, including a community music playlist', 'https://www.mossradio.live/users/sign_in', [-6, 1, -4])
-addPortfolioItem('pomodoro.png', 'widgets', 'info about widgets', 'https://www.mossradio.live/users/sign_in', [-13, 1, 4], true)
-addPortfolioItem('pomodoro.png', 'info', 'info about D3', 'https://www.mossradio.live/users/sign_in', [-20, 1, -4])
-addPortfolioItem('pomodoro.png', 'info', 'info for certs skills about', 'https://www.mossradio.live/users/sign_in', [-27, 1, 4])
-addPortfolioItem('pomodoro.png', 'info', 'info', 'https://www.mossradio.live/users/sign_in', [-35, 1, 4])
+addPortfolioItem('Moss.jpeg', 'moss', 'https://www.mossradio.live/users/sign_in', [1, 1, 4])
+addPortfolioItem('api.jpeg', 'api', '/api', [-6, 1, -4])
+addPortfolioItem('pomodoro.png', 'widgets', '/api#widgets', [-13, 1, 4], true)
+addPortfolioItem('america.png', 'd3', 'https://www.mossradio.live/users/sign_in', [-20, 1, -4], true)
+addPortfolioItem('finn.png', 'info', 'https://www.mossradio.live/users/sign_in', [-27, 1, 4])
+addPortfolioItem('finn.png', 'info', 'https://www.mossradio.live/users/sign_in', [-35, 1, 4])
 // console.log(portfolioItems);
 portfolioItems.forEach(i => scene.add(i))
 // document.addEventListener('click', onClick);
@@ -379,12 +412,7 @@ portfolioItems.forEach(i => scene.add(i))
 // testing area
 // testing area
 // testing area
-// const infoHash = {
-//   'moss': 'This is Moss Radio',
-//   'api': 'This is my API',
-//   'widgets': 'These are some widgets',
-//   'info': 'This is a clock',
-// }
+
 // const info = document.getElementById('info')
 // const showInfo = (item) => {
 //   const text = infoHash[item.object.userData.name]
@@ -399,9 +427,12 @@ portfolioItems.forEach(i => scene.add(i))
 document.onkeydown = checkKey;
 document.onkeyup = ((e) => {
   if (params.keyCodes[e.keyCode]) {
-    idle()
     let i = params.heldKeys.indexOf(params.keyCodes[e.keyCode])
     params.heldKeys.splice(i, 1)
+    if (params.heldKeys.length == 0) idle()
+  }
+  if (e.keyCode == '32' && params.idle == true && params.squashable && params.messageEmpty == true) {
+    squash()
   }
 })
 
@@ -414,10 +445,12 @@ let illegalKeys = [
 
 
 function checkKey(e) {
-
+  if (controls.autoRotate && e.keyCode != '32') {
+    console.log('Resetting controls after autorotate');
+    setControls()
+  }
   if (e.repeat) { return }
   e = e || window.event;
-  swim()
 
   let key = e.keyCode
 
@@ -428,6 +461,7 @@ function checkKey(e) {
 
     // check it's an arrow
     if (params.keyCodes[key]) {
+      swim()
       params.heldKeys.push(params.keyCodes[key])
       // controls.reset()
     }
@@ -436,9 +470,32 @@ function checkKey(e) {
 
 const validateMove = (axis, posOrNeg) => {
   if (posOrNeg == -1) {
-    return (camera.position[axis] > params.limits[axis][0])
+    if (camera.position[axis] > params.limits[axis][0]) {
+      return true
+    } else {
+      outOfBounds()
+      return false
+    }
   } else if (posOrNeg == 1) {
-    return (camera.position[axis] < params.limits[axis][1])
+    if (camera.position[axis] < params.limits[axis][1]) {
+      return true
+    } else {
+      outOfBounds()
+      return false
+    }
+  }
+}
+
+const outOfBounds = () => {
+  if (params.outOfBounds == false) {
+    params.outOfBounds = true;
+    infoContainer.innerHTML = '<h2 style="text-align: center;">Out of bounds</h2>'
+    infoContainer.classList.add('out-of-bounds')
+    console.log('Out of bounds');
+    setTimeout(() => {
+      params.outOfBounds = false;
+      infoContainer.classList.remove('out-of-bounds')
+    }, 1000);
   }
 }
 
@@ -470,63 +527,65 @@ const checkDistances = () => {
 }
 
 const typeInfo = (item) => {
-  let typed = new Typed(messageContainer, {
-    strings: item.children[0].userData.info.split(".."),
-    typeSpeed: 50,
-    startDelay: 0,
-    backDelay: 1000,
-    fadeOut: true,
-    fadeOutDelay: 1000,
-    showCursor: false,
-    onStringTyped: () => {
-      if (params.model.position.distanceTo(item.position) > 2) {
-        messageContainer.classList.add('fadeout')
-        setTimeout(() => {
-          typed.stop()
-          messageContainer.innerText = ""
-          params.messageEmpty = true
-          messageContainer.classList.remove('fadeout')
-        }, 1000);
-        setTimeout(() => {
-          if (params.messageEmpty == true) randomMessage()
-        }, 8000);
-      }
-    },
-    onComplete: () => {
-      setTimeout(() => {
-        params.messageEmpty = true
-      }, 3000);
-      setTimeout(() => {
-        if (params.messageEmpty == true) randomMessage()
-      }, 8000);
-    }
-  });
+  clearTimeout(params.messageTimeout)
+  if (item.children[2].material.color.b != 0) {
+    item.children[2].material.color = new THREE.Color('gold')
+    params.completed += 1
+  }
+  const info = infoHash[item.children[0].userData.name]
+  infoContainer.innerHTML = info;
+  infoContainer.classList.add('show')
+
+  setTimeout(() => {
+    infoContainer.classList.remove('show')
+    params.messageEmpty = true;
+    if (params.completed >= 5) completed()
+
+    params.messageTimeout = setTimeout(() => {
+      if (params.messageEmpty == true) randomMessage()
+    }, 5000);
+
+  }, 1000);
 }
 
-const randomMessage = () => {
+const randomMessage = (squash = false) => {
+  clearTimeout(params.messageTimeout)
+  if (squash) {
+    params.squashable = false
+    params.squashCount += 1
+  }
+  messageContainer.innerText = ""
+  messageContainer.classList.add('show')
   params.messageEmpty = false;
+  let message = squash ? ouch[params.squashCount] || "" : messages[Math.floor(Math.random() * messages.length)]
   let typed = new Typed(messageContainer, {
-    strings: [messages[Math.floor(Math.random() * messages.length)], ""],
+    strings: [message],
     typeSpeed: 50,
     startDelay: 0,
-    backDelay: 2000,
-    fadeOut: true,
-    fadeOutDelay: 1000,
     showCursor: false,
     onComplete: () => {
       setTimeout(() => {
-        console.log("completed random message");
+        messageContainer.classList.remove('show')
         params.messageEmpty = true
+        params.squashable = true
       }, 2000)
-      setTimeout(() => {
-        if (params.messageEmpty == true) {
-          console.log("making another rando");
+      params.messageTimeout = setTimeout(() => {
+        if (params.messageEmpty == true && params.squashable == true) {
           randomMessage()
         }
-      }, 8000);
+      }, 10000);
     }
   });
 
+}
+
+const completed = () => {
+  console.log('You completed it!');
+  infoContainer.innerHTML = '<h2 class="completed-text">Yazoo!</h2> <p>You visited all the hoops, congratulations!</p><h3 class="completed-text">Unlocked:</h3><p> Galaxy Mode </p>'
+  infoContainer.classList.add('completed')
+  setTimeout(() => {
+    infoContainer.classList.remove('completed')
+  }, 5000);
 }
 
 
@@ -548,12 +607,9 @@ scene.add(camera)
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
 controls.enablePan = false
-// controls.autoRotate = true;
-
-// controls.enableZoom = false
-// controls.maxAzimuthAngle = 1.8
-// controls.minAzimuthAngle = 1.2
-// controls.maxPolarAngle = 2.3
+controls.autoRotate = true;
+controls.enableZoom = false
+controls.maxPolarAngle = 2.3
 
 /**
  * Renderer
@@ -569,7 +625,7 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
-// floor.receiveShadow = true
+floor.receiveShadow = true
 directionalLight.castShadow = true
 directionalLight.shadow.camera.far = 25
 directionalLight.shadow.mapSize.set(1024, 1024)
@@ -587,6 +643,7 @@ const tick = () => {
     const elapsedTime = clock.getElapsedTime()
     const deltaTime = elapsedTime - previousTime
     previousTime = elapsedTime
+
 
     if (params.heldKeys.length == 2) {
       let axis1 = params.heldKeys[0][0]
@@ -633,6 +690,12 @@ const tick = () => {
       checkDistances()
     }
 
+    if (params.herring) {
+      params.herring.position.x = Math.cos(elapsedTime * 0.1) * 10 - 10
+      params.herring.position.z = Math.sin(elapsedTime * 0.1) * 10
+      params.herring.rotation.y = elapsedTime * -0.1
+    }
+
 
 
     // Update controls
@@ -673,10 +736,6 @@ const tick = () => {
 // -----------------------------------------
 // -----------------------------------------
 
-const actions = {
-  3: "Jump",
-  5: "Roll"
-}
 
 const messages = [
   "Nice weather we're having, no?",
@@ -692,59 +751,112 @@ const messages = [
   "Ha! You're feet are covered in sand!"
 ]
 
+const ouch = [
+  "Bonk! Haha.",
+  "I have a squishy head!",
+  "Oof!",
+  "Eee!",
+  "...",
+  "Yes, yes, okay...",
+  "Ow!",
+  "Stop it now.",
+  "I mean it.",
+  "I have ink, you know?",
+  "Okay, last warning!",
+  "...",
+  "hhhhHHHHHUUUUUUAAAAAAAA!",
+  "AAAAARRRRRRRR!",
+  "fffffffFFFAAAA!",
+  "GLEICH KRIEGSTE EINS RICHTIG DOLL AUF DIE FRESSE!!!",
+  "...",
+  "...",
+  "...",
+  "...grrr....",
+  "If you keep doing that, you're gonna be in a world of pain!",
+  "No more Mr. Nice Squid!",
+  "You ugly b*stard!",
+  "Ok, what's your address?"
+]
+
+const infoHash = {
+  'moss': '<h2 class="highlight">Moss Radio</h2> <p>Ruby on Rails, PostgreSQL, Stimulus.js.</p><h3 class="highlight">Features:</h3><p> Live chat, live music stream, and beautifully smooth front end.</p>',
+  'api': '<h2 class="highlight">My API</h2> <p>Node.js, MongoDB, Express.js</p><h3 class="highlight">Features:</h3><p> 4 different API Microservices, including a community playlist - submit your favourite song!</p>',
+  'widgets': '<h2 class="highlight">Widgets</h2> <p>React, Typescript, JQuery</p><h3 class="highlight">Features:</h3><p>Pomodoro Clock, React Calculator, Drum Machine, Delivery Fee Calculator</p>',
+  'd3': '<h2 class="highlight">Data Visualisation</h2> <p>D3.js</p><h3 class="highlight">Features:</h3><p>Choropleth map of US Education by County, band graph of Global Temperature Variance, tree map of Highest Grossing Films.</p',
+  'info': '<h2 class="highlight">Certifications, Skills, About</h2><p>Here you can see all the certifications I have completed, as well as a full list of coding skills and a short bio.</p>',
+}
+
 const triggerAction = (actionName) => {
   const newAction = params.animations.find((a) => a.name == actionName)
   doOnceThenWalk(newAction)
 }
 
 const messageContainer = document.getElementById('text')
+const infoContainer = document.getElementById('info')
 
-
-// document.getElementById('next').addEventListener('click', () => {
-//   params.messageNumber += 1;
-//   update()
-//   // // messageContainer.classList.add('animate__fadeOut')
-//   // setTimeout(() => {
-//   //   messageContainer.innerText = messages[params.message]
-//   //   // messageContainer.classList.remove('animate__fadeOut')
-//   //   messageContainer.classList.add('animate__fadeIn')
-//   // }, 0);
-// })
-// document.getElementById('previous').addEventListener('click', () => {
-//   params.messageNumber -= 1;
-//   update()
-// })
 
 window.onload = () => {
+  canvas.classList.add('show')
+
   let typed = new Typed(messageContainer, {
     strings: ["Oh, it's you!", "I'm glad you made it", " Let's have a look around, shall we?", " Use the arrow keys to move", ""],
     typeSpeed: 50,
-    startDelay: 500,
-    backDelay: 2000,
+    startDelay: 1000,
+    backDelay: 1000,
     fadeOut: true,
-    fadeOutDelay: 2000,
+    fadeOutDelay: 1000,
     showCursor: false,
     onStringTyped: () => {
       if (params.model.position.x != 8 || params.model.position.z != 0) {
-        messageContainer.classList.add('fadeout')
-        setTimeout(() => {
-          typed.stop()
-          messageContainer.innerText = ""
-          params.messageEmpty = true
-          messageContainer.classList.remove('fadeout')
-        }, 1000);
-        setTimeout(() => {
-          if (params.messageEmpty == true) randomMessage()
-        }, 8000);
+        messageContainer.classList.remove('show')
+        typed.stop()
+        endTyped()
+      }
+    },
+    preStringTyped: () => {
+      if (params.model.position.x != 8 || params.model.position.z != 0) {
+        messageContainer.classList.remove('show')
+        typed.stop()
+        endTyped()
       }
     },
     onComplete: () => {
       params.messageEmpty = true
+      console.log('Resetting controls after completed typing');
+      setControls()
       setTimeout(() => {
         if (params.messageEmpty == true) randomMessage()
       }, 8000);
     }
   });
+}
+
+const endTyped = () => {
+  if (controls.autoRotate == true) {
+    controls.autoRotate = false
+    setControls()
+  }
+  setTimeout(() => {
+    messageContainer.innerText = ""
+    params.messageEmpty = true
+  }, 1000);
+  params.messageTimeout = setTimeout(() => {
+    if (params.messageEmpty == true) randomMessage()
+  }, 8000);
+}
+
+const setControls = () => {
+  controls.autoRotate = false;
+  canvas.classList.remove('show')
+  let p = params.model.position
+  setTimeout(() => {
+    controls.target.set(p.x, p.y + 1, p.z)
+    camera.position.set(p.x + 2, 3, p.z)
+    controls.maxAzimuthAngle = 1.8
+    controls.minAzimuthAngle = 1.2
+    canvas.classList.add('show')
+  }, 1000);
+
 }
 
 tick()
