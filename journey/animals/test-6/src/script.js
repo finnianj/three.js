@@ -200,18 +200,20 @@ gltfLoader.load('/models/Omabuarts/animals/inkfish.glb', (gltf) => {
   }
   )
 })
+let newMixer;
 gltfLoader.load('/models/Omabuarts/animals/herring.glb', (gltf) => {
   gltf.scene.children[0].children[0].castShadow = true;
   gltf.scene.position.y = 1
   gltf.scene.position.x = 8
   params.herring = gltf.scene
   scene.add(gltf.scene)
-  let newMixer = new THREE.AnimationMixer(params.herring)
+  newMixer = new THREE.AnimationMixer(params.herring)
   params.herringMixer = newMixer;
 
   gltfLoader.load('/models/Omabuarts/animals/animations/herring_animations.glb',
   (anim) => {
     params.herringAnimations = anim.animations;
+    loadHerringActions()
     animateHerring()
   }
   )
@@ -222,10 +224,14 @@ gltfLoader.load('/models/Omabuarts/animals/herring.glb', (gltf) => {
 // --------------------
 
 const animateHerring = () => {
-  const action = params.herringMixer.clipAction(params.herringAnimations[2])
-  action.setDuration(0.5)
-  console.log(action);
-  action.play()
+  params.herringMixer._actions.find(a => a._clip.name == 'Swim').play()
+  params.herringMixer
+}
+
+const loadHerringActions = () => {
+  const action1 = params.herringMixer.clipAction(params.herringAnimations[16])
+  action1.setDuration(1.5)
+  console.log(params.herringMixer);
 }
 
 const loadActions = () => {
