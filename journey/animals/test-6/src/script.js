@@ -219,11 +219,8 @@ const loadActions = () => {
 const swim = () => {
   params.idle = false;
   clearTimeout(params.idleTimeout)
-  // console.log(params.mixer._actions[0]._clip.name);
   params.mixer._actions.find(a => a._clip.name == 'Idle_A').stop()
   params.mixer._actions.find(a => a._clip.name == 'Swim').play()
-  // console.log(params.mixer.existingAction('Idle_A'));
-  // params.mixer.existingAction('Swim').play()
 }
 const idle = () => {
   params.idle = true;
@@ -233,7 +230,7 @@ const idle = () => {
     if (params.idle == true) {
       controls.autoRotate = true
     }
-  }, 10000);
+  }, 15000);
   // console.log(params.mixer._actions[1]._clip.name);
   // console.log('idling');
   // console.log(params.mixer.existingAction('Idle A'));
@@ -552,11 +549,10 @@ const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
 controls.enablePan = false
 controls.autoRotate = true;
-
-// controls.enableZoom = false
-// controls.maxAzimuthAngle = 1.8
-// controls.minAzimuthAngle = 1.2
-// controls.maxPolarAngle = 2.3
+controls.enableZoom = false
+controls.maxAzimuthAngle = 1.8
+controls.minAzimuthAngle = 1.2
+controls.maxPolarAngle = 2.3
 
 /**
  * Renderer
