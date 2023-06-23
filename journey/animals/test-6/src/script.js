@@ -49,7 +49,7 @@ let params = {
     'z1x-1': Math.PI * 1.75,
   },
   messageEmpty: false,
-  timeOfLastMessage: 0
+  outOfBounds: false
 }
 
 const speed = 0.05
@@ -431,9 +431,32 @@ function checkKey(e) {
 
 const validateMove = (axis, posOrNeg) => {
   if (posOrNeg == -1) {
-    return (camera.position[axis] > params.limits[axis][0])
+    if (camera.position[axis] > params.limits[axis][0]) {
+      return true
+    } else {
+      outOfBounds()
+      return false
+    }
   } else if (posOrNeg == 1) {
-    return (camera.position[axis] < params.limits[axis][1])
+    if (camera.position[axis] < params.limits[axis][1]) {
+      return true
+    } else {
+      outOfBounds()
+      return false
+    }
+  }
+}
+
+const outOfBounds = () => {
+  if (params.outOfBounds == false) {
+    params.outOfBounds = true;
+    infoContainer.innerHTML = '<h2 style="text-align: center;">Out of bounds</h2>'
+    infoContainer.classList.add('out-of-bounds')
+    console.log('Out of bounds');
+    setTimeout(() => {
+      params.outOfBounds = false;
+      infoContainer.classList.remove('out-of-bounds')
+    }, 1000);
   }
 }
 
