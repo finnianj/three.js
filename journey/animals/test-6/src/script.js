@@ -341,13 +341,13 @@ const circleGeometry = new THREE.CircleGeometry( 1, 32 );
 const torusGeometry = new THREE.TorusGeometry( 1, 0.05, 10, 100 );
 const portfolioItems = []
 
-const addPortfolioItem = (image, name, info, url, position, alpha = false) => {
+const addPortfolioItem = (image, name, url, position, alpha = false) => {
   const torusMaterial = new THREE.MeshStandardMaterial( { color: '#ff7f50' } );
   const circleMaterial = new THREE.MeshStandardMaterial();
   let texture = textureLoader.load(image);
   circleMaterial.map = texture
   if (alpha) {
-    circleMaterial.alphaMap = textureLoader.load('alpha.png')
+    circleMaterial.alphaMap = textureLoader.load(`${name}Alpha.png`)
     circleMaterial.transparent = true;
   }
   const circle = new THREE.Mesh( circleGeometry, circleMaterial );
@@ -384,12 +384,12 @@ const addPortfolioItem = (image, name, info, url, position, alpha = false) => {
 //   }
 // }
 
-addPortfolioItem('Moss.jpeg', 'moss', '', 'https://www.mossradio.live/users/sign_in', [1, 1, 4])
-addPortfolioItem('api.jpeg', 'api', 'My API!.. Built with Node.js and MongoDB.. Features several microservices, including a community music playlist', 'https://www.mossradio.live/users/sign_in', [-6, 1, -4])
-addPortfolioItem('pomodoro.png', 'widgets', 'info about widgets', 'https://www.mossradio.live/users/sign_in', [-13, 1, 4], true)
-addPortfolioItem('pomodoro.png', 'info', 'info about D3', 'https://www.mossradio.live/users/sign_in', [-20, 1, -4])
-addPortfolioItem('pomodoro.png', 'info', 'info for certs skills about', 'https://www.mossradio.live/users/sign_in', [-27, 1, 4])
-addPortfolioItem('pomodoro.png', 'info', 'info', 'https://www.mossradio.live/users/sign_in', [-35, 1, 4])
+addPortfolioItem('Moss.jpeg', 'moss', 'https://www.mossradio.live/users/sign_in', [1, 1, 4])
+addPortfolioItem('api.jpeg', 'api', '/api', [-6, 1, -4])
+addPortfolioItem('pomodoro.png', 'widgets', '/api#widgets', [-13, 1, 4], true)
+addPortfolioItem('america.png', 'd3', 'https://www.mossradio.live/users/sign_in', [-20, 1, -4], true)
+addPortfolioItem('pomodoro.png', 'info', 'https://www.mossradio.live/users/sign_in', [-27, 1, 4])
+addPortfolioItem('pomodoro.png', 'info', 'https://www.mossradio.live/users/sign_in', [-35, 1, 4])
 // console.log(portfolioItems);
 portfolioItems.forEach(i => scene.add(i))
 // document.addEventListener('click', onClick);
