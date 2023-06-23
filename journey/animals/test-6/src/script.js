@@ -139,7 +139,6 @@ const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight
 scene.add(directionalLightHelper)
 
 
-
 // --------------------
 // Particles
 // --------------------
@@ -860,3 +859,7 @@ const setControls = () => {
 }
 
 tick()
+
+
+// Todo: Add larger shadowed area
+// possibly add normal map to floor
