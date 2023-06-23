@@ -113,8 +113,8 @@ const floor = new THREE.Mesh(
   new THREE.PlaneGeometry(params.floorLength, params.floorWidth),
   new THREE.MeshStandardMaterial({
       color: params.color,
-      metalness: 0,
-      roughness: 0.5
+      metalness: 0.2,
+      roughness: 0
   })
 )
 floor.rotation.x = - Math.PI * 0.5
