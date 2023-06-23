@@ -865,3 +865,5 @@ tick()
 // possibly add normal map to floor
 // Separate widgets and d3 into their own hoops?
 // Add sound: visiting hoop, all hoops visited, secret song, default song
+
+// Angry: camera.pos.x -= 1, metal riff plays, background goes red, speed increases
