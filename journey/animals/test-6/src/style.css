@@ -14,8 +14,10 @@
 html,
 body
 {
-    overflow: hidden;
-    cursor: grab;
+  font-family: cherry;
+  overflow: hidden;
+  cursor: grab;
+  font-weight: 100;
 }
 
 .webgl
@@ -40,7 +42,6 @@ body
 }
 
 #text{
-  font-family: cherry;
   position: fixed;
   max-width: 40vw;
   top: 24vh;
@@ -50,20 +51,27 @@ body
 }
 
 #info{
+  font-family: monospace;
   position: fixed;
   top: 0;
   width: 100%;
   margin: 0 auto;
-  height: 10vh;
-  visibility: visible;
-  background-color: rgba(255, 127, 80, 0.515);
+  height: fit-content;
+  background-color: rgba(80, 86, 255, 0.515);
   padding: 10px;
   color: white;
-  font-size: 4vw;
+  font-size: 2vw;
+  opacity: 0;
+  transition: 1s;
 }
 
-#info .show{
-  visibility: visible;
+.show{
+  opacity: 1 !important;
+  transition: 1s;
+}
+
+.highlight {
+  color: rgb(4, 253, 58);
 }
 
 @keyframes fadeOut {

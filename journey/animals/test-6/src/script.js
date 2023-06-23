@@ -379,12 +379,7 @@ portfolioItems.forEach(i => scene.add(i))
 // testing area
 // testing area
 // testing area
-const infoHash = {
-  'moss': '<h2>Moss Radio</h2> <p>Ruby on Rails, PostgreSQL, Stimulus.js.</p><p>Features: live chat, live music stream, and beautifully smooth front end.</p>',
-  'api': 'This is my API',
-  'widgets': 'These are some widgets',
-  'info': 'This is a clock',
-}
+
 // const info = document.getElementById('info')
 // const showInfo = (item) => {
 //   const text = infoHash[item.object.userData.name]
@@ -470,8 +465,9 @@ const checkDistances = () => {
 }
 
 const typeInfo = (item) => {
-  const info = infohash[item.children[0].userData.name]
+  const info = infoHash[item.children[0].userData.name]
   infoContainer.innerHTML = info;
+  infoContainer.classList.add('show')
 }
 
 const randomMessage = () => {
@@ -662,6 +658,13 @@ const messages = [
   "🎵 A B C D E F G... 🎵 ",
   "Ha! You're feet are covered in sand!"
 ]
+
+const infoHash = {
+  'moss': '<h2 class="highlight">Moss Radio</h2> <p>Ruby on Rails, PostgreSQL, Stimulus.js.</p><h4 class="highlight">Features:</h4><p> Live chat, live music stream, and beautifully smooth front end.</p>',
+  'api': 'This is my API',
+  'widgets': 'These are some widgets',
+  'info': 'This is a clock',
+}
 
 const triggerAction = (actionName) => {
   const newAction = params.animations.find((a) => a.name == actionName)
