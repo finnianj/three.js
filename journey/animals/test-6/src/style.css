@@ -26,20 +26,16 @@ body
     top: 0;
     left: 0;
     outline: none;
+    opacity: 0;
+    transition: 1s;
+
 }
 
 .pointer-cursor{
   cursor: pointer;
 }
 
-.fadeout{
-  animation-name: fadeOut;
-  animation-duration: 1.5s;
-}
-.fadein{
-  animation-name: fadeIn;
-  animation-duration: 1s;
-}
+
 
 #text{
   position: fixed;

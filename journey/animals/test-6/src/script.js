@@ -522,7 +522,7 @@ scene.add(camera)
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
 controls.enablePan = false
-// controls.autoRotate = true;
+controls.autoRotate = true;
 
 // controls.enableZoom = false
 // controls.maxAzimuthAngle = 1.8
@@ -647,10 +647,6 @@ const tick = () => {
 // -----------------------------------------
 // -----------------------------------------
 
-const actions = {
-  3: "Jump",
-  5: "Roll"
-}
 
 const messages = [
   "Nice weather we're having, no?",
@@ -681,29 +677,17 @@ const triggerAction = (actionName) => {
 const messageContainer = document.getElementById('text')
 const infoContainer = document.getElementById('info')
 
-// document.getElementById('next').addEventListener('click', () => {
-//   params.messageNumber += 1;
-//   update()
-//   // // messageContainer.classList.add('animate__fadeOut')
-//   // setTimeout(() => {
-//   //   messageContainer.innerText = messages[params.message]
-//   //   // messageContainer.classList.remove('animate__fadeOut')
-//   //   messageContainer.classList.add('animate__fadeIn')
-//   // }, 0);
-// })
-// document.getElementById('previous').addEventListener('click', () => {
-//   params.messageNumber -= 1;
-//   update()
-// })
 
 window.onload = () => {
+  canvas.classList.add('show')
+
   let typed = new Typed(messageContainer, {
     strings: ["Oh, it's you!", "I'm glad you made it", " Let's have a look around, shall we?", " Use the arrow keys to move", ""],
     typeSpeed: 50,
     startDelay: 1000,
-    backDelay: 2000,
+    backDelay: 1000,
     fadeOut: true,
-    fadeOutDelay: 2000,
+    fadeOutDelay: 1000,
     showCursor: false,
     onStringTyped: () => {
       if (params.model.position.x != 8 || params.model.position.z != 0) {
@@ -729,6 +713,8 @@ window.onload = () => {
 }
 
 const endTyped = () => {
+  controls.autoRotate = false
+  setControls()
   setTimeout(() => {
     messageContainer.innerText = ""
     messageContainer.classList.add('show')
@@ -737,6 +723,18 @@ const endTyped = () => {
   setTimeout(() => {
     if (params.messageEmpty == true) randomMessage()
   }, 8000);
+}
+
+const setControls = () => {
+  canvas.classList.remove('show')
+  let p = params.model.position
+  controls.autoRotate = false;
+  camera.position.set(p.x + 2, 3, p.z)
+  controls.target.set(p.x, p.y + 1, p.z)
+  setTimeout(() => {
+    canvas.classList.add('show')
+  }, 1000);
+
 }
 
 tick()
