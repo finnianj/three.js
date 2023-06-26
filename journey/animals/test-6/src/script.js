@@ -227,6 +227,10 @@ const loadActions = () => {
   action1.setDuration(1.5)
   const action2 = params.mixer.clipAction(params.animations[16])
   action2.setDuration(1.5)
+  const action3 = params.mixer.clipAction(params.animations[2])
+  action3.setDuration(0.5)
+  action3.setLoop(THREE.LoopOnce)
+
 }
 
 const swim = () => {
@@ -257,18 +261,13 @@ const idle = () => {
 
 const squash = () => {
   randomMessage(true)
-  const action = params.mixer.clipAction(params.animations[2])
-  action.setLoop(THREE.LoopRepeat, 1)
-  action.setDuration(0.5)
+  params.mixer.stopAllAction()
+  params.mixer._actions.find(a => a._clip.name == 'Clicked').play()
 
   // params.number = (params.animations.indexOf(newAction) + 1)
 
-  params.mixer.stopAllAction()
-  action.play()
-
   params.mixer.addEventListener( 'finished', function( e	) {
     // console.log("Action finished. Uncaching...");
-    params.mixer.uncacheClip(action)
     params.mixer._actions.find(a => a._clip.name == 'Idle_A').play()
     // console.log(params.mixer);
   } )
