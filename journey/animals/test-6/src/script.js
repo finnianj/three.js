@@ -568,7 +568,6 @@ const randomMessage = (squash = false) => {
   }
   messageContainer.innerText = ""
   messageContainer.classList.add('show')
-  params.messageEmpty = false;
   let message = squash ? ouch[params.squashCount] || "" : messages[Math.floor(Math.random() * messages.length)]
   let typed = new Typed(messageContainer, {
     strings: [message],
@@ -578,7 +577,6 @@ const randomMessage = (squash = false) => {
     onComplete: () => {
       setTimeout(() => {
         messageContainer.classList.remove('show')
-        params.messageEmpty = true
         params.squashable = true
       }, 2000)
       params.messageTimeout = setTimeout(() => {
@@ -594,7 +592,7 @@ const randomMessage = (squash = false) => {
 const completed = () => {
   params.completedBanner = true;
   console.log('You completed it!');
-  infoContainer.innerHTML = '<h2 class="completed-text">Yazoo!</h2> <p>You visited all the hoops, congratulations!</p>'
+  infoContainer.innerHTML = '<h2>Yazoo!</h2> <p>You visited all the hoops, congratulations!</p>'
   infoContainer.classList.add('completed')
   setTimeout(() => {
     infoContainer.classList.remove('completed')
