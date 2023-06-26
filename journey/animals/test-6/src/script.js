@@ -54,7 +54,7 @@ let params = {
   outOfBounds: false,
   floorLength: 100,
   floorWidth: 70,
-  completed: 3,
+  completed: 0,
   completedBanner: false, // Set to true once the banner has been shown
   idle: true,
   squashable: true,
