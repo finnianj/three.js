@@ -49,6 +49,7 @@ let params = {
     'x-1z1': Math.PI * 1.75,
     'z1x-1': Math.PI * 1.75,
   },
+  speed: 0.05,
   messageEmpty: false,
   outOfBounds: false,
   floorLength: 100,
@@ -61,7 +62,6 @@ let params = {
   squashCount: 13
 }
 
-const speed = 0.05
 
 scene.background = new THREE.Color(params.background)
 
@@ -285,6 +285,11 @@ const angry = () => {
   fog.color = red
   scene.background = red
   params.model.scale.set(5,5,5)
+  params.speed = 0.2
+  params.limits = {
+    x: [-50, 50],
+    z: [-50, 50]
+  }
   params.model.rotation.y = Math.PI * 0.5
   camera.position.x += 2
   params.messageEmpty = false
@@ -296,13 +301,18 @@ const angry = () => {
       scene.background = resetColor
       params.model.scale.set(1,1,1)
       camera.position.x -= 2
+      params.speed = 0.05
+      params.limits = {
+        x: [-35, 12],
+        z: [-20, 20]
+      }
       params.messageEmpty = true
       audioPlayer.pause()
       audioPlayer.children[0].src = '/sounds/ambient.mp3'
       audioPlayer.load()
       audioPlayer.play()
     }, 500);
-  }, 10000);
+  }, 30000);
 
 }
 
@@ -704,10 +714,10 @@ const tick = () => {
 
       if (validateMove(axis1, axisDir1) && validateMove(axis2, axisDir2)) {
 
-        params.model.position[axis1] += speed * axisDir1
-        camera.position[axis1] += speed * axisDir1
-        params.model.position[axis2] += speed * axisDir2
-        camera.position[axis2] += speed * axisDir2
+        params.model.position[axis1] += params.speed * axisDir1
+        camera.position[axis1] += params.speed * axisDir1
+        params.model.position[axis2] += params.speed * axisDir2
+        camera.position[axis2] += params.speed * axisDir2
 
         let i = `${axis1}${axisDir1}${axis2}${axisDir2}`
         rotate(params.diagonalRotations[i])
@@ -726,8 +736,8 @@ const tick = () => {
 
       if (validateMove(axis, axisDir)) {
 
-        params.model.position[axis] += speed * axisDir
-        camera.position[axis] += speed * axisDir
+        params.model.position[axis] += params.speed * axisDir
+        camera.position[axis] += params.speed * axisDir
         rotate(params.heldKeys[0][2])
 
         let p = params.model.position || {x: 0, y: 2, z: 0}
