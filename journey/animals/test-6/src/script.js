@@ -291,7 +291,7 @@ const angry = () => {
   const red = new THREE.Color('#ff0000')
   fog.color = red
   scene.background = red
-  params.model.scale.set(5,5,5)
+  params.model.scale.set(3,3,3)
   params.speed = 0.2
   params.limits = {
     x: [-50, 50],
@@ -789,9 +789,9 @@ const messages = [
   "My friend showed me a multicolored shell today. Isn't that nice?",
   "🎵 A B C D E F G... 🎵 ",
   "Ha! You're feet are covered in sand!",
-  "Zzzzz...",
-  "Sometimes I fall asleep, and wake up in places I've never seen before",
-  "It's nice to clean the ocean floor. Where does all that junk come from?",
+  "...zzzzz...",
+  "Sometimes I fall asleep, and wake up in places I've never seen before!",
+  "It's nice to clean the ocean floor. But where does all that junk come from?",
   "Fish don't have feelings? Good thing I'm not a fish then.",
   "School was okay, but I preferred collecting shells.",
   "Would you like to see my ink drawings?",
@@ -799,7 +799,8 @@ const messages = [
   "Gosh, I'm thirsty!",
   "A long time ago, something huge fell down from the surface...",
   "The thing that fell from above...did you see it yet?",
-  "Once you're done here, I can take you to where the relic landed...",
+  "Once you're done here, maybe I can take you to where the relic landed...",
+  "The nearby relic scares me...I only go when I'm feeling brave."
 ]
 
 const ouch = [
