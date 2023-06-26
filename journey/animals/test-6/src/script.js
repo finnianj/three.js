@@ -109,16 +109,24 @@ window.addEventListener('mousemove', (e) => {
 /**
  * Floor
  */
-const floor = new THREE.Mesh(
-  new THREE.PlaneGeometry(params.floorLength, params.floorWidth),
-  new THREE.MeshStandardMaterial({
-      color: params.color,
-      metalness: 0.2,
-      roughness: 0
-  })
-)
+const floorColorTexture = textureLoader.load('textures/dirt/sand.jpg')
+floorColorTexture.colorSpace = THREE.SRGBColorSpace
+floorColorTexture.repeat.set(5, 5)
+floorColorTexture.wrapS = THREE.RepeatWrapping
+floorColorTexture.wrapT = THREE.RepeatWrapping
+
+const floorNormalTexture = textureLoader.load('textures/dirt/normal.jpg')
+floorNormalTexture.repeat.set(5, 5)
+floorNormalTexture.wrapS = THREE.RepeatWrapping
+floorNormalTexture.wrapT = THREE.RepeatWrapping
+
+const floorGeometry = new THREE.PlaneGeometry(params.floorLength, params.floorWidth)
+const floorMaterial = new THREE.MeshStandardMaterial({
+    map: floorColorTexture,
+    normalMap: floorNormalTexture
+})
+const floor = new THREE.Mesh(floorGeometry, floorMaterial)
 floor.rotation.x = - Math.PI * 0.5
-floor.position.x = -15
 scene.add(floor)
 
 /**
@@ -867,3 +875,6 @@ tick()
 // Add sound: visiting hoop, all hoops visited, secret song, default song
 
 // Angry: camera.pos.x -= 1, metal riff plays, background goes red, speed increases
+// facial expressions?
+// params.model.scale.set(3, 3, 3)
+// controls.autoRotate = true
