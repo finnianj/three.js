@@ -72,7 +72,7 @@ scene.background = new THREE.Color(params.background)
 
 // Fog
 const fog = new THREE.Fog(params.background, 1, 10)
-// scene.fog = fog
+scene.fog = fog
 
 
 /**
@@ -675,17 +675,20 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
-directionalLight.shadow.camera.left = -5
-directionalLight.shadow.camera.top = 5
-directionalLight.shadow.camera.right = 5
-directionalLight.shadow.camera.bottom = -5
+directionalLight.shadow.camera.left = -8
+directionalLight.shadow.camera.top = 8
+directionalLight.shadow.camera.right = 8
+directionalLight.shadow.camera.bottom = -8
 directionalLight.shadow.camera.near = 4
-directionalLight.shadow.camera.far = 10
+directionalLight.shadow.camera.far = 13
 
 floor.receiveShadow = true
 directionalLight.castShadow = true
 directionalLight.shadow.mapSize.set(1024, 1024)
 console.log(directionalLight.shadow.mapSize);
+
+const directionalLightCameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera)
+scene.add(directionalLightCameraHelper)
 
 /**
  * Animate
