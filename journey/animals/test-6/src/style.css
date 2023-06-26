@@ -39,11 +39,10 @@ body
 #text{
   position: fixed;
   max-width: 40vw;
-  top: 24vh;
+  bottom: 3vh;
   left: 19vw;
-  font-size: 30px;
-  color: #a3e8ff;
-  text-shadow: 1px 1px black;
+  font-size: 40px;
+  color: rgb(132, 0, 255);
   opacity: 0;
   transition: 1s;
 }

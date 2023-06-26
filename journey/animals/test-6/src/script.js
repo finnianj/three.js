@@ -3,14 +3,9 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
-import * as dat from 'lil-gui'
-
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
-
-// Debug
-const gui = new dat.GUI()
 
 // Scene
 const scene = new THREE.Scene()
@@ -506,10 +501,10 @@ function checkKey(e) {
     if (params.keyCodes[key]) {
       swim()
       params.heldKeys.push(params.keyCodes[key])
-      if (audioPlayer.paused == true) {
-        audioPlayer.currentTime = 0;
-        audioPlayer.play()
-      }
+      // if (audioPlayer.paused == true) {
+      //   audioPlayer.currentTime = 0;
+      //   audioPlayer.play()
+      // }
       // controls.reset()
     }
 
@@ -807,11 +802,20 @@ const messages = [
   "I've heard there is a whole world above the ocean...",
   "I enjoy working for Finn!",
   "Tell me, what is water? Finn always mentions it...",
-  "Recently I've become very fond of juggling. Have you tried it?",
+  "I'm good at juggling. Have you tried it?",
   "You know, it's so great that you're here.",
   "My friend showed me a multicolored shell today. Isn't that nice?",
   "🎵 A B C D E F G... 🎵 ",
-  "Ha! You're feet are covered in sand!"
+  "Ha! You're feet are covered in sand!",
+  "Zzzzz...",
+  "Sometimes I fall asleep, and wake up in places I've never seen before",
+  "It's nice to clean the ocean floor. Where does all that junk come from?",
+  "Fish don't have feelings? Good thing I'm not a fish then.",
+  "School was okay, but I preferred collecting shells.",
+  "Would you like to see my ink drawings?",
+  "A thumb war? No, thank you...",
+  "Gosh, I'm thirsty!",
+  "A long time ago, something huge fell down from the surface..."
 ]
 
 const ouch = [
@@ -835,10 +839,10 @@ const ouch = [
 ]
 
 const infoHash = {
-  'moss': '<h2 class="highlight">Moss Radio</h2> <p>Ruby on Rails, PostgreSQL, Stimulus.js.</p><h3 class="highlight">Features:</h3><p> Live chat, live music stream, beautifully smooth front end, user authentication.</p>',
-  'api': '<h2 class="highlight">My API</h2> <p>Node.js, MongoDB, Express.js</p><h3 class="highlight">Features:</h3><p> Four different API Microservices, including a community playlist - submit your favourite song!</p>',
-  'widgets': '<h2 class="highlight">Widgets</h2> <p>React, Typescript, JQuery</p><h3 class="highlight">Features:</h3><p>Pomodoro Clock, React Calculator, Drum Machine, Delivery Fee Calculator</p>',
-  'd3': '<h2 class="highlight">Data Visualisation</h2> <p>D3.js</p><h3 class="highlight">Features:</h3><p>US Education Data by County, Global Temperature Variance, Highest Grossing Films.</p',
+  'moss': '<h2 class="highlight">Moss Radio</h2> <p>Ruby on Rails, PostgreSQL, Stimulus.js.</p><h3 class="highlight">Includes:</h3><p> Live chat, live music stream, beautifully smooth front end, user authentication.</p>',
+  'api': '<h2 class="highlight">My API</h2> <p>Node.js, MongoDB, Express.js</p><h3 class="highlight">Includes:</h3><p> Four different API Microservices, including a community playlist - submit your favourite song!</p>',
+  'widgets': '<h2 class="highlight">Widgets</h2> <p>React, Typescript, JQuery</p><h3 class="highlight">Includes:</h3><p>Pomodoro Clock, React Calculator, Drum Machine, Delivery Fee Calculator</p>',
+  'd3': '<h2 class="highlight">Data Visualisation</h2> <p>D3.js</p><h3 class="highlight">Includes:</h3><p>US Education Data by County, Global Temperature Variance, Highest Grossing Films.</p',
   'info': '<h2 class="highlight">Certifications, Skills, About</h2><p>Here you can see all the certifications I have completed, as well as a full list of coding skills and a short bio.</p>',
 }
 
