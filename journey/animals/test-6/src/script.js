@@ -210,13 +210,13 @@ gltfLoader.load('/models/Omabuarts/animals/inkfish.glb', (gltf) => {
   )
 })
 
-gltfLoader.load('/models/Omabuarts/animals/herring.glb', (gltf) => {
-  gltf.scene.children[0].children[0].castShadow = true;
-  gltf.scene.position.y = 0.5
-  gltf.scene.position.x = 7
-  params.herring = gltf.scene
-  scene.add(gltf.scene)
-})
+// gltfLoader.load('/models/Omabuarts/animals/herring.glb', (gltf) => {
+//   gltf.scene.children[0].children[0].castShadow = true;
+//   gltf.scene.position.y = 0.5
+//   gltf.scene.position.x = 7
+//   params.herring = gltf.scene
+//   scene.add(gltf.scene)
+// })
 
 // --------------------
 // Squid Animations
@@ -590,11 +590,13 @@ const randomMessage = (squash = false) => {
 }
 
 const completed = () => {
+  params.messageEmpty = false;
   params.completedBanner = true;
   console.log('You completed it!');
   infoContainer.innerHTML = '<h2>Yazoo!</h2> <p>You visited all the hoops, congratulations!</p>'
   infoContainer.classList.add('completed')
   setTimeout(() => {
+    params.messageEmpty = true;
     infoContainer.classList.remove('completed')
   }, 5000);
 }
