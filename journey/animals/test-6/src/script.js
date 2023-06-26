@@ -26,7 +26,7 @@ let params = {
   particleSize: 0.1,
   keyCodes: {
     // In tick function:
-    // 1 is used for positive movement along axis, -1 for negative
+    // 1 is used for positive movement along axis, -1 for negative. 3rd value is rotation
     '37': ['z', 1, 0],
     '38': ['x', -1, Math.PI * 1.5],
     '39': ['z', -1, Math.PI],
@@ -39,6 +39,7 @@ let params = {
     z: [-20, 20]
   },
   diagonalRotations: {
+    // These rotational values are for when two keys are held simultaneously
     'z1x1': Math.PI * 0.25,
     'x1z1': Math.PI * 0.25,
     'z-1x1': Math.PI * 0.75,
@@ -48,17 +49,19 @@ let params = {
     'x-1z1': Math.PI * 1.75,
     'z1x-1': Math.PI * 1.75,
   },
+  speed: 0.05,
   messageEmpty: false,
   outOfBounds: false,
   floorLength: 100,
   floorWidth: 70,
   completed: 0,
+  completedBanner: false, // Set to true once the banner has been shown
   idle: true,
   squashable: true,
   squashCount: -1
+  // squashCount: 13
 }
 
-const speed = 0.05
 
 scene.background = new THREE.Color(params.background)
 
@@ -109,16 +112,24 @@ window.addEventListener('mousemove', (e) => {
 /**
  * Floor
  */
-const floor = new THREE.Mesh(
-  new THREE.PlaneGeometry(params.floorLength, params.floorWidth),
-  new THREE.MeshStandardMaterial({
-      color: params.color,
-      metalness: 0.2,
-      roughness: 0
-  })
-)
+const floorColorTexture = textureLoader.load('textures/dirt/sandy.jpg')
+floorColorTexture.colorSpace = THREE.SRGBColorSpace
+floorColorTexture.repeat.set(5, 5)
+floorColorTexture.wrapS = THREE.RepeatWrapping
+floorColorTexture.wrapT = THREE.RepeatWrapping
+
+const floorNormalTexture = textureLoader.load('textures/dirt/normal.jpg')
+floorNormalTexture.repeat.set(5, 5)
+floorNormalTexture.wrapS = THREE.RepeatWrapping
+floorNormalTexture.wrapT = THREE.RepeatWrapping
+
+const floorGeometry = new THREE.PlaneGeometry(params.floorLength, params.floorWidth)
+const floorMaterial = new THREE.MeshStandardMaterial({
+    map: floorColorTexture,
+    normalMap: floorNormalTexture
+})
+const floor = new THREE.Mesh(floorGeometry, floorMaterial)
 floor.rotation.x = - Math.PI * 0.5
-floor.position.x = -15
 scene.add(floor)
 
 /**
@@ -128,16 +139,19 @@ const ambientLight = new THREE.AmbientLight(0xffffff, 0.8)
 scene.add(ambientLight)
 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6)
-// directionalLight.shadow.camera.left = - 7
-// directionalLight.shadow.camera.top = 7
-// directionalLight.shadow.camera.right = 7
-// directionalLight.shadow.camera.bottom = - 7
-directionalLight.position.set(5, 5, 5)
+directionalLight.position.set(9, 6, 3)
 scene.add(directionalLight)
 
-const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight)
-scene.add(directionalLightHelper)
 
+// const dlHelper = new THREE.DirectionalLightHelper(directionalLight)
+// scene.add(dlHelper)
+
+
+// Audio
+const audioPlayer = document.getElementById('music')
+audioPlayer.volume = 0.7
+const effectPlayer = document.getElementById('effect')
+effectPlayer.volume = 0.6
 
 // --------------------
 // Particles
@@ -181,42 +195,56 @@ generateParticles()
 // Import Squid Model
 // --------------------
 
-gltfLoader.load('/models/Omabuarts/animals/inkfish.glb', (gltf) => {
+gltfLoader.load('/animals/inkfish.glb', (gltf) => {
   gltf.scene.children[0].children[0].castShadow = true;
   gltf.scene.position.y = 1
   gltf.scene.position.x = 8
   params.model = gltf.scene
+  console.log(gltf);
   scene.add(gltf.scene)
+  directionalLight.target = gltf.scene
   controls.target.set(8, 2, 0)
   mixer = new THREE.AnimationMixer(gltf.scene)
   params.mixer = mixer;
 
-  gltfLoader.load('/models/Omabuarts/animals/animations/inkfish_animations.glb',
+  gltfLoader.load('animals/animations/Inkfish_Idle_A.glb',
   (anim) => {
-    params.animations = anim.animations;
-    loadActions()
-    idle()
-  }
-  )
+    anim.animations[0].name = 'Idle_A'
+    gltfLoader.load('animals/animations/Inkfish_Swim.glb',
+    (anim2) => {
+      anim2.animations[0].name = 'Swim'
+      gltfLoader.load('animals/animations/Inkfish_Clicked.glb',
+      (anim3) => {
+        anim3.animations[0].name = 'Clicked'
+        params.animations = [anim.animations[0], anim2.animations[0], anim3.animations[0] ]
+        console.log(params.animations);
+        loadActions()
+        idle()
+      })
+    })
+  })
 })
 
-gltfLoader.load('/models/Omabuarts/animals/herring.glb', (gltf) => {
-  gltf.scene.children[0].children[0].castShadow = true;
-  gltf.scene.position.y = 0.5
-  gltf.scene.position.x = 7
-  params.herring = gltf.scene
-  scene.add(gltf.scene)
-})
+// gltfLoader.load('/models/Omabuarts/animals/herring.glb', (gltf) => {
+//   gltf.scene.children[0].children[0].castShadow = true;
+//   gltf.scene.position.y = 0.5
+//   gltf.scene.position.x = 7
+//   params.herring = gltf.scene
+//   scene.add(gltf.scene)
+// })
 
 // --------------------
 // Squid Animations
 // --------------------
 
 const loadActions = () => {
-  const action1 = params.mixer.clipAction(params.animations[8])
+  const action1 = params.mixer.clipAction(params.animations[0])
   action1.setDuration(1.5)
-  const action2 = params.mixer.clipAction(params.animations[16])
+  const action2 = params.mixer.clipAction(params.animations[1])
   action2.setDuration(1.5)
+  const action3 = params.mixer.clipAction(params.animations[2])
+  action3.setDuration(0.5)
+  action3.setLoop(THREE.LoopOnce)
 }
 
 const swim = () => {
@@ -237,31 +265,62 @@ const idle = () => {
       controls.autoRotate = true
     }
   }, 20000);
-  // console.log(params.mixer._actions[1]._clip.name);
-  // console.log('idling');
-  // console.log(params.mixer.existingAction('Idle A'));
-
-  // params.mixer.existingAction('Swim').stop()
-  // params.mixer.existingAction('Idle A').play()
 }
 
 const squash = () => {
   randomMessage(true)
-  const action = params.mixer.clipAction(params.animations[2])
-  action.setLoop(THREE.LoopRepeat, 1)
-  action.setDuration(0.5)
-
-  // params.number = (params.animations.indexOf(newAction) + 1)
-
   params.mixer.stopAllAction()
-  action.play()
+  params.mixer._actions.find(a => a._clip.name == 'Clicked').play()
+
+  if (params.squashCount == 16) {
+    angry()
+    params.squashCount = -1
+  }
 
   params.mixer.addEventListener( 'finished', function( e	) {
-    // console.log("Action finished. Uncaching...");
-    params.mixer.uncacheClip(action)
     params.mixer._actions.find(a => a._clip.name == 'Idle_A').play()
-    // console.log(params.mixer);
   } )
+}
+
+
+const angry = () => {
+  audioPlayer.pause()
+  audioPlayer.children[0].src = '/sounds/angry.mp3'
+  audioPlayer.load()
+  audioPlayer.play()
+  const red = new THREE.Color('#ff0000')
+  fog.color = red
+  scene.background = red
+  params.model.scale.set(5,5,5)
+  params.speed = 0.2
+  params.limits = {
+    x: [-50, 50],
+    z: [-50, 50]
+  }
+  params.model.rotation.y = Math.PI * 0.5
+  camera.position.x += 2
+  params.messageEmpty = false
+  setTimeout(() => {
+    setControls()
+    setTimeout(() => {
+      const resetColor = new THREE.Color(params.background)
+      fog.color = resetColor
+      scene.background = resetColor
+      params.model.scale.set(1,1,1)
+      camera.position.x -= 2
+      params.speed = 0.05
+      params.limits = {
+        x: [-35, 12],
+        z: [-20, 20]
+      }
+      params.messageEmpty = true
+      audioPlayer.pause()
+      audioPlayer.children[0].src = '/sounds/ambient.mp3'
+      audioPlayer.load()
+      audioPlayer.play()
+    }, 500);
+  }, 30000);
+
 }
 
 
@@ -271,16 +330,16 @@ const squash = () => {
 // // Plants
 // // --------------------
 
-const plantsDirectory = '/models/Omabuarts/models/nature/3d/OBJ/'
+
 const mtlLoader = new MTLLoader()
 const objLoader = new OBJLoader()
 
 const loadPlants = (path, number, maxScaleDifference, minScale, specifiedPosition = undefined) => {
 
-  mtlLoader.load( `${plantsDirectory}${path}.mtl`, function (materials) {
+  mtlLoader.load( `/environment/${path}.mtl`, function (materials) {
     materials.preload();
 
-    objLoader.setMaterials(materials).load(`${plantsDirectory}${path}.obj`, function (object) {
+    objLoader.setMaterials(materials).load(`/environment/${path}.obj`, function (object) {
       // object.children[0].material.shininess = 10
       let zArea= params.floorWidth;
       let xArea = params.floorLength;
@@ -357,7 +416,7 @@ const addPortfolioItem = (image, name, url, position, alpha = false) => {
   let texture = textureLoader.load(image);
   circleMaterial.map = texture
   if (alpha) {
-    circleMaterial.alphaMap = textureLoader.load(`${name}Alpha.png`)
+    circleMaterial.alphaMap = textureLoader.load(`/images/${name}Alpha.png`)
     circleMaterial.transparent = true;
   }
   const circle = new THREE.Mesh( circleGeometry, circleMaterial );
@@ -376,52 +435,24 @@ const addPortfolioItem = (image, name, url, position, alpha = false) => {
   portfolioItems.push(group)
 }
 
-// function onClick() {
-//   // Check for intersections when the mouse is clicked
-//   const intersects = raycaster.intersectObjects(portfolioItems, true);
+function onClick() {
+  const intersects = raycaster.intersectObjects(portfolioItems, true);
 
-//   if (intersects.length > 0) {
+  if (intersects.length > 0) {
+    const clickedObject = intersects[0].object;
+    console.log(clickedObject);
+    if (clickedObject.userData.url) {
+      window.open(clickedObject.userData.url, '_blank');
+    }
+  }
+}
 
-//     // An object was clicked
-//     const clickedObject = intersects[0].object;
-//     console.log(clickedObject);
-
-//     // Check if the clickedObject has a specific userData property
-//     if (clickedObject.userData.url) {
-//       // Redirect to the specified URL
-//       window.open(clickedObject.userData.url, '_blank');
-//     }
-//   }
-// }
-
-addPortfolioItem('Moss.jpeg', 'moss', 'https://www.mossradio.live/users/sign_in', [1, 1, 4])
-addPortfolioItem('api.jpeg', 'api', '/api', [-6, 1, -4])
-addPortfolioItem('pomodoro.png', 'widgets', '/api#widgets', [-13, 1, 4], true)
-addPortfolioItem('america.png', 'd3', 'https://www.mossradio.live/users/sign_in', [-20, 1, -4], true)
-addPortfolioItem('finn.png', 'info', 'https://www.mossradio.live/users/sign_in', [-27, 1, 4])
-addPortfolioItem('finn.png', 'info', 'https://www.mossradio.live/users/sign_in', [-35, 1, 4])
-// console.log(portfolioItems);
+addPortfolioItem('/images/Moss.jpeg', 'moss', 'https://www.mossradio.live/users/sign_in', [1, 1, 4])
+addPortfolioItem('/images/api.jpeg', 'api', '/api', [-6, 1, -4])
+addPortfolioItem('/images/pomodoro.png', 'widgets', '/simple#widgets', [-13, 1, 4], true)
+addPortfolioItem('/images/america.png', 'd3', '/simple#datavis', [-20, 1, -4], true)
+addPortfolioItem('/images/finn.png', 'info', '/simple#skills', [-27, 1, 4])
 portfolioItems.forEach(i => scene.add(i))
-// document.addEventListener('click', onClick);
-
-
-
-// testing area
-// testing area
-// testing area
-// testing area
-// testing area
-
-// const info = document.getElementById('info')
-// const showInfo = (item) => {
-//   const text = infoHash[item.object.userData.name]
-//   info.innerText = text
-//   info.classList.add('show-info')
-// }
-// const hideInfo = (item) => {
-//   info.classList.remove('show-info')
-// }
-
 
 document.onkeydown = checkKey;
 document.onkeyup = ((e) => {
@@ -444,12 +475,13 @@ let illegalKeys = [
 
 
 function checkKey(e) {
+  if (e.repeat) { return }
+  e = e || window.event;
+
   if (controls.autoRotate && e.keyCode != '32') {
     console.log('Resetting controls after autorotate');
     setControls()
   }
-  if (e.repeat) { return }
-  e = e || window.event;
 
   let key = e.keyCode
 
@@ -462,6 +494,10 @@ function checkKey(e) {
     if (params.keyCodes[key]) {
       swim()
       params.heldKeys.push(params.keyCodes[key])
+      // if (audioPlayer.paused == true) {
+      //   audioPlayer.currentTime = 0;
+      //   audioPlayer.play()
+      // }
       // controls.reset()
     }
 
@@ -518,18 +554,24 @@ const rotate = (targetRotation) => {
 const checkDistances = () => {
   portfolioItems.forEach((item)  => {
     if (params.model.position.distanceTo(item.position) < 2) {
-      params.messageEmpty = false
-      typeInfo(item)
+      showInfo(item)
       return
     }
   })
+  if (params.completedBanner == false && params.completed >= 5 && params.messageEmpty == true) completed()
+
 }
 
-const typeInfo = (item) => {
+const showInfo = (item) => {
+  console.log('info');
+  params.messageEmpty = false;
+
   clearTimeout(params.messageTimeout)
   if (item.children[2].material.color.b != 0) {
     item.children[2].material.color = new THREE.Color('gold')
     params.completed += 1
+    effectPlayer.currentTime = 0
+    effectPlayer.play()
   }
   const info = infoHash[item.children[0].userData.name]
   infoContainer.innerHTML = info;
@@ -538,7 +580,6 @@ const typeInfo = (item) => {
   setTimeout(() => {
     infoContainer.classList.remove('show')
     params.messageEmpty = true;
-    if (params.completed >= 5) completed()
 
     params.messageTimeout = setTimeout(() => {
       if (params.messageEmpty == true) randomMessage()
@@ -549,13 +590,12 @@ const typeInfo = (item) => {
 
 const randomMessage = (squash = false) => {
   clearTimeout(params.messageTimeout)
+  params.squashable = false
   if (squash) {
-    params.squashable = false
     params.squashCount += 1
   }
   messageContainer.innerText = ""
   messageContainer.classList.add('show')
-  params.messageEmpty = false;
   let message = squash ? ouch[params.squashCount] || "" : messages[Math.floor(Math.random() * messages.length)]
   let typed = new Typed(messageContainer, {
     strings: [message],
@@ -565,7 +605,6 @@ const randomMessage = (squash = false) => {
     onComplete: () => {
       setTimeout(() => {
         messageContainer.classList.remove('show')
-        params.messageEmpty = true
         params.squashable = true
       }, 2000)
       params.messageTimeout = setTimeout(() => {
@@ -579,10 +618,13 @@ const randomMessage = (squash = false) => {
 }
 
 const completed = () => {
-  console.log('You completed it!');
-  infoContainer.innerHTML = '<h2 class="completed-text">Yazoo!</h2> <p>You visited all the hoops, congratulations!</p><h3 class="completed-text">Unlocked:</h3><p> Galaxy Mode </p>'
+  clearTimeout(params.messageTimeout)
+  params.messageEmpty = false;
+  params.completedBanner = true;
+  infoContainer.innerHTML = '<h2>Yazoo!</h2> <p>You visited all the hoops, congratulations!</p>'
   infoContainer.classList.add('completed')
   setTimeout(() => {
+    params.messageEmpty = true;
     infoContainer.classList.remove('completed')
   }, 5000);
 }
@@ -624,9 +666,15 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
+directionalLight.shadow.camera.left = -9
+directionalLight.shadow.camera.top = 8
+directionalLight.shadow.camera.right = 8
+directionalLight.shadow.camera.bottom = -8
+directionalLight.shadow.camera.near = 4
+directionalLight.shadow.camera.far = 13
+
 floor.receiveShadow = true
 directionalLight.castShadow = true
-directionalLight.shadow.camera.far = 25
 directionalLight.shadow.mapSize.set(1024, 1024)
 
 
@@ -653,10 +701,13 @@ const tick = () => {
 
       if (validateMove(axis1, axisDir1) && validateMove(axis2, axisDir2)) {
 
-        params.model.position[axis1] += speed * axisDir1
-        camera.position[axis1] += speed * axisDir1
-        params.model.position[axis2] += speed * axisDir2
-        camera.position[axis2] += speed * axisDir2
+        params.model.position[axis1] += params.speed * axisDir1
+        camera.position[axis1] += params.speed * axisDir1
+        params.model.position[axis2] += params.speed * axisDir2
+        camera.position[axis2] += params.speed * axisDir2
+        directionalLight.position[axis1] += params.speed * axisDir1
+        directionalLight.position[axis2] += params.speed * axisDir2
+
 
         let i = `${axis1}${axisDir1}${axis2}${axisDir2}`
         rotate(params.diagonalRotations[i])
@@ -675,8 +726,9 @@ const tick = () => {
 
       if (validateMove(axis, axisDir)) {
 
-        params.model.position[axis] += speed * axisDir
-        camera.position[axis] += speed * axisDir
+        params.model.position[axis] += params.speed * axisDir
+        camera.position[axis] += params.speed * axisDir
+        directionalLight.position[axis] += params.speed * axisDir
         rotate(params.heldKeys[0][2])
 
         let p = params.model.position || {x: 0, y: 2, z: 0}
@@ -689,30 +741,19 @@ const tick = () => {
       checkDistances()
     }
 
-    if (params.herring) {
-      params.herring.position.x = Math.cos(elapsedTime * 0.1) * 10 - 10
-      params.herring.position.z = Math.sin(elapsedTime * 0.1) * 10
-      params.herring.rotation.y = elapsedTime * -0.1
-    }
-
-
-
     // Update controls
 
     controls.update()
 
-    // // Raycaster
-    // raycaster.setFromCamera(mouse, camera)
-    // let currentIntersect = null
-    // const intersects = raycaster.intersectObjects(portfolioItems, true)
+    // Raycaster
+    raycaster.setFromCamera(mouse, camera)
+    const intersects = raycaster.intersectObjects(portfolioItems, true)
 
-    // if (intersects.length) {
-    //   document.body.classList.add('pointer-cursor');
-    //   showInfo(intersects[0])
-    // } else {
-    //   document.body.classList.remove('pointer-cursor');
-    //   hideInfo()
-    // }
+    if (intersects.length) {
+      document.body.classList.add('pointer-cursor');
+    } else {
+      document.body.classList.remove('pointer-cursor');
+    }
 
     // Update mixer
     if (mixer != null) {
@@ -741,13 +782,24 @@ const messages = [
   "*guuuuuuuurrrrppp*",
   "🎵 Under the seaaaa....🎵",
   "I've heard there is a whole world above the ocean...",
-  "I enjoy working for Finn! He tells me about the world beyond.",
+  "I enjoy working for Finn!",
   "Tell me, what is water? Finn always mentions it...",
-  "Recently I've become very fond of juggling. Have you tried it?",
+  "I'm good at juggling. Have you tried it?",
   "You know, it's so great that you're here.",
   "My friend showed me a multicolored shell today. Isn't that nice?",
   "🎵 A B C D E F G... 🎵 ",
-  "Ha! You're feet are covered in sand!"
+  "Ha! You're feet are covered in sand!",
+  "Zzzzz...",
+  "Sometimes I fall asleep, and wake up in places I've never seen before",
+  "It's nice to clean the ocean floor. Where does all that junk come from?",
+  "Fish don't have feelings? Good thing I'm not a fish then.",
+  "School was okay, but I preferred collecting shells.",
+  "Would you like to see my ink drawings?",
+  "A thumb war? No, thank you...",
+  "Gosh, I'm thirsty!",
+  "A long time ago, something huge fell down from the surface...",
+  "The thing that fell from above...did you see it yet?",
+  "Once you're done here, I can take you to where the relic landed...",
 ]
 
 const ouch = [
@@ -761,33 +813,21 @@ const ouch = [
   "Stop it now.",
   "I mean it.",
   "I have ink, you know?",
+  "If you keep doing that, you're gonna be in a world of pain!",
+  "...",
+  "...",
   "Okay, last warning!",
   "...",
-  "hhhhHHHHHUUUUUUAAAAAAAA!",
-  "AAAAARRRRRRRR!",
-  "fffffffFFFAAAA!",
   "GLEICH KRIEGSTE EINS RICHTIG DOLL AUF DIE FRESSE!!!",
-  "...",
-  "...",
-  "...",
-  "...grrr....",
-  "If you keep doing that, you're gonna be in a world of pain!",
-  "No more Mr. Nice Squid!",
-  "You ugly b*stard!",
-  "Ok, what's your address?"
+  "hhhhHHHHHUUUUUUAAAAAAAA!"
 ]
 
 const infoHash = {
-  'moss': '<h2 class="highlight">Moss Radio</h2> <p>Ruby on Rails, PostgreSQL, Stimulus.js.</p><h3 class="highlight">Features:</h3><p> Live chat, live music stream, and beautifully smooth front end.</p>',
-  'api': '<h2 class="highlight">My API</h2> <p>Node.js, MongoDB, Express.js</p><h3 class="highlight">Features:</h3><p> 4 different API Microservices, including a community playlist - submit your favourite song!</p>',
-  'widgets': '<h2 class="highlight">Widgets</h2> <p>React, Typescript, JQuery</p><h3 class="highlight">Features:</h3><p>Pomodoro Clock, React Calculator, Drum Machine, Delivery Fee Calculator</p>',
-  'd3': '<h2 class="highlight">Data Visualisation</h2> <p>D3.js</p><h3 class="highlight">Features:</h3><p>Choropleth map of US Education by County, band graph of Global Temperature Variance, tree map of Highest Grossing Films.</p',
+  'moss': '<h2 class="highlight">Moss Radio</h2> <p>Ruby on Rails, PostgreSQL, Stimulus.js.</p><h3 class="highlight">Includes:</h3><p> Live chat, live music stream, beautifully smooth front end, user authentication.</p>',
+  'api': '<h2 class="highlight">My API</h2> <p>Node.js, MongoDB, Express.js</p><h3 class="highlight">Includes:</h3><p> Four different API Microservices, including a community playlist - submit your favourite song!</p>',
+  'widgets': '<h2 class="highlight">Widgets</h2> <p>React, Typescript, JQuery</p><h3 class="highlight">Includes:</h3><p>Pomodoro Clock, React Calculator, Drum Machine, Delivery Fee Calculator</p>',
+  'd3': '<h2 class="highlight">Data Visualisation</h2> <p>D3.js</p><h3 class="highlight">Includes:</h3><p>US Education Data by County, Global Temperature Variance, Highest Grossing Films.</p',
   'info': '<h2 class="highlight">Certifications, Skills, About</h2><p>Here you can see all the certifications I have completed, as well as a full list of coding skills and a short bio.</p>',
-}
-
-const triggerAction = (actionName) => {
-  const newAction = params.animations.find((a) => a.name == actionName)
-  doOnceThenWalk(newAction)
 }
 
 const messageContainer = document.getElementById('text')
@@ -796,6 +836,7 @@ const infoContainer = document.getElementById('info')
 
 window.onload = () => {
   canvas.classList.add('show')
+  if(window.innerWidth <= 800) return;
 
   let typed = new Typed(messageContainer, {
     strings: ["Oh, it's you!", "I'm glad you made it", " Let's have a look around, shall we?", " Use the arrow keys to move", ""],
@@ -859,9 +900,9 @@ const setControls = () => {
 }
 
 tick()
+document.addEventListener('click', onClick)
 
 
-// Todo: Add larger shadowed area
-// possibly add normal map to floor
 // Separate widgets and d3 into their own hoops?
-// Add sound: visiting hoop, all hoops visited, secret song, default song
+
+// facial expressions?

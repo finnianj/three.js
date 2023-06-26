@@ -28,7 +28,6 @@ body
     outline: none;
     opacity: 0;
     transition: 1s;
-
 }
 
 .pointer-cursor{
@@ -40,10 +39,10 @@ body
 #text{
   position: fixed;
   max-width: 40vw;
-  top: 24vh;
+  bottom: 3vh;
   left: 19vw;
-  font-size: 30px;
-  color: white;
+  font-size: 40px;
+  color: rgb(132, 0, 255);
   opacity: 0;
   transition: 1s;
 }
@@ -55,12 +54,13 @@ body
   width: 100%;
   margin: 0 auto;
   height: fit-content;
-  background-color: rgba(80, 86, 255, 0.515);
+  background-color: rgb(80 151 255 / 86%);
   padding: 10px;
   color: white;
   font-size: 20px;
   opacity: 0;
   transition: 1s;
+  text-align: center;
 }
 
 .show{
@@ -74,17 +74,40 @@ body
 }
 
 .completed {
+  background-color: rgb(32, 191, 0) !important;
   opacity: 1 !important;
-  transition: 1s;
-}
-
-.completed-text {
-  color:gold !important;
 }
 
 .highlight {
   color: rgb(4, 253, 58);
 }
+
+#simple-mode-link{
+  position: fixed;
+  top: 1vh;
+  right: 2vw;
+  font-size: 20px;
+  color: rgb(255, 255, 255);
+  opacity: 0.4;
+  text-decoration: none;
+}
+#simple-mode-link:hover{
+  opacity: 1;
+}
+
+.non-laptops-only{
+  position: fixed;
+  top: 5vh;
+  left: 2vw;
+  width: 90%;
+  height: fit-content;
+  padding: 2vw;
+  text-align: center;
+  font-size: 4vw;
+}
+
+
+
 
 @media (max-width:480px)  {
   /* smartphones, Android phones, landscape iPhone */
@@ -96,6 +119,8 @@ body
   }
 }
 @media (min-width:801px)  {
-  /* tablet, landscape iPad, lo-res laptops ands desktops */
-  /* give option for arrow movement on screen */
+
+  .non-laptops-only{
+    display: none;
+  }
 }
