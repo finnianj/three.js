@@ -26,7 +26,7 @@ let params = {
   particleSize: 0.1,
   keyCodes: {
     // In tick function:
-    // 1 is used for positive movement along axis, -1 for negative
+    // 1 is used for positive movement along axis, -1 for negative. 3rd value is rotation
     '37': ['z', 1, 0],
     '38': ['x', -1, Math.PI * 1.5],
     '39': ['z', -1, Math.PI],
@@ -39,6 +39,7 @@ let params = {
     z: [-20, 20]
   },
   diagonalRotations: {
+    // These rotational values are for when two keys are held simultaneously
     'z1x1': Math.PI * 0.25,
     'x1z1': Math.PI * 0.25,
     'z-1x1': Math.PI * 0.75,
@@ -52,7 +53,8 @@ let params = {
   outOfBounds: false,
   floorLength: 100,
   floorWidth: 70,
-  completed: 0,
+  completed: 4,
+  completedBanner: false, // Set to true once the banner has been shown
   idle: true,
   squashable: true,
   squashCount: -1
@@ -531,9 +533,13 @@ const checkDistances = () => {
       return
     }
   })
+  if (params.completedBanner == false && params.completed >= 5 && params.messageEmpty == true) completed()
+
 }
 
 const typeInfo = (item) => {
+  console.log('info');
+
   clearTimeout(params.messageTimeout)
   if (item.children[2].material.color.b != 0) {
     item.children[2].material.color = new THREE.Color('gold')
@@ -546,7 +552,6 @@ const typeInfo = (item) => {
   setTimeout(() => {
     infoContainer.classList.remove('show')
     params.messageEmpty = true;
-    if (params.completed >= 5) completed()
 
     params.messageTimeout = setTimeout(() => {
       if (params.messageEmpty == true) randomMessage()
@@ -587,8 +592,9 @@ const randomMessage = (squash = false) => {
 }
 
 const completed = () => {
+  params.completedBanner = true;
   console.log('You completed it!');
-  infoContainer.innerHTML = '<h2 class="completed-text">Yazoo!</h2> <p>You visited all the hoops, congratulations!</p><h3 class="completed-text">Unlocked:</h3><p> Galaxy Mode </p>'
+  infoContainer.innerHTML = '<h2 class="completed-text">Yazoo!</h2> <p>You visited all the hoops, congratulations!</p>'
   infoContainer.classList.add('completed')
   setTimeout(() => {
     infoContainer.classList.remove('completed')

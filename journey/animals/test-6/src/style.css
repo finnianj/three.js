@@ -61,6 +61,7 @@ body
   font-size: 20px;
   opacity: 0;
   transition: 1s;
+  text-align: center;
 }
 
 .show{
@@ -75,7 +76,6 @@ body
 
 .completed {
   opacity: 1 !important;
-  transition: 1s;
 }
 
 .completed-text {
