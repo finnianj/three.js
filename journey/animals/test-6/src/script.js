@@ -228,7 +228,6 @@ gltfLoader.load('/models/Omabuarts/animals/inkfish.glb', (gltf) => {
       })
     })
   })
-  console.log('hi');
 })
 
 // gltfLoader.load('/models/Omabuarts/animals/herring.glb', (gltf) => {
@@ -251,8 +250,6 @@ const loadActions = () => {
   const action3 = params.mixer.clipAction(params.animations[2])
   action3.setDuration(0.5)
   action3.setLoop(THREE.LoopOnce)
-  console.log(params.mixer);
-
 }
 
 const swim = () => {
@@ -273,12 +270,6 @@ const idle = () => {
       controls.autoRotate = true
     }
   }, 20000);
-  // console.log(params.mixer._actions[1]._clip.name);
-  // console.log('idling');
-  // console.log(params.mixer.existingAction('Idle A'));
-
-  // params.mixer.existingAction('Swim').stop()
-  // params.mixer.existingAction('Idle A').play()
 }
 
 const squash = () => {
