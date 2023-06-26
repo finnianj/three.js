@@ -144,11 +144,13 @@ const ambientLight = new THREE.AmbientLight(0xffffff, 0.8)
 scene.add(ambientLight)
 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6)
-directionalLight.position.set(5, 40, 5)
+directionalLight.position.set(9, 6, 3)
 scene.add(directionalLight)
 
-const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight)
-scene.add(directionalLightHelper)
+
+const dlHelper = new THREE.DirectionalLightHelper(directionalLight)
+scene.add(dlHelper)
+
 
 // Audio
 const audioPlayer = document.getElementById('music')
@@ -204,6 +206,7 @@ gltfLoader.load('/models/Omabuarts/animals/inkfish.glb', (gltf) => {
   gltf.scene.position.x = 8
   params.model = gltf.scene
   scene.add(gltf.scene)
+  directionalLight.target = gltf.scene
   controls.target.set(8, 2, 0)
   mixer = new THREE.AnimationMixer(gltf.scene)
   params.mixer = mixer;
@@ -458,19 +461,7 @@ addPortfolioItem('pomodoro.png', 'widgets', '/api#widgets', [-13, 1, 4], true)
 addPortfolioItem('america.png', 'd3', 'https://www.mossradio.live/users/sign_in', [-20, 1, -4], true)
 addPortfolioItem('finn.png', 'info', 'https://www.mossradio.live/users/sign_in', [-27, 1, 4])
 addPortfolioItem('finn.png', 'info', 'https://www.mossradio.live/users/sign_in', [-35, 1, 4])
-// console.log(portfolioItems);
 portfolioItems.forEach(i => scene.add(i))
-// document.addEventListener('click', onClick);
-
-
-
-// testing area
-// testing area
-// testing area
-// testing area
-// testing area
-
-
 
 document.onkeydown = checkKey;
 document.onkeyup = ((e) => {
@@ -684,12 +675,12 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
-directionalLight.shadow.camera.left = -45
-directionalLight.shadow.camera.top = 50
-directionalLight.shadow.camera.right = 45
-directionalLight.shadow.camera.bottom = -50
-directionalLight.shadow.camera.near = 35
-directionalLight.shadow.camera.far = 55
+directionalLight.shadow.camera.left = -5
+directionalLight.shadow.camera.top = 5
+directionalLight.shadow.camera.right = 5
+directionalLight.shadow.camera.bottom = -5
+directionalLight.shadow.camera.near = 4
+directionalLight.shadow.camera.far = 10
 
 floor.receiveShadow = true
 directionalLight.castShadow = true
@@ -723,6 +714,9 @@ const tick = () => {
         camera.position[axis1] += params.speed * axisDir1
         params.model.position[axis2] += params.speed * axisDir2
         camera.position[axis2] += params.speed * axisDir2
+        directionalLight.position[axis1] += params.speed * axisDir1
+        directionalLight.position[axis2] += params.speed * axisDir2
+
 
         let i = `${axis1}${axisDir1}${axis2}${axisDir2}`
         rotate(params.diagonalRotations[i])
@@ -743,6 +737,7 @@ const tick = () => {
 
         params.model.position[axis] += params.speed * axisDir
         camera.position[axis] += params.speed * axisDir
+        directionalLight.position[axis] += params.speed * axisDir
         rotate(params.heldKeys[0][2])
 
         let p = params.model.position || {x: 0, y: 2, z: 0}
