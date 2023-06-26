@@ -148,8 +148,8 @@ directionalLight.position.set(9, 6, 3)
 scene.add(directionalLight)
 
 
-const dlHelper = new THREE.DirectionalLightHelper(directionalLight)
-scene.add(dlHelper)
+// const dlHelper = new THREE.DirectionalLightHelper(directionalLight)
+// scene.add(dlHelper)
 
 
 // Audio
@@ -205,19 +205,30 @@ gltfLoader.load('/models/Omabuarts/animals/inkfish.glb', (gltf) => {
   gltf.scene.position.y = 1
   gltf.scene.position.x = 8
   params.model = gltf.scene
+  console.log(gltf);
   scene.add(gltf.scene)
   directionalLight.target = gltf.scene
   controls.target.set(8, 2, 0)
   mixer = new THREE.AnimationMixer(gltf.scene)
   params.mixer = mixer;
 
-  gltfLoader.load('/models/Omabuarts/animals/animations/inkfish_animations.glb',
+  gltfLoader.load('/models/Omabuarts/animals/animations/Inkfish_Idle_A.glb',
   (anim) => {
-    params.animations = anim.animations;
-    loadActions()
-    idle()
-  }
-  )
+    anim.animations[0].name = 'Idle_A'
+    gltfLoader.load('/models/Omabuarts/animals/animations/Inkfish_Swim.glb',
+    (anim2) => {
+      anim2.animations[0].name = 'Swim'
+      gltfLoader.load('/models/Omabuarts/animals/animations/Inkfish_Clicked.glb',
+      (anim3) => {
+        anim3.animations[0].name = 'Clicked'
+        params.animations = [anim.animations[0], anim2.animations[0], anim3.animations[0] ]
+        console.log(params.animations);
+        loadActions()
+        idle()
+      })
+    })
+  })
+  console.log('hi');
 })
 
 // gltfLoader.load('/models/Omabuarts/animals/herring.glb', (gltf) => {
@@ -233,13 +244,14 @@ gltfLoader.load('/models/Omabuarts/animals/inkfish.glb', (gltf) => {
 // --------------------
 
 const loadActions = () => {
-  const action1 = params.mixer.clipAction(params.animations[8])
+  const action1 = params.mixer.clipAction(params.animations[0])
   action1.setDuration(1.5)
-  const action2 = params.mixer.clipAction(params.animations[16])
+  const action2 = params.mixer.clipAction(params.animations[1])
   action2.setDuration(1.5)
   const action3 = params.mixer.clipAction(params.animations[2])
   action3.setDuration(0.5)
   action3.setLoop(THREE.LoopOnce)
+  console.log(params.mixer);
 
 }
 
