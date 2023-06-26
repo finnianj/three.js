@@ -28,7 +28,6 @@ body
     outline: none;
     opacity: 0;
     transition: 1s;
-
 }
 
 .pointer-cursor{
@@ -97,6 +96,16 @@ body
   opacity: 1;
 }
 
+.non-laptops-only{
+  position: fixed;
+  bottom: 2vh;
+  left: 2vw;
+  width: 80%;
+  text-align: center;
+  font-size: 4vw;
+}
+
+
 
 
 @media (max-width:480px)  {
@@ -109,6 +118,8 @@ body
   }
 }
 @media (min-width:801px)  {
-  /* tablet, landscape iPad, lo-res laptops ands desktops */
-  /* give option for arrow movement on screen */
+
+  .non-laptops-only{
+    display: none;
+  }
 }

@@ -847,7 +847,9 @@ const infoContainer = document.getElementById('info')
 
 
 window.onload = () => {
+  // if document.getElementById('mobile').classList.includes('')
   canvas.classList.add('show')
+  if(window.innerWidth <= 800) return;
 
   let typed = new Typed(messageContainer, {
     strings: ["Oh, it's you!", "I'm glad you made it", " Let's have a look around, shall we?", " Use the arrow keys to move", ""],
