@@ -97,9 +97,11 @@ body
 
 .non-laptops-only{
   position: fixed;
-  bottom: 2vh;
+  top: 5vh;
   left: 2vw;
-  width: 80%;
+  width: 90%;
+  height: fit-content;
+  padding: 2vw;
   text-align: center;
   font-size: 4vw;
 }

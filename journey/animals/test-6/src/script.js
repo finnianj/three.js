@@ -435,30 +435,23 @@ const addPortfolioItem = (image, name, url, position, alpha = false) => {
   portfolioItems.push(group)
 }
 
-// function onClick() {
-//   // Check for intersections when the mouse is clicked
-//   const intersects = raycaster.intersectObjects(portfolioItems, true);
+function onClick() {
+  const intersects = raycaster.intersectObjects(portfolioItems, true);
 
-//   if (intersects.length > 0) {
-
-//     // An object was clicked
-//     const clickedObject = intersects[0].object;
-//     console.log(clickedObject);
-
-//     // Check if the clickedObject has a specific userData property
-//     if (clickedObject.userData.url) {
-//       // Redirect to the specified URL
-//       window.open(clickedObject.userData.url, '_blank');
-//     }
-//   }
-// }
+  if (intersects.length > 0) {
+    const clickedObject = intersects[0].object;
+    console.log(clickedObject);
+    if (clickedObject.userData.url) {
+      window.open(clickedObject.userData.url, '_blank');
+    }
+  }
+}
 
 addPortfolioItem('/images/Moss.jpeg', 'moss', 'https://www.mossradio.live/users/sign_in', [1, 1, 4])
 addPortfolioItem('/images/api.jpeg', 'api', '/api', [-6, 1, -4])
-addPortfolioItem('/images/pomodoro.png', 'widgets', '/api#widgets', [-13, 1, 4], true)
-addPortfolioItem('/images/america.png', 'd3', 'https://www.mossradio.live/users/sign_in', [-20, 1, -4], true)
-addPortfolioItem('/images/finn.png', 'info', 'https://www.mossradio.live/users/sign_in', [-27, 1, 4])
-addPortfolioItem('/images/finn.png', 'info', 'https://www.mossradio.live/users/sign_in', [-35, 1, 4])
+addPortfolioItem('/images/pomodoro.png', 'widgets', '/simple#widgets', [-13, 1, 4], true)
+addPortfolioItem('/images/america.png', 'd3', '/simple#datavis', [-20, 1, -4], true)
+addPortfolioItem('/images/finn.png', 'info', '/simple#skills', [-27, 1, 4])
 portfolioItems.forEach(i => scene.add(i))
 
 document.onkeydown = checkKey;
@@ -748,30 +741,19 @@ const tick = () => {
       checkDistances()
     }
 
-    if (params.herring) {
-      params.herring.position.x = Math.cos(elapsedTime * 0.1) * 10 - 10
-      params.herring.position.z = Math.sin(elapsedTime * 0.1) * 10
-      params.herring.rotation.y = elapsedTime * -0.1
-    }
-
-
-
     // Update controls
 
     controls.update()
 
-    // // Raycaster
-    // raycaster.setFromCamera(mouse, camera)
-    // let currentIntersect = null
-    // const intersects = raycaster.intersectObjects(portfolioItems, true)
+    // Raycaster
+    raycaster.setFromCamera(mouse, camera)
+    const intersects = raycaster.intersectObjects(portfolioItems, true)
 
-    // if (intersects.length) {
-    //   document.body.classList.add('pointer-cursor');
-    //   showInfo(intersects[0])
-    // } else {
-    //   document.body.classList.remove('pointer-cursor');
-    //   hideInfo()
-    // }
+    if (intersects.length) {
+      document.body.classList.add('pointer-cursor');
+    } else {
+      document.body.classList.remove('pointer-cursor');
+    }
 
     // Update mixer
     if (mixer != null) {
@@ -815,7 +797,9 @@ const messages = [
   "Would you like to see my ink drawings?",
   "A thumb war? No, thank you...",
   "Gosh, I'm thirsty!",
-  "A long time ago, something huge fell down from the surface..."
+  "A long time ago, something huge fell down from the surface...",
+  "The thing that fell from above...did you see it yet?",
+  "Once you're done here, I can take you to where the relic landed...",
 ]
 
 const ouch = [
@@ -851,7 +835,6 @@ const infoContainer = document.getElementById('info')
 
 
 window.onload = () => {
-  // if document.getElementById('mobile').classList.includes('')
   canvas.classList.add('show')
   if(window.innerWidth <= 800) return;
 
@@ -917,14 +900,9 @@ const setControls = () => {
 }
 
 tick()
+document.addEventListener('click', onClick)
 
 
-// Todo: Add larger shadowed area
-// possibly add normal map to floor
 // Separate widgets and d3 into their own hoops?
-// Add sound: visiting hoop, all hoops visited, secret song, default song
 
-// Angry: camera.pos.x -= 1, metal riff plays, background goes red, speed increases
 // facial expressions?
-// params.model.scale.set(3, 3, 3)
-// controls.autoRotate = true
