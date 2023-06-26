@@ -54,7 +54,7 @@ let params = {
   outOfBounds: false,
   floorLength: 100,
   floorWidth: 70,
-  completed: 4,
+  completed: 3,
   completedBanner: false, // Set to true once the banner has been shown
   idle: true,
   squashable: true,
@@ -112,7 +112,7 @@ window.addEventListener('mousemove', (e) => {
 /**
  * Floor
  */
-const floorColorTexture = textureLoader.load('textures/dirt/sand.jpg')
+const floorColorTexture = textureLoader.load('textures/dirt/sandy.jpg')
 floorColorTexture.colorSpace = THREE.SRGBColorSpace
 floorColorTexture.repeat.set(5, 5)
 floorColorTexture.wrapS = THREE.RepeatWrapping
@@ -466,15 +466,6 @@ portfolioItems.forEach(i => scene.add(i))
 // testing area
 // testing area
 
-// const info = document.getElementById('info')
-// const showInfo = (item) => {
-//   const text = infoHash[item.object.userData.name]
-//   info.innerText = text
-//   info.classList.add('show-info')
-// }
-// const hideInfo = (item) => {
-//   info.classList.remove('show-info')
-// }
 
 
 document.onkeydown = checkKey;
@@ -577,7 +568,6 @@ const rotate = (targetRotation) => {
 const checkDistances = () => {
   portfolioItems.forEach((item)  => {
     if (params.model.position.distanceTo(item.position) < 2) {
-      params.messageEmpty = false
       showInfo(item)
       return
     }
@@ -588,6 +578,7 @@ const checkDistances = () => {
 
 const showInfo = (item) => {
   console.log('info');
+  params.messageEmpty = false;
 
   clearTimeout(params.messageTimeout)
   if (item.children[2].material.color.b != 0) {
@@ -641,9 +632,9 @@ const randomMessage = (squash = false) => {
 }
 
 const completed = () => {
+  clearTimeout(params.messageTimeout)
   params.messageEmpty = false;
   params.completedBanner = true;
-  console.log('You completed it!');
   infoContainer.innerHTML = '<h2>Yazoo!</h2> <p>You visited all the hoops, congratulations!</p>'
   infoContainer.classList.add('completed')
   setTimeout(() => {
