@@ -57,7 +57,8 @@ let params = {
   completedBanner: false, // Set to true once the banner has been shown
   idle: true,
   squashable: true,
-  squashCount: -1
+  // squashCount: -1
+  squashCount: 13
 }
 
 const speed = 0.05
@@ -264,13 +265,33 @@ const squash = () => {
   params.mixer.stopAllAction()
   params.mixer._actions.find(a => a._clip.name == 'Clicked').play()
 
-  // params.number = (params.animations.indexOf(newAction) + 1)
+  if (params.squashCount == 15) angry()
 
   params.mixer.addEventListener( 'finished', function( e	) {
-    // console.log("Action finished. Uncaching...");
     params.mixer._actions.find(a => a._clip.name == 'Idle_A').play()
-    // console.log(params.mixer);
   } )
+}
+
+const angry = () => {
+  const red = new THREE.Color('#ff0000')
+  fog.color = red
+  scene.background = red
+  params.model.scale.set(5,5,5)
+  params.model.rotation.y = Math.PI * 0.5
+  camera.position.x += 2
+  params.messageEmpty = false
+  setTimeout(() => {
+    setControls()
+    setTimeout(() => {
+      const resetColor = new THREE.Color(params.background)
+      fog.color = resetColor
+      scene.background = resetColor
+      params.model.scale.set(1,1,1)
+      camera.position.x -= 2
+      params.messageEmpty = true
+    }, 500);
+  }, 10000);
+
 }
 
 
