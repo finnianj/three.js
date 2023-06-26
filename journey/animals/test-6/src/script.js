@@ -272,7 +272,13 @@ const squash = () => {
   } )
 }
 
+const audioPlayer = document.getElementById('myAudio')
+audioPlayer.volume = 0.9
+// audioPlayer.children[0].src = '/sounds/angry.mp3'
+console.log(audioPlayer.children[0].src);
+
 const angry = () => {
+  audioPlayer.play()
   const red = new THREE.Color('#ff0000')
   fog.color = red
   scene.background = red
