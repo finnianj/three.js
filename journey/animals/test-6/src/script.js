@@ -277,6 +277,7 @@ const squash = () => {
 
 
 const angry = () => {
+  audioPlayer.pause()
   audioPlayer.children[0].src = '/sounds/angry.mp3'
   audioPlayer.load()
   audioPlayer.play()
@@ -296,6 +297,10 @@ const angry = () => {
       params.model.scale.set(1,1,1)
       camera.position.x -= 2
       params.messageEmpty = true
+      audioPlayer.pause()
+      audioPlayer.children[0].src = '/sounds/ambient.mp3'
+      audioPlayer.load()
+      audioPlayer.play()
     }, 500);
   }, 10000);
 
@@ -481,12 +486,13 @@ let illegalKeys = [
 
 
 function checkKey(e) {
+  if (e.repeat) { return }
+  e = e || window.event;
+
   if (controls.autoRotate && e.keyCode != '32') {
     console.log('Resetting controls after autorotate');
     setControls()
   }
-  if (e.repeat) { return }
-  e = e || window.event;
 
   let key = e.keyCode
 
@@ -499,6 +505,10 @@ function checkKey(e) {
     if (params.keyCodes[key]) {
       swim()
       params.heldKeys.push(params.keyCodes[key])
+      if (audioPlayer.paused == true) {
+        audioPlayer.currentTime = 0;
+        audioPlayer.play()
+      }
       // controls.reset()
     }
 
@@ -556,7 +566,7 @@ const checkDistances = () => {
   portfolioItems.forEach((item)  => {
     if (params.model.position.distanceTo(item.position) < 2) {
       params.messageEmpty = false
-      typeInfo(item)
+      showInfo(item)
       return
     }
   })
@@ -564,7 +574,7 @@ const checkDistances = () => {
 
 }
 
-const typeInfo = (item) => {
+const showInfo = (item) => {
   console.log('info');
 
   clearTimeout(params.messageTimeout)
@@ -589,8 +599,8 @@ const typeInfo = (item) => {
 
 const randomMessage = (squash = false) => {
   clearTimeout(params.messageTimeout)
+  params.squashable = false
   if (squash) {
-    params.squashable = false
     params.squashCount += 1
   }
   messageContainer.innerText = ""
@@ -824,11 +834,6 @@ const infoHash = {
   'widgets': '<h2 class="highlight">Widgets</h2> <p>React, Typescript, JQuery</p><h3 class="highlight">Features:</h3><p>Pomodoro Clock, React Calculator, Drum Machine, Delivery Fee Calculator</p>',
   'd3': '<h2 class="highlight">Data Visualisation</h2> <p>D3.js</p><h3 class="highlight">Features:</h3><p>Choropleth map of US Education by County, band graph of Global Temperature Variance, tree map of Highest Grossing Films.</p',
   'info': '<h2 class="highlight">Certifications, Skills, About</h2><p>Here you can see all the certifications I have completed, as well as a full list of coding skills and a short bio.</p>',
-}
-
-const triggerAction = (actionName) => {
-  const newAction = params.animations.find((a) => a.name == actionName)
-  doOnceThenWalk(newAction)
 }
 
 const messageContainer = document.getElementById('text')
