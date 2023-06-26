@@ -675,7 +675,7 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
-directionalLight.shadow.camera.left = -8
+directionalLight.shadow.camera.left = -9
 directionalLight.shadow.camera.top = 8
 directionalLight.shadow.camera.right = 8
 directionalLight.shadow.camera.bottom = -8
@@ -685,10 +685,7 @@ directionalLight.shadow.camera.far = 13
 floor.receiveShadow = true
 directionalLight.castShadow = true
 directionalLight.shadow.mapSize.set(1024, 1024)
-console.log(directionalLight.shadow.mapSize);
 
-const directionalLightCameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera)
-scene.add(directionalLightCameraHelper)
 
 /**
  * Animate
