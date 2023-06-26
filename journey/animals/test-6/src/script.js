@@ -3,9 +3,14 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
+import * as dat from 'lil-gui'
+
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
+
+// Debug
+const gui = new dat.GUI()
 
 // Scene
 const scene = new THREE.Scene()
@@ -58,8 +63,8 @@ let params = {
   completedBanner: false, // Set to true once the banner has been shown
   idle: true,
   squashable: true,
-  // squashCount: -1
-  squashCount: 13
+  squashCount: -1
+  // squashCount: 13
 }
 
 
@@ -67,7 +72,7 @@ scene.background = new THREE.Color(params.background)
 
 // Fog
 const fog = new THREE.Fog(params.background, 1, 10)
-scene.fog = fog
+// scene.fog = fog
 
 
 /**
@@ -139,11 +144,7 @@ const ambientLight = new THREE.AmbientLight(0xffffff, 0.8)
 scene.add(ambientLight)
 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6)
-// directionalLight.shadow.camera.left = - 7
-// directionalLight.shadow.camera.top = 7
-// directionalLight.shadow.camera.right = 7
-// directionalLight.shadow.camera.bottom = - 7
-directionalLight.position.set(5, 5, 5)
+directionalLight.position.set(5, 40, 5)
 scene.add(directionalLight)
 
 const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight)
@@ -151,9 +152,9 @@ scene.add(directionalLightHelper)
 
 // Audio
 const audioPlayer = document.getElementById('music')
-audioPlayer.volume = 0.9
+audioPlayer.volume = 0.7
 const effectPlayer = document.getElementById('effect')
-effectPlayer.volume = 0.9
+effectPlayer.volume = 0.6
 
 // --------------------
 // Particles
@@ -270,7 +271,10 @@ const squash = () => {
   params.mixer.stopAllAction()
   params.mixer._actions.find(a => a._clip.name == 'Clicked').play()
 
-  if (params.squashCount == 15) angry()
+  if (params.squashCount == 16) {
+    angry()
+    params.squashCount = -1
+  }
 
   params.mixer.addEventListener( 'finished', function( e	) {
     params.mixer._actions.find(a => a._clip.name == 'Idle_A').play()
@@ -680,11 +684,17 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
+directionalLight.shadow.camera.left = -45
+directionalLight.shadow.camera.top = 50
+directionalLight.shadow.camera.right = 45
+directionalLight.shadow.camera.bottom = -50
+directionalLight.shadow.camera.near = 35
+directionalLight.shadow.camera.far = 55
+
 floor.receiveShadow = true
 directionalLight.castShadow = true
-directionalLight.shadow.camera.far = 25
 directionalLight.shadow.mapSize.set(1024, 1024)
-
+console.log(directionalLight.shadow.mapSize);
 
 /**
  * Animate
@@ -797,7 +807,7 @@ const messages = [
   "*guuuuuuuurrrrppp*",
   "🎵 Under the seaaaa....🎵",
   "I've heard there is a whole world above the ocean...",
-  "I enjoy working for Finn! He tells me about the world beyond.",
+  "I enjoy working for Finn!",
   "Tell me, what is water? Finn always mentions it...",
   "Recently I've become very fond of juggling. Have you tried it?",
   "You know, it's so great that you're here.",
@@ -817,27 +827,20 @@ const ouch = [
   "Stop it now.",
   "I mean it.",
   "I have ink, you know?",
+  "If you keep doing that, you're gonna be in a world of pain!",
+  "...",
+  "...",
   "Okay, last warning!",
   "...",
-  "hhhhHHHHHUUUUUUAAAAAAAA!",
-  "AAAAARRRRRRRR!",
-  "fffffffFFFAAAA!",
   "GLEICH KRIEGSTE EINS RICHTIG DOLL AUF DIE FRESSE!!!",
-  "...",
-  "...",
-  "...",
-  "...grrr....",
-  "If you keep doing that, you're gonna be in a world of pain!",
-  "No more Mr. Nice Squid!",
-  "You ugly b*stard!",
-  "Ok, what's your address?"
+  "hhhhHHHHHUUUUUUAAAAAAAA!"
 ]
 
 const infoHash = {
-  'moss': '<h2 class="highlight">Moss Radio</h2> <p>Ruby on Rails, PostgreSQL, Stimulus.js.</p><h3 class="highlight">Features:</h3><p> Live chat, live music stream, beautifully smooth front end.</p>',
-  'api': '<h2 class="highlight">My API</h2> <p>Node.js, MongoDB, Express.js</p><h3 class="highlight">Features:</h3><p> 4 different API Microservices, including a community playlist - submit your favourite song!</p>',
+  'moss': '<h2 class="highlight">Moss Radio</h2> <p>Ruby on Rails, PostgreSQL, Stimulus.js.</p><h3 class="highlight">Features:</h3><p> Live chat, live music stream, beautifully smooth front end, user authentication.</p>',
+  'api': '<h2 class="highlight">My API</h2> <p>Node.js, MongoDB, Express.js</p><h3 class="highlight">Features:</h3><p> Four different API Microservices, including a community playlist - submit your favourite song!</p>',
   'widgets': '<h2 class="highlight">Widgets</h2> <p>React, Typescript, JQuery</p><h3 class="highlight">Features:</h3><p>Pomodoro Clock, React Calculator, Drum Machine, Delivery Fee Calculator</p>',
-  'd3': '<h2 class="highlight">Data Visualisation</h2> <p>D3.js</p><h3 class="highlight">Features:</h3><p>Choropleth map of US Education by County, band graph of Global Temperature Variance, tree map of Highest Grossing Films.</p',
+  'd3': '<h2 class="highlight">Data Visualisation</h2> <p>D3.js</p><h3 class="highlight">Features:</h3><p>US Education Data by County, band graph of Global Temperature Variance, tree map of Highest Grossing Films.</p',
   'info': '<h2 class="highlight">Certifications, Skills, About</h2><p>Here you can see all the certifications I have completed, as well as a full list of coding skills and a short bio.</p>',
 }
 

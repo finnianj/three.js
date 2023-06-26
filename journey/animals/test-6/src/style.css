@@ -43,7 +43,8 @@ body
   top: 24vh;
   left: 19vw;
   font-size: 30px;
-  color: white;
+  color: rgb(216 165 255);
+  text-shadow: 1px 1px black;
   opacity: 0;
   transition: 1s;
 }
@@ -55,7 +56,7 @@ body
   width: 100%;
   margin: 0 auto;
   height: fit-content;
-  background-color: rgba(80, 86, 255, 0.515);
+  background-color: rgb(80 151 255 / 86%);
   padding: 10px;
   color: white;
   font-size: 20px;
@@ -82,6 +83,21 @@ body
 .highlight {
   color: rgb(4, 253, 58);
 }
+
+#simple-mode-link{
+  position: fixed;
+  top: 1vh;
+  right: 2vw;
+  font-size: 20px;
+  color: rgb(255, 255, 255);
+  opacity: 0.4;
+  text-decoration: none;
+}
+#simple-mode-link:hover{
+  opacity: 1;
+}
+
+
 
 @media (max-width:480px)  {
   /* smartphones, Android phones, landscape iPhone */
