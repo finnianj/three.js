@@ -150,8 +150,10 @@ const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight
 scene.add(directionalLightHelper)
 
 // Audio
-const audioPlayer = document.getElementById('myAudio')
+const audioPlayer = document.getElementById('music')
 audioPlayer.volume = 0.9
+const effectPlayer = document.getElementById('effect')
+effectPlayer.volume = 0.9
 
 // --------------------
 // Particles
@@ -591,6 +593,8 @@ const showInfo = (item) => {
   if (item.children[2].material.color.b != 0) {
     item.children[2].material.color = new THREE.Color('gold')
     params.completed += 1
+    effectPlayer.currentTime = 0
+    effectPlayer.play()
   }
   const info = infoHash[item.children[0].userData.name]
   infoContainer.innerHTML = info;
