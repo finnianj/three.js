@@ -11,7 +11,7 @@ export default {
     },
     build:
     {
-        outDir: '../dist',
+        outDir: './bundled',
         emptyOutDir: true,
         sourcemap: true
     }

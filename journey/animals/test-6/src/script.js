@@ -195,7 +195,7 @@ generateParticles()
 // Import Squid Model
 // --------------------
 
-gltfLoader.load('/models/Omabuarts/animals/inkfish.glb', (gltf) => {
+gltfLoader.load('/animals/inkfish.glb', (gltf) => {
   gltf.scene.children[0].children[0].castShadow = true;
   gltf.scene.position.y = 1
   gltf.scene.position.x = 8
@@ -207,13 +207,13 @@ gltfLoader.load('/models/Omabuarts/animals/inkfish.glb', (gltf) => {
   mixer = new THREE.AnimationMixer(gltf.scene)
   params.mixer = mixer;
 
-  gltfLoader.load('/models/Omabuarts/animals/animations/Inkfish_Idle_A.glb',
+  gltfLoader.load('animals/animations/Inkfish_Idle_A.glb',
   (anim) => {
     anim.animations[0].name = 'Idle_A'
-    gltfLoader.load('/models/Omabuarts/animals/animations/Inkfish_Swim.glb',
+    gltfLoader.load('animals/animations/Inkfish_Swim.glb',
     (anim2) => {
       anim2.animations[0].name = 'Swim'
-      gltfLoader.load('/models/Omabuarts/animals/animations/Inkfish_Clicked.glb',
+      gltfLoader.load('animals/animations/Inkfish_Clicked.glb',
       (anim3) => {
         anim3.animations[0].name = 'Clicked'
         params.animations = [anim.animations[0], anim2.animations[0], anim3.animations[0] ]
@@ -330,16 +330,16 @@ const angry = () => {
 // // Plants
 // // --------------------
 
-const plantsDirectory = '/models/Omabuarts/models/nature/3d/OBJ/'
+
 const mtlLoader = new MTLLoader()
 const objLoader = new OBJLoader()
 
 const loadPlants = (path, number, maxScaleDifference, minScale, specifiedPosition = undefined) => {
 
-  mtlLoader.load( `${plantsDirectory}${path}.mtl`, function (materials) {
+  mtlLoader.load( `/environment/${path}.mtl`, function (materials) {
     materials.preload();
 
-    objLoader.setMaterials(materials).load(`${plantsDirectory}${path}.obj`, function (object) {
+    objLoader.setMaterials(materials).load(`/environment/${path}.obj`, function (object) {
       // object.children[0].material.shininess = 10
       let zArea= params.floorWidth;
       let xArea = params.floorLength;
@@ -416,7 +416,7 @@ const addPortfolioItem = (image, name, url, position, alpha = false) => {
   let texture = textureLoader.load(image);
   circleMaterial.map = texture
   if (alpha) {
-    circleMaterial.alphaMap = textureLoader.load(`${name}Alpha.png`)
+    circleMaterial.alphaMap = textureLoader.load(`/images/${name}Alpha.png`)
     circleMaterial.transparent = true;
   }
   const circle = new THREE.Mesh( circleGeometry, circleMaterial );
@@ -453,12 +453,12 @@ const addPortfolioItem = (image, name, url, position, alpha = false) => {
 //   }
 // }
 
-addPortfolioItem('Moss.jpeg', 'moss', 'https://www.mossradio.live/users/sign_in', [1, 1, 4])
-addPortfolioItem('api.jpeg', 'api', '/api', [-6, 1, -4])
-addPortfolioItem('pomodoro.png', 'widgets', '/api#widgets', [-13, 1, 4], true)
-addPortfolioItem('america.png', 'd3', 'https://www.mossradio.live/users/sign_in', [-20, 1, -4], true)
-addPortfolioItem('finn.png', 'info', 'https://www.mossradio.live/users/sign_in', [-27, 1, 4])
-addPortfolioItem('finn.png', 'info', 'https://www.mossradio.live/users/sign_in', [-35, 1, 4])
+addPortfolioItem('/images/Moss.jpeg', 'moss', 'https://www.mossradio.live/users/sign_in', [1, 1, 4])
+addPortfolioItem('/images/api.jpeg', 'api', '/api', [-6, 1, -4])
+addPortfolioItem('/images/pomodoro.png', 'widgets', '/api#widgets', [-13, 1, 4], true)
+addPortfolioItem('/images/america.png', 'd3', 'https://www.mossradio.live/users/sign_in', [-20, 1, -4], true)
+addPortfolioItem('/images/finn.png', 'info', 'https://www.mossradio.live/users/sign_in', [-27, 1, 4])
+addPortfolioItem('/images/finn.png', 'info', 'https://www.mossradio.live/users/sign_in', [-35, 1, 4])
 portfolioItems.forEach(i => scene.add(i))
 
 document.onkeydown = checkKey;
