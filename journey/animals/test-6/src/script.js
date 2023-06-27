@@ -59,7 +59,8 @@ let params = {
   completedBanner: false, // Set to true once the banner has been shown
   idle: true,
   squashable: true,
-  squashCount: 14
+  squashCount: 15,
+  moonFound: false,
   // squashCount: 13
 }
 
@@ -562,13 +563,16 @@ const checkDistances = () => {
       return
     }
   })
-  if (params.completedBanner == false && params.completed >= 7 && params.messageEmpty == true) completed()
+  if (params.moonFound == false && params.model.position.distanceTo(portfolioItems[7].position) <= 5) {
+    moonFound()
+  }
+
 
 }
 
 const showInfo = (item) => {
+
   params.messageEmpty = false;
-console.log(item.children[2].material.color);
   if (item.children[2].material.color.g != 1) {
     item.children[2].material.color = new THREE.Color('rgb(4, 255, 58)')
     params.completed += 1
@@ -592,6 +596,8 @@ console.log(item.children[2].material.color);
     infoContainer.classList.remove('show')
     setNewMessageTimeout()
 
+    if (params.completedBanner == false && params.completed >= 7 && params.messageEmpty == true) completed()
+
   }, 1000);
 }
 
@@ -606,6 +612,14 @@ const showSidebar = (name) => {
 
     setNewMessageTimeout()
   }, 1000);
+}
+
+const moonFound = () => {
+  console.log('moon found');
+  params.moonFound = true;
+  const moonMessage = document.getElementById('moon-message')
+  moonMessage.classList.add('show')
+  moonMessage.classList.remove('d-none')
 }
 
 const setNewMessageTimeout = () => {
@@ -707,7 +721,6 @@ directionalLight.castShadow = true
 directionalLight.shadow.mapSize.set(1024, 1024)
 
 // moon
-
 const moonTexture = new THREE.TextureLoader().load('images/moon.jpeg')
 const normalTexture = new THREE.TextureLoader().load('images/normal.jpeg')
 const moon = new THREE.Mesh(
@@ -717,9 +730,11 @@ const moon = new THREE.Mesh(
     normalMap: normalTexture
   })
 );
+moon.userData.name = "moon"
+moon.position.set(1, 3, 60)
+portfolioItems.push(moon)
 
 scene.add(moon)
-moon.position.set(1, 3, 60)
 
 
 /**

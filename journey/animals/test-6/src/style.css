@@ -159,11 +159,23 @@ body
   padding: 10px;
 }
 
-
+#moon-message{
+  font-family: monospace;
+  position: fixed;
+  width: 200px;
+  right: 0;
+  height: 100%;
+  padding: 30px;
+  font-size: 20px;
+  background-color: rgb(80 151 255 / 45%);
+  color: rgb(0, 0, 0);
+  opacity: 0;
+}
 
 .d-none{
   display: none;
 }
+
 
 
 
