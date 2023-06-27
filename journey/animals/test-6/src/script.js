@@ -35,8 +35,8 @@ let params = {
   heldKeys: [],
   modelPosition: {},
   limits: {
-    x: [-35, 12],
-    z: [-20, 20]
+    x: [-45, 30],
+    z: [-25, 25]
   },
   diagonalRotations: {
     // These rotational values are for when two keys are held simultaneously
@@ -53,8 +53,8 @@ let params = {
   speed: 0.1,
   messageEmpty: false,
   outOfBounds: false,
-  floorLength: 100,
-  floorWidth: 70,
+  floorLength: 110,
+  floorWidth: 130,
   completed: 0,
   completedBanner: false, // Set to true once the banner has been shown
   idle: true,
@@ -68,7 +68,7 @@ scene.background = new THREE.Color(params.background)
 
 // Fog
 const fog = new THREE.Fog(params.background, 1, 10)
-scene.fog = fog
+// scene.fog = fog
 
 
 /**
@@ -131,6 +131,7 @@ const floorMaterial = new THREE.MeshStandardMaterial({
 })
 const floor = new THREE.Mesh(floorGeometry, floorMaterial)
 floor.rotation.x = - Math.PI * 0.5
+floor.position.z = 20
 scene.add(floor)
 
 /**
