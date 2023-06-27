@@ -800,7 +800,8 @@ const messages = [
   "A long time ago, something huge fell down from the surface...",
   "The thing that fell from above...did you see it yet?",
   "Once you're done here, maybe I can take you to where the relic landed...",
-  "The nearby relic scares me...I only go when I'm feeling brave."
+  "The nearby relic scares me...I only go when I'm feeling brave.",
+  "Time is just an illusion...lunchtime doubly so!"
 ]
 
 const ouch = [

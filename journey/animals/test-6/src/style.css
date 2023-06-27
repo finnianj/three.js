@@ -16,7 +16,6 @@ body
 {
   font-family: cherry;
   overflow: hidden;
-  cursor: grab;
   font-weight: 100;
 }
 
@@ -37,6 +36,7 @@ body
 
 
 #text{
+  z-index: 10;
   position: fixed;
   max-width: 40vw;
   bottom: 3vh;
@@ -83,6 +83,7 @@ body
 }
 
 #simple-mode-link{
+  z-index: 1;
   position: fixed;
   top: 1vh;
   right: 2vw;
