@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>22 - Imported models</title>
     
-  <script type="module" crossorigin src="./assets/index-d554b38d.js"></script>
-  <link rel="stylesheet" href="./assets/index-1377de89.css">
+  <script type="module" crossorigin src="./assets/index-e67fb752.js"></script>
+  <link rel="stylesheet" href="./assets/index-6e8d394a.css">
 </head>
 <body>
     <canvas class="webgl"></canvas>
@@ -15,13 +15,80 @@
 
       <a id="simple-mode-link" href="/simple">Simple mode</a>
 
-      <div class="non-laptops-only">I'm still working out how to implement mobile navigation. Check back again soon, or visit the <a href="/simple">simple version</a> of the site
+      <div id="skills-and-certs">
+        <div id="skills" class="d-none">
+          <h3>Skills</h3>
+              <div>
+                <h4>Frontend</h4>
+                <ul>
+                  <li>React</li>
+                  <li>Typescript</li>
+                  <li>Three.js</li>
+                  <li>Blender</li>
+                  <li>D3.js</li>
+                  <li>HTML & CSS</li>
+                  <li>Bootstrap</li>
+                  <li>Figma</li>
+                </ul>
+                <h4>Backend</h4>
+                <ul>
+                  <li>Ruby on Rails</li>
+                  <li>Node.js</li>
+                  <li>Express.js</li>
+                  <li>MongoDB</li>
+                  <li>PostgreSQL</li>
+                  <li>QA with Mocha/Chai.js </li>
+                  <li>Heroku</li>
+                  <li>Vite</li>
+                  <li>Vercel</li>
+                  <li>Bash</li>
+                  <li>Git</li>
+                </ul>
+              </div>
+        </div>
+
+        <div id="certifications" class="d-none">
+          <h3>Certifications</h3>
+          <li><a href="https://kitt.lewagon.com/schoolings/22767/public_diploma?token=0b5dfa10a908f7e729afebfc8f26c892e2925f2226c51689d4f56c5725090578" target="_blank">Web Development Bootcamp</a></li>
+          <li><a href="https://www.freecodecamp.org/certification/Finnian_Charlton_Jones/javascript-algorithms-and-data-structures" target="_blank">Javascript Algorithms and Data Structures</a></li>
+          <li><a href="https://www.freecodecamp.org/certification/Finnian_Charlton_Jones/front-end-development-libraries" target="_blank">Frontend Development Libraries</a></li>
+          <li><a href="https://www.freecodecamp.org/certification/Finnian_Charlton_Jones/data-visualization" target="_blank">Data Visualisation</a></li>
+          <li><a href="https://www.freecodecamp.org/certification/Finnian_Charlton_Jones/back-end-development-and-apis" target="_blank">Backend Development and API's</a></li>
+          <li><a href="https://www.freecodecamp.org/certification/Finnian_Charlton_Jones/quality-assurance-v7" target="_blank">Quality Assurance</a></li>
+          <li><a href="https://www.freecodecamp.org/certification/Finnian_Charlton_Jones/relational-database-v8" target="_blank">Relational Databases</a></li>
+        </div>
+
+        <div id="about" class="d-none">
+          <h3>About</h3>
+          <p>After completing my BA in German & Russian at the University of Bristol, I moved to Berlin in 2020 to pursue drumming. Although I still play in bands and occasionally teach, I realised fairly quickly that I wanted to earn my living another way.</p>
+          <p>Last year I completed a bootcamp at Le Wagon and became fully immersed in the process of learning again. Coding unites many of my interests. It is fundamentally based in language, logic and creativity, and this sort of puzzle solving mentality realy catalysed my curiosity.</p>
+          <p>Since the bootcamp, I have been eager to discover as many aspects of computer science as possible. Currently I am exploring Angular and Three.js.</p>
+          <p>Thanks for checking out my website. Remember to <a href="/api" target="_blank" style="text-decoration: none;">add your favourite song to my playlist API!</a> Have a great day.</p>
+          <p>Finn</p>
+        </div>
+      </div>
+
+      <div id="moon-message" class="d-none">
+        🎉🎉🎉
+        <h3>You found the sunken moon!</h3>
+        🎉🎉🎉
+        <br>
+        <p>Submit your name to the hall of fame:</p>
+        <br>
+        <form action="/winners" method="post">
+          <input id="moon-input" type="text" name="name" placeholder="Your name..."/>
+          <input id="moon-input" type="text" name="comment" placeholder="Witty comment..."/>
+          <input type="submit" id="moon-submit" value="Submit" />
+        </form>
+      </div>
+
+      <div class="non-laptops-only">I'm still working out how to implement mobile navigation. Check back again soon, or visit the <a href="/simple" style="text-decoration: none;">simple version</a> of the site
       </div>
       <audio id="music">
         <source src="./sounds/ambient.mp3" type="audio/mpeg">
       </audio>
       <audio id="effect">
-        <source src="./sounds/ching.mp3" type="audio/mpeg">
+        <source src="./sounds/pop.mp3" type="audio/mpeg">
       </audio>
     
     <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>

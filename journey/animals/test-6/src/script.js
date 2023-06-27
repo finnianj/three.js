@@ -595,8 +595,6 @@ const showInfo = (item) => {
     infoContainer.classList.remove('show')
     setNewMessageTimeout()
 
-    if (params.completedBanner == false && params.completed >= 7 && params.messageEmpty == true) completed()
-
   }, 1000);
 }
 
@@ -623,6 +621,8 @@ const moonFound = () => {
 const setNewMessageTimeout = () => {
   clearTimeout(params.messageTimeout)
   params.messageEmpty = true;
+  if (params.completedBanner == false && params.completed >= 7 && params.messageEmpty == true) completed()
+
 
   params.messageTimeout = setTimeout(() => {
     if (params.messageEmpty == true) randomMessage()
