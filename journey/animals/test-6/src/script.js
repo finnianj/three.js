@@ -152,7 +152,7 @@ scene.add(directionalLight)
 const audioPlayer = document.getElementById('music')
 audioPlayer.volume = 0.7
 const effectPlayer = document.getElementById('effect')
-effectPlayer.volume = 0.6
+effectPlayer.volume = 0.2
 
 // --------------------
 // Particles
@@ -811,7 +811,7 @@ const messages = [
   "🎵 Under the seaaaa....🎵",
   "I've heard there is a whole world above the ocean...",
   "I enjoy working for Finn!",
-  "Tell me, what is water? Finn always mentions it...",
+  "Tell me, what is water? I've heard it mentioned...",
   "I'm good at juggling. Have you tried it?",
   "You know, it's so great that you're here.",
   "My friend showed me a multicolored shell today. Isn't that nice?",
@@ -821,14 +821,14 @@ const messages = [
   "Sometimes I fall asleep, and wake up in places I've never seen before!",
   "It's nice to clean the ocean floor. But where does all that junk come from?",
   "Fish don't have feelings? Good thing I'm not a fish then.",
-  "School was okay, but I preferred collecting shells.",
+  "School was okay, but I prefer to swim in my own way",
   "Would you like to see my ink drawings?",
   "A thumb war? No, thank you...",
   "Gosh, I'm thirsty!",
   "A long time ago, something huge fell down from the surface...",
   "The thing that fell from above...did you see it yet?",
   "Once you're done here, maybe I can take you to where the relic landed...",
-  "The nearby relic scares me...I only go when I'm feeling brave.",
+  "The nearby relic...I only go when I'm feeling brave.",
   "Time is just an illusion...lunchtime doubly so!"
 ]
 
