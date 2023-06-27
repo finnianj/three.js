@@ -55,7 +55,7 @@ let params = {
   completedBanner: false, // Set to true once the banner has been shown
   idle: true,
   squashable: true,
-  squashCount: 15,
+  squashCount: -1,
   moonFound: false,
   angry: false,
   // squashCount: 13
@@ -618,6 +618,7 @@ const setNewMessageTimeout = () => {
 
 const randomMessage = (squash = false) => {
   clearTimeout(params.messageTimeout)
+  params.messageEmpty = false
   params.squashable = false
   if (squash) {
     params.squashCount += 1
