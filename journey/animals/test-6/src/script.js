@@ -61,6 +61,7 @@ let params = {
   squashable: true,
   squashCount: 15,
   moonFound: false,
+  angry: false,
   // squashCount: 13
 }
 
@@ -287,6 +288,7 @@ const squash = () => {
 
 
 const angry = () => {
+  params.angry = true;
   audioPlayer.pause()
   audioPlayer.children[0].src = '/sounds/angry.mp3'
   audioPlayer.load()
@@ -321,8 +323,9 @@ const angry = () => {
       audioPlayer.children[0].src = '/sounds/ambient.mp3'
       audioPlayer.load()
       audioPlayer.play()
+      params.angry = false
     }, 500);
-  }, 30000);
+  }, 15000);
 
 }
 
@@ -563,10 +566,6 @@ const checkDistances = () => {
       return
     }
   })
-  if (params.moonFound == false && params.model.position.distanceTo(portfolioItems[7].position) <= 5) {
-    moonFound()
-  }
-
 
 }
 
@@ -615,7 +614,6 @@ const showSidebar = (name) => {
 }
 
 const moonFound = () => {
-  console.log('moon found');
   params.moonFound = true;
   const moonMessage = document.getElementById('moon-message')
   moonMessage.classList.add('show')
@@ -798,6 +796,11 @@ const tick = () => {
 
     if (params.messageEmpty) {
       checkDistances()
+    }
+    if (params.angry == true) {
+      if (params.moonFound == false && params.model.position.distanceTo(portfolioItems[7].position) <= 5) {
+        moonFound()
+      }
     }
 
     // Update controls
