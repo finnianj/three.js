@@ -264,7 +264,7 @@ const squash = () => {
   params.mixer.stopAllAction()
   params.mixer._actions.find(a => a._clip.name == 'Clicked').play()
 
-  if (params.squashCount == 16) {
+  if (params.squashCount == 17) {
     angry()
     params.squashCount = -1
   }
@@ -427,6 +427,16 @@ const addPortfolioItem = (image, name, url, position, alpha = false) => {
   portfolioItems.push(group)
 }
 
+addPortfolioItem('/images/Moss.jpeg', 'moss', 'https://www.mossradio.live/users/sign_in', [1, 1, 4])
+addPortfolioItem('/images/api.jpeg', 'api', '/api', [-6, 1, -4])
+addPortfolioItem('/images/pomodoro.png', 'widgets', '/simple#widgets', [-13, 1, 4], true)
+addPortfolioItem('/images/america.png', 'd3', '/simple#datavis', [-20, 1, -4], true)
+addPortfolioItem('/images/skills.png', 'skills', '/simple#skills', [-27, 1, 3], true)
+addPortfolioItem('/images/finn.png', 'about', '/simple#about', [-30, 1, 7])
+addPortfolioItem('/images/certifications.png', 'certifications', '/simple#certifications', [-27, 1, 11], true)
+portfolioItems.forEach(i => scene.add(i))
+
+
 function onClick() {
   const intersects = raycaster.intersectObjects(portfolioItems, true);
 
@@ -438,15 +448,6 @@ function onClick() {
     }
   }
 }
-
-addPortfolioItem('/images/Moss.jpeg', 'moss', 'https://www.mossradio.live/users/sign_in', [1, 1, 4])
-addPortfolioItem('/images/api.jpeg', 'api', '/api', [-6, 1, -4])
-addPortfolioItem('/images/pomodoro.png', 'widgets', '/simple#widgets', [-13, 1, 4], true)
-addPortfolioItem('/images/america.png', 'd3', '/simple#datavis', [-20, 1, -4], true)
-addPortfolioItem('/images/skills.png', 'skills', '/simple#skills', [-27, 1, 3], true)
-addPortfolioItem('/images/finn.png', 'about', '/simple#about', [-30, 1, 7])
-addPortfolioItem('/images/certifications.png', 'certifications', '/simple#certifications', [-27, 1, 11], true)
-portfolioItems.forEach(i => scene.add(i))
 
 document.onkeydown = checkKey;
 document.onkeyup = ((e) => {
@@ -858,6 +859,7 @@ const ouch = [
   "Bonk! Haha.",
   "I have a squishy head!",
   "Oof!",
+  "Who needs brain cells?",
   "Eee!",
   "...",
   "Yes, yes, okay...",
@@ -870,7 +872,7 @@ const ouch = [
   "...",
   "Okay, last warning!",
   "...",
-  "GLEICH KRIEGSTE EINS RICHTIG DOLL AUF DIE FRESSE!!!",
+  "Ich sag's dir, das wirst du gleich bereuen!",
   "hhhhHHHHHUUUUUUAAAAAAAA!"
 ]
 
