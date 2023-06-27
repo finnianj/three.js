@@ -225,14 +225,6 @@ gltfLoader.load('/animals/inkfish.glb', (gltf) => {
   })
 })
 
-// gltfLoader.load('/models/Omabuarts/animals/herring.glb', (gltf) => {
-//   gltf.scene.children[0].children[0].castShadow = true;
-//   gltf.scene.position.y = 0.5
-//   gltf.scene.position.x = 7
-//   params.herring = gltf.scene
-//   scene.add(gltf.scene)
-// })
-
 // --------------------
 // Squid Animations
 // --------------------
@@ -400,8 +392,6 @@ loadPlants('Sponge_B_03_LOD2', 10, 0.1, 0.2) // the coolest
 
 // Starfish
 loadPlants('Starfish_01_LOD3', 40, 0.1, 0.2)
-
-
 
 
 /**
@@ -666,12 +656,6 @@ const completed = () => {
   }, 5000);
 }
 
-
-// testing area
-// testing area
-// testing area
-// testing area
-// testing area
 /**
  * Camera
  */
@@ -689,12 +673,25 @@ controls.autoRotate = true;
 controls.enableZoom = false
 controls.maxPolarAngle = 2.3
 
+const setControls = () => {
+  controls.autoRotate = false;
+  canvas.classList.remove('show')
+  let p = params.model.position
+  setTimeout(() => {
+    controls.target.set(p.x, p.y + 1, p.z)
+    camera.position.set(p.x + 2, 3, p.z)
+    controls.maxAzimuthAngle = 1.8
+    controls.minAzimuthAngle = 1.2
+    canvas.classList.add('show')
+  }, 1000);
+
+}
+
 /**
  * Renderer
  */
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
-    // alpha: true
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
@@ -828,11 +825,6 @@ const tick = () => {
 
 // -----------------------------------------
 // -----------------------------------------
-// -----------------------------------------
-// -----------------------------------------
-// -----------------------------------------
-// -----------------------------------------
-// -----------------------------------------
 
 
 const messages = [
@@ -948,24 +940,5 @@ const endTyped = () => {
   }, 8000);
 }
 
-const setControls = () => {
-  controls.autoRotate = false;
-  canvas.classList.remove('show')
-  let p = params.model.position
-  setTimeout(() => {
-    controls.target.set(p.x, p.y + 1, p.z)
-    camera.position.set(p.x + 2, 3, p.z)
-    controls.maxAzimuthAngle = 1.8
-    controls.minAzimuthAngle = 1.2
-    canvas.classList.add('show')
-  }, 1000);
-
-}
-
 tick()
 document.addEventListener('click', onClick)
-
-
-// Separate widgets and d3 into their own hoops?
-
-// facial expressions?
