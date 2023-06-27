@@ -149,7 +149,7 @@ scene.add(directionalLight)
 
 // Audio
 const audioPlayer = document.getElementById('music')
-audioPlayer.volume = 0.5
+audioPlayer.volume = 0.3
 const effectPlayer = document.getElementById('effect')
 effectPlayer.volume = 0.2
 
@@ -556,6 +556,7 @@ const checkDistances = () => {
 
 }
 
+
 const showInfo = (item) => {
 
   params.messageEmpty = false;
@@ -585,6 +586,7 @@ const showInfo = (item) => {
   }, 1000);
 }
 
+
 const showSidebar = (name) => {
   const element =  document.getElementById(name)
   skillsAndCerts.classList.add('show')
@@ -598,6 +600,19 @@ const showSidebar = (name) => {
   }, 1000);
 }
 
+const setNewMessageTimeout = () => {
+  clearTimeout(params.messageTimeout)
+  params.messageEmpty = true;
+
+  setTimeout(() => {
+    if (params.messageEmpty == true && params.completedBanner == false && params.completed >= 7) completed()
+  }, 2000);
+
+  params.messageTimeout = setTimeout(() => {
+    if (params.messageEmpty == true) randomMessage()
+  }, 8000);
+}
+
 const moonFound = () => {
   params.moonFound = true;
   const moonMessage = document.getElementById('moon-message')
@@ -605,20 +620,9 @@ const moonFound = () => {
   moonMessage.classList.remove('d-none')
 }
 
-const setNewMessageTimeout = () => {
-  clearTimeout(params.messageTimeout)
-  params.messageEmpty = true;
-  if (params.completedBanner == false && params.completed >= 7 && params.messageEmpty == true) completed()
-
-
-  params.messageTimeout = setTimeout(() => {
-    if (params.messageEmpty == true) randomMessage()
-  }, 5000);
-}
-
 const randomMessage = (squash = false) => {
+  console.log(params.messageTimeout);
   clearTimeout(params.messageTimeout)
-  params.messageEmpty = false
   params.squashable = false
   if (squash) {
     params.squashCount += 1
@@ -920,9 +924,8 @@ window.onload = () => {
     },
     onComplete: () => {
       params.messageEmpty = true
-      console.log('Resetting controls after completed typing');
       setControls()
-      setTimeout(() => {
+      params.messageTimeout = setTimeout(() => {
         if (params.messageEmpty == true) randomMessage()
       }, 8000);
     }
