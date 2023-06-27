@@ -561,7 +561,7 @@ const checkDistances = () => {
       return
     }
   })
-  if (params.completedBanner == false && params.completed >= 5 && params.messageEmpty == true) completed()
+  if (params.completedBanner == false && params.completed >= 7 && params.messageEmpty == true) completed()
 
 }
 
