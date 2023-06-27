@@ -49,7 +49,8 @@ let params = {
     'x-1z1': Math.PI * 1.75,
     'z1x-1': Math.PI * 1.75,
   },
-  speed: 0.05,
+  // speed: 0.05,
+  speed: 0.1,
   messageEmpty: false,
   outOfBounds: false,
   floorLength: 100,
@@ -451,7 +452,9 @@ addPortfolioItem('/images/Moss.jpeg', 'moss', 'https://www.mossradio.live/users/
 addPortfolioItem('/images/api.jpeg', 'api', '/api', [-6, 1, -4])
 addPortfolioItem('/images/pomodoro.png', 'widgets', '/simple#widgets', [-13, 1, 4], true)
 addPortfolioItem('/images/america.png', 'd3', '/simple#datavis', [-20, 1, -4], true)
-addPortfolioItem('/images/finn.png', 'info', '/simple#skills', [-27, 1, 4])
+addPortfolioItem('/images/finn.png', 'skills', '/simple#skills', [-27, 1, 3])
+addPortfolioItem('/images/finn.png', 'certifications', '/simple#certifications', [-27, 1, 7])
+addPortfolioItem('/images/finn.png', 'about', '/simple#about', [-27, 1, 9])
 portfolioItems.forEach(i => scene.add(i))
 
 document.onkeydown = checkKey;
@@ -563,29 +566,54 @@ const checkDistances = () => {
 }
 
 const showInfo = (item) => {
-  console.log('info');
   params.messageEmpty = false;
 
-  clearTimeout(params.messageTimeout)
   if (item.children[2].material.color.b != 0) {
     item.children[2].material.color = new THREE.Color('gold')
     params.completed += 1
     effectPlayer.currentTime = 0
     effectPlayer.play()
   }
-  const info = infoHash[item.children[0].userData.name]
+
+  let name = item.children[0].userData.name
+
+  if (["skills", "certifications", "about"].includes(name)) {
+    console.log(name);
+    showSidebar(name)
+    return
+  }
+
+  const info = infoHash[name]
   infoContainer.innerHTML = info;
   infoContainer.classList.add('show')
 
   setTimeout(() => {
     infoContainer.classList.remove('show')
-    params.messageEmpty = true;
-
-    params.messageTimeout = setTimeout(() => {
-      if (params.messageEmpty == true) randomMessage()
-    }, 5000);
+    setNewMessageTimeout()
 
   }, 1000);
+}
+
+const showSidebar = (name) => {
+  const element =  document.getElementById(name)
+  skillsAndCerts.classList.add('show')
+  element.classList.remove('d-none')
+
+  setTimeout(() => {
+    skillsAndCerts.classList.remove('show')
+    element.classList.add('d-none')
+
+    setNewMessageTimeout()
+  }, 1000);
+}
+
+const setNewMessageTimeout = () => {
+  clearTimeout(params.messageTimeout)
+  params.messageEmpty = true;
+
+  params.messageTimeout = setTimeout(() => {
+    if (params.messageEmpty == true) randomMessage()
+  }, 5000);
 }
 
 const randomMessage = (squash = false) => {
@@ -834,7 +862,10 @@ const infoHash = {
 
 const messageContainer = document.getElementById('text')
 const infoContainer = document.getElementById('info')
-
+const skillsAndCerts = document.getElementById('skills-and-certs')
+const skills = document.getElementById('skills')
+const certifications = document.getElementById('certifications')
+const about = document.getElementById('about')
 
 window.onload = () => {
   canvas.classList.add('show')
