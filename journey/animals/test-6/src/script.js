@@ -59,7 +59,7 @@ let params = {
   completedBanner: false, // Set to true once the banner has been shown
   idle: true,
   squashable: true,
-  squashCount: -1
+  squashCount: 14
   // squashCount: 13
 }
 
@@ -68,7 +68,7 @@ scene.background = new THREE.Color(params.background)
 
 // Fog
 const fog = new THREE.Fog(params.background, 1, 10)
-// scene.fog = fog
+scene.fog = fog
 
 
 /**
@@ -296,8 +296,8 @@ const angry = () => {
   params.model.scale.set(3,3,3)
   params.speed = 0.2
   params.limits = {
-    x: [-50, 50],
-    z: [-50, 50]
+    x: [-45, 50],
+    z: [-35, 60]
   }
   params.model.rotation.y = Math.PI * 0.5
   camera.position.x += 2
@@ -312,8 +312,8 @@ const angry = () => {
       camera.position.x -= 2
       params.speed = 0.05
       params.limits = {
-        x: [-35, 12],
-        z: [-20, 20]
+        x: [-45, 30],
+        z: [-25, 25]
       }
       params.messageEmpty = true
       audioPlayer.pause()
@@ -705,6 +705,21 @@ directionalLight.shadow.camera.far = 13
 floor.receiveShadow = true
 directionalLight.castShadow = true
 directionalLight.shadow.mapSize.set(1024, 1024)
+
+// moon
+
+const moonTexture = new THREE.TextureLoader().load('images/moon.jpeg')
+const normalTexture = new THREE.TextureLoader().load('images/normal.jpeg')
+const moon = new THREE.Mesh(
+  new THREE.SphereGeometry(3, 32, 32),
+  new THREE.MeshStandardMaterial({
+    map: moonTexture,
+    normalMap: normalTexture
+  })
+);
+
+scene.add(moon)
+moon.position.set(1, 3, 60)
 
 
 /**
