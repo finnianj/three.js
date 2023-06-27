@@ -149,7 +149,7 @@ scene.add(directionalLight)
 
 // Audio
 const audioPlayer = document.getElementById('music')
-audioPlayer.volume = 0.7
+audioPlayer.volume = 0.5
 const effectPlayer = document.getElementById('effect')
 effectPlayer.volume = 0.2
 
@@ -488,10 +488,10 @@ function checkKey(e) {
     if (params.keyCodes[key]) {
       swim()
       params.heldKeys.push(params.keyCodes[key])
-      // if (audioPlayer.paused == true) {
-      //   audioPlayer.currentTime = 0;
-      //   audioPlayer.play()
-      // }
+      if (audioPlayer.paused == true) {
+        audioPlayer.currentTime = 0;
+        audioPlayer.play()
+      }
       // controls.reset()
     }
 
