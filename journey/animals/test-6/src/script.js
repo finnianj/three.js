@@ -452,9 +452,9 @@ addPortfolioItem('/images/Moss.jpeg', 'moss', 'https://www.mossradio.live/users/
 addPortfolioItem('/images/api.jpeg', 'api', '/api', [-6, 1, -4])
 addPortfolioItem('/images/pomodoro.png', 'widgets', '/simple#widgets', [-13, 1, 4], true)
 addPortfolioItem('/images/america.png', 'd3', '/simple#datavis', [-20, 1, -4], true)
-addPortfolioItem('/images/finn.png', 'skills', '/simple#skills', [-27, 1, 3])
-addPortfolioItem('/images/finn.png', 'certifications', '/simple#certifications', [-27, 1, 7])
-addPortfolioItem('/images/finn.png', 'about', '/simple#about', [-27, 1, 9])
+addPortfolioItem('/images/skills.png', 'skills', '/simple#skills', [-27, 1, 3])
+addPortfolioItem('/images/certificate.png', 'certifications', '/simple#certifications', [-27, 1, 7])
+addPortfolioItem('/images/finn.png', 'about', '/simple#about', [-27, 1, 11])
 portfolioItems.forEach(i => scene.add(i))
 
 document.onkeydown = checkKey;

@@ -54,7 +54,7 @@ body
   width: 100%;
   margin: 0 auto;
   height: fit-content;
-  background-color: rgb(80 151 255 / 86%);
+  background-color: rgb(80 151 255 / 45%);
   padding: 10px;
   color: white;
   font-size: 20px;
@@ -86,7 +86,7 @@ body
   z-index: 1;
   position: fixed;
   top: 1vh;
-  right: 2vw;
+  left: 2vw;
   font-size: 20px;
   color: rgb(255, 255, 255);
   opacity: 0.4;
@@ -113,24 +113,23 @@ body
   right: 0;
   width: 30vw;
   height: 100vh;
-  background-color: rgb(66 59 41 / 54%);
-  color: rgb(4, 253, 58);
-  font-size: 20px;
+  background-color: rgb(80 151 255 / 45%);
+  color: white;
+  font-size: 15px;
   opacity: 0;
   transition: 1s;
   padding: 20px;
 }
 
 #skills-and-certs h3{
-  font-size: 40px;
+  font-size: 30px;
   text-align: center;
   margin: 20px;
-  color: white;
+  margin-bottom: 50px
 }
 
 #skills-and-certs h4{
-  color: white;
-  font-size: 30px;
+  font-size: 20px;
   padding-top: 10px;
 }
 
@@ -140,27 +139,21 @@ body
   padding-top: 5px;
 }
 
-#skills-and-certs a {
-  text-decoration: none;
-  color: blueviolet;
-}
-#skilla-and-certs a:hover{
-  opacity: 60%;
+#skills-and-certs a:hover {
+  opacity: 70%;
 }
 
-#certifications li {
-  padding-top: 40px;
-}
 #certifications a {
-  color: rgb(4, 253, 58)
-}
-
-#about{
+  text-decoration: none;
   color: white;
 }
 
+#certifications li {
+  margin-top: 30px;
+}
+
 #about p {
-  font-size: 1.2vw;
+  font-size: 14px;
   padding: 10px;
 }
 
