@@ -246,7 +246,6 @@ const swim = () => {
   params.mixer._actions.find(a => a._clip.name == 'Swim').play()
 }
 const idle = () => {
-  console.log('idling');
   params.idle = true;
   params.mixer._actions.find(a => a._clip.name == 'Swim').stop()
   params.mixer._actions.find(a => a._clip.name == 'Idle_A').play()
@@ -260,6 +259,7 @@ const idle = () => {
 }
 
 const squash = () => {
+  clearTimeout(params.idleTimeout)
   randomMessage(true)
   params.mixer.stopAllAction()
   params.mixer._actions.find(a => a._clip.name == 'Clicked').play()
@@ -311,7 +311,6 @@ const angry = () => {
       audioPlayer.children[0].src = '/sounds/ambient.mp3'
       audioPlayer.load()
       audioPlayer.play()
-      params.angry = false
     }, 500);
   }, 15000);
 
@@ -613,12 +612,6 @@ const setNewMessageTimeout = () => {
   }, 8000);
 }
 
-const moonFound = () => {
-  params.moonFound = true;
-  const moonMessage = document.getElementById('moon-message')
-  moonMessage.classList.add('show')
-  moonMessage.classList.remove('d-none')
-}
 
 const randomMessage = (squash = false) => {
   console.log(params.messageTimeout);
@@ -660,6 +653,13 @@ const completed = () => {
     params.messageEmpty = true;
     infoContainer.classList.remove('completed')
   }, 5000);
+}
+
+const moonFound = () => {
+  params.moonFound = true;
+  const moonMessage = document.getElementById('moon-message')
+  moonMessage.classList.add('show')
+  moonMessage.classList.remove('d-none')
 }
 
 /**
