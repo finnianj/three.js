@@ -10,10 +10,6 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 
-// Axes Helper
-const axesHelper = new THREE.AxesHelper( 5 );
-scene.add( axesHelper );
-
 // GLTF
 const gltfLoader = new GLTFLoader()
 
@@ -35,8 +31,8 @@ let params = {
   heldKeys: [],
   modelPosition: {},
   limits: {
-    x: [-35, 12],
-    z: [-20, 20]
+    x: [-45, 30],
+    z: [-25, 25]
   },
   diagonalRotations: {
     // These rotational values are for when two keys are held simultaneously
@@ -49,16 +45,19 @@ let params = {
     'x-1z1': Math.PI * 1.75,
     'z1x-1': Math.PI * 1.75,
   },
-  speed: 0.05,
+  // speed: 0.05,
+  speed: 0.1,
   messageEmpty: false,
   outOfBounds: false,
-  floorLength: 100,
-  floorWidth: 70,
+  floorLength: 110,
+  floorWidth: 130,
   completed: 0,
   completedBanner: false, // Set to true once the banner has been shown
   idle: true,
   squashable: true,
-  squashCount: -1
+  squashCount: 15,
+  moonFound: false,
+  angry: false,
   // squashCount: 13
 }
 
@@ -130,6 +129,7 @@ const floorMaterial = new THREE.MeshStandardMaterial({
 })
 const floor = new THREE.Mesh(floorGeometry, floorMaterial)
 floor.rotation.x = - Math.PI * 0.5
+floor.position.z = 20
 scene.add(floor)
 
 /**
@@ -151,7 +151,7 @@ scene.add(directionalLight)
 const audioPlayer = document.getElementById('music')
 audioPlayer.volume = 0.7
 const effectPlayer = document.getElementById('effect')
-effectPlayer.volume = 0.6
+effectPlayer.volume = 0.2
 
 // --------------------
 // Particles
@@ -225,14 +225,6 @@ gltfLoader.load('/animals/inkfish.glb', (gltf) => {
   })
 })
 
-// gltfLoader.load('/models/Omabuarts/animals/herring.glb', (gltf) => {
-//   gltf.scene.children[0].children[0].castShadow = true;
-//   gltf.scene.position.y = 0.5
-//   gltf.scene.position.x = 7
-//   params.herring = gltf.scene
-//   scene.add(gltf.scene)
-// })
-
 // --------------------
 // Squid Animations
 // --------------------
@@ -284,6 +276,7 @@ const squash = () => {
 
 
 const angry = () => {
+  params.angry = true;
   audioPlayer.pause()
   audioPlayer.children[0].src = '/sounds/angry.mp3'
   audioPlayer.load()
@@ -291,11 +284,11 @@ const angry = () => {
   const red = new THREE.Color('#ff0000')
   fog.color = red
   scene.background = red
-  params.model.scale.set(5,5,5)
+  params.model.scale.set(3,3,3)
   params.speed = 0.2
   params.limits = {
-    x: [-50, 50],
-    z: [-50, 50]
+    x: [-45, 50],
+    z: [-35, 60]
   }
   params.model.rotation.y = Math.PI * 0.5
   camera.position.x += 2
@@ -310,16 +303,17 @@ const angry = () => {
       camera.position.x -= 2
       params.speed = 0.05
       params.limits = {
-        x: [-35, 12],
-        z: [-20, 20]
+        x: [-45, 30],
+        z: [-25, 25]
       }
       params.messageEmpty = true
       audioPlayer.pause()
       audioPlayer.children[0].src = '/sounds/ambient.mp3'
       audioPlayer.load()
       audioPlayer.play()
+      params.angry = false
     }, 500);
-  }, 30000);
+  }, 15000);
 
 }
 
@@ -400,8 +394,6 @@ loadPlants('Sponge_B_03_LOD2', 10, 0.1, 0.2) // the coolest
 loadPlants('Starfish_01_LOD3', 40, 0.1, 0.2)
 
 
-
-
 /**
  * Portfolio Items
 */
@@ -451,7 +443,9 @@ addPortfolioItem('/images/Moss.jpeg', 'moss', 'https://www.mossradio.live/users/
 addPortfolioItem('/images/api.jpeg', 'api', '/api', [-6, 1, -4])
 addPortfolioItem('/images/pomodoro.png', 'widgets', '/simple#widgets', [-13, 1, 4], true)
 addPortfolioItem('/images/america.png', 'd3', '/simple#datavis', [-20, 1, -4], true)
-addPortfolioItem('/images/finn.png', 'info', '/simple#skills', [-27, 1, 4])
+addPortfolioItem('/images/skills.png', 'skills', '/simple#skills', [-27, 1, 3], true)
+addPortfolioItem('/images/finn.png', 'about', '/simple#about', [-30, 1, 7])
+addPortfolioItem('/images/certifications.png', 'certifications', '/simple#certifications', [-27, 1, 11], true)
 portfolioItems.forEach(i => scene.add(i))
 
 document.onkeydown = checkKey;
@@ -558,34 +552,67 @@ const checkDistances = () => {
       return
     }
   })
-  if (params.completedBanner == false && params.completed >= 5 && params.messageEmpty == true) completed()
 
 }
 
 const showInfo = (item) => {
-  console.log('info');
-  params.messageEmpty = false;
 
-  clearTimeout(params.messageTimeout)
-  if (item.children[2].material.color.b != 0) {
-    item.children[2].material.color = new THREE.Color('gold')
+  params.messageEmpty = false;
+  if (item.children[2].material.color.g != 1) {
+    item.children[2].material.color = new THREE.Color('rgb(4, 255, 58)')
     params.completed += 1
     effectPlayer.currentTime = 0
     effectPlayer.play()
   }
-  const info = infoHash[item.children[0].userData.name]
+
+  let name = item.children[0].userData.name
+
+  if (["skills", "certifications", "about"].includes(name)) {
+    console.log(name);
+    showSidebar(name)
+    return
+  }
+
+  const info = infoHash[name]
   infoContainer.innerHTML = info;
   infoContainer.classList.add('show')
 
   setTimeout(() => {
     infoContainer.classList.remove('show')
-    params.messageEmpty = true;
-
-    params.messageTimeout = setTimeout(() => {
-      if (params.messageEmpty == true) randomMessage()
-    }, 5000);
+    setNewMessageTimeout()
 
   }, 1000);
+}
+
+const showSidebar = (name) => {
+  const element =  document.getElementById(name)
+  skillsAndCerts.classList.add('show')
+  element.classList.remove('d-none')
+
+  setTimeout(() => {
+    skillsAndCerts.classList.remove('show')
+    element.classList.add('d-none')
+
+    setNewMessageTimeout()
+  }, 1000);
+}
+
+const moonFound = () => {
+  params.moonFound = true;
+  const moonMessage = document.getElementById('moon-message')
+  moonMessage.classList.add('show')
+  moonMessage.classList.remove('d-none')
+}
+
+const setNewMessageTimeout = () => {
+  clearTimeout(params.messageTimeout)
+  params.messageEmpty = true;
+  if (params.completedBanner == false && params.completed >= 7 && params.messageEmpty == true) completed()
+
+
+  params.messageTimeout = setTimeout(() => {
+    if (params.messageEmpty == true) randomMessage()
+  }, 5000);
 }
 
 const randomMessage = (squash = false) => {
@@ -621,7 +648,7 @@ const completed = () => {
   clearTimeout(params.messageTimeout)
   params.messageEmpty = false;
   params.completedBanner = true;
-  infoContainer.innerHTML = '<h2>Yazoo!</h2> <p>You visited all the hoops, congratulations!</p>'
+  infoContainer.innerHTML = '<h2>Yazoo!</h2> <p>You visited all the hoops, congratulations! <p>There is just one more thing left to find...</p></p>'
   infoContainer.classList.add('completed')
   setTimeout(() => {
     params.messageEmpty = true;
@@ -629,12 +656,6 @@ const completed = () => {
   }, 5000);
 }
 
-
-// testing area
-// testing area
-// testing area
-// testing area
-// testing area
 /**
  * Camera
  */
@@ -652,12 +673,25 @@ controls.autoRotate = true;
 controls.enableZoom = false
 controls.maxPolarAngle = 2.3
 
+const setControls = () => {
+  controls.autoRotate = false;
+  canvas.classList.remove('show')
+  let p = params.model.position
+  setTimeout(() => {
+    controls.target.set(p.x, p.y + 1, p.z)
+    camera.position.set(p.x + 2, 3, p.z)
+    controls.maxAzimuthAngle = 1.8
+    controls.minAzimuthAngle = 1.2
+    canvas.classList.add('show')
+  }, 1000);
+
+}
+
 /**
  * Renderer
  */
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
-    // alpha: true
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
@@ -676,6 +710,22 @@ directionalLight.shadow.camera.far = 13
 floor.receiveShadow = true
 directionalLight.castShadow = true
 directionalLight.shadow.mapSize.set(1024, 1024)
+
+// moon
+const moonTexture = new THREE.TextureLoader().load('images/moon.jpeg')
+const normalTexture = new THREE.TextureLoader().load('images/normal.jpeg')
+const moon = new THREE.Mesh(
+  new THREE.SphereGeometry(3, 32, 32),
+  new THREE.MeshStandardMaterial({
+    map: moonTexture,
+    normalMap: normalTexture
+  })
+);
+moon.userData.name = "moon"
+moon.position.set(1, 3, 60)
+portfolioItems.push(moon)
+
+scene.add(moon)
 
 
 /**
@@ -740,6 +790,11 @@ const tick = () => {
     if (params.messageEmpty) {
       checkDistances()
     }
+    if (params.angry == true) {
+      if (params.moonFound == false && params.model.position.distanceTo(portfolioItems[7].position) <= 5) {
+        moonFound()
+      }
+    }
 
     // Update controls
 
@@ -770,11 +825,6 @@ const tick = () => {
 
 // -----------------------------------------
 // -----------------------------------------
-// -----------------------------------------
-// -----------------------------------------
-// -----------------------------------------
-// -----------------------------------------
-// -----------------------------------------
 
 
 const messages = [
@@ -783,23 +833,25 @@ const messages = [
   "🎵 Under the seaaaa....🎵",
   "I've heard there is a whole world above the ocean...",
   "I enjoy working for Finn!",
-  "Tell me, what is water? Finn always mentions it...",
+  "Tell me, what is water? I've heard it mentioned...",
   "I'm good at juggling. Have you tried it?",
   "You know, it's so great that you're here.",
   "My friend showed me a multicolored shell today. Isn't that nice?",
   "🎵 A B C D E F G... 🎵 ",
   "Ha! You're feet are covered in sand!",
-  "Zzzzz...",
-  "Sometimes I fall asleep, and wake up in places I've never seen before",
-  "It's nice to clean the ocean floor. Where does all that junk come from?",
+  "...zzzzz...",
+  "Sometimes I fall asleep, and wake up in places I've never seen before!",
+  "It's nice to clean the ocean floor. But where does all that junk come from?",
   "Fish don't have feelings? Good thing I'm not a fish then.",
-  "School was okay, but I preferred collecting shells.",
+  "School was okay, but I prefer to swim in my own way",
   "Would you like to see my ink drawings?",
   "A thumb war? No, thank you...",
   "Gosh, I'm thirsty!",
   "A long time ago, something huge fell down from the surface...",
   "The thing that fell from above...did you see it yet?",
-  "Once you're done here, I can take you to where the relic landed...",
+  "Once you're done here, maybe I can take you to where the relic landed...",
+  "The nearby relic...I only go when I'm feeling brave.",
+  "Time is just an illusion...lunchtime doubly so!"
 ]
 
 const ouch = [
@@ -832,7 +884,10 @@ const infoHash = {
 
 const messageContainer = document.getElementById('text')
 const infoContainer = document.getElementById('info')
-
+const skillsAndCerts = document.getElementById('skills-and-certs')
+const skills = document.getElementById('skills')
+const certifications = document.getElementById('certifications')
+const about = document.getElementById('about')
 
 window.onload = () => {
   canvas.classList.add('show')
@@ -885,24 +940,5 @@ const endTyped = () => {
   }, 8000);
 }
 
-const setControls = () => {
-  controls.autoRotate = false;
-  canvas.classList.remove('show')
-  let p = params.model.position
-  setTimeout(() => {
-    controls.target.set(p.x, p.y + 1, p.z)
-    camera.position.set(p.x + 2, 3, p.z)
-    controls.maxAzimuthAngle = 1.8
-    controls.minAzimuthAngle = 1.2
-    canvas.classList.add('show')
-  }, 1000);
-
-}
-
 tick()
 document.addEventListener('click', onClick)
-
-
-// Separate widgets and d3 into their own hoops?
-
-// facial expressions?

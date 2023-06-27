@@ -16,7 +16,6 @@ body
 {
   font-family: cherry;
   overflow: hidden;
-  cursor: grab;
   font-weight: 100;
 }
 
@@ -37,10 +36,11 @@ body
 
 
 #text{
+  z-index: 10;
   position: fixed;
-  max-width: 40vw;
+  max-width: 80vw;
   bottom: 3vh;
-  left: 19vw;
+  left: 10vw;
   font-size: 40px;
   color: rgb(132, 0, 255);
   opacity: 0;
@@ -54,7 +54,7 @@ body
   width: 100%;
   margin: 0 auto;
   height: fit-content;
-  background-color: rgb(80 151 255 / 86%);
+  background-color: rgb(80 151 255 / 45%);
   padding: 10px;
   color: white;
   font-size: 20px;
@@ -68,24 +68,27 @@ body
   transition: 1s;
 }
 .out-of-bounds{
+  z-index: 10;
   background-color: rgb(132, 0, 255) !important;
   opacity: 1 !important;
   transition: 1s;
 }
 
 .completed {
+  z-index: 10;
   background-color: rgb(32, 191, 0) !important;
   opacity: 1 !important;
 }
 
 .highlight {
-  color: rgb(4, 253, 58);
+  color: rgb(4, 255, 58);
 }
 
 #simple-mode-link{
+  z-index: 1;
   position: fixed;
   top: 1vh;
-  right: 2vw;
+  left: 2vw;
   font-size: 20px;
   color: rgb(255, 255, 255);
   opacity: 0.4;
@@ -105,6 +108,74 @@ body
   text-align: center;
   font-size: 4vw;
 }
+
+#skills-and-certs{
+  font-family: monospace;
+  position: fixed;
+  right: 0;
+  width: 300px;
+  height: 100vh;
+  background-color: rgb(80 151 255 / 45%);
+  color: white;
+  font-size: 15px;
+  opacity: 0;
+  transition: 1s;
+  padding: 20px;
+}
+
+#skills-and-certs h3{
+  font-size: 30px;
+  text-align: center;
+  margin: 20px;
+  margin-bottom: 50px
+}
+
+#skills-and-certs h4{
+  font-size: 20px;
+  padding-top: 10px;
+}
+
+#skills-and-certs li {
+  list-style-type: none;
+  padding-left: 50px;
+  padding-top: 5px;
+}
+
+#skills-and-certs a:hover {
+  opacity: 70%;
+}
+
+#certifications a {
+  text-decoration: none;
+  color: white;
+}
+
+#certifications li {
+  margin-top: 30px;
+}
+
+#about p {
+  font-size: 14px;
+  padding: 10px;
+}
+
+#moon-message{
+  font-family: monospace;
+  position: fixed;
+  width: 200px;
+  right: 0;
+  height: 100%;
+  padding: 30px;
+  font-size: 20px;
+  background-color: rgb(80 151 255 / 45%);
+  color: rgb(0, 0, 0);
+  opacity: 0;
+}
+
+.d-none{
+  display: none;
+}
+
 
 
 
