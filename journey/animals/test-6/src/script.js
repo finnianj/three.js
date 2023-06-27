@@ -567,9 +567,9 @@ const checkDistances = () => {
 
 const showInfo = (item) => {
   params.messageEmpty = false;
-
-  if (item.children[2].material.color.b != 0) {
-    item.children[2].material.color = new THREE.Color('gold')
+console.log(item.children[2].material.color);
+  if (item.children[2].material.color.g != 1) {
+    item.children[2].material.color = new THREE.Color('#66FF99')
     params.completed += 1
     effectPlayer.currentTime = 0
     effectPlayer.play()
