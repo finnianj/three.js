@@ -649,7 +649,7 @@ const completed = () => {
   clearTimeout(params.messageTimeout)
   params.messageEmpty = false;
   params.completedBanner = true;
-  infoContainer.innerHTML = '<h2>Yazoo!</h2> <p>You visited all the hoops, congratulations!</p>'
+  infoContainer.innerHTML = '<h2>Yazoo!</h2> <p>You visited all the hoops, congratulations! <p>But there is one more thing left to find...</p></p>'
   infoContainer.classList.add('completed')
   setTimeout(() => {
     params.messageEmpty = true;

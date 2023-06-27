@@ -68,12 +68,14 @@ body
   transition: 1s;
 }
 .out-of-bounds{
+  z-index: 10;
   background-color: rgb(132, 0, 255) !important;
   opacity: 1 !important;
   transition: 1s;
 }
 
 .completed {
+  z-index: 10;
   background-color: rgb(32, 191, 0) !important;
   opacity: 1 !important;
 }
