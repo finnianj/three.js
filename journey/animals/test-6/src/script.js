@@ -18,16 +18,17 @@ let mixer = null
 let params = {
   color: '#e1bf92',
   background: '#0593ff',
-  particleCount: 600,
+  particleCount: 200,
   particleSize: 0.1,
   keyCodes: {
-    // In tick function:
+    // For reference in tick function:
     // 1 is used for positive movement along axis, -1 for negative. 3rd value is rotation
     '37': ['z', 1, 0],
     '38': ['x', -1, Math.PI * 1.5],
     '39': ['z', -1, Math.PI],
     '40': ['x', 1, Math.PI * 0.5]
   },
+  // Important -  the items in the held keys array determine the direction of travel
   heldKeys: [],
   modelPosition: {},
   limits: {
@@ -140,11 +141,6 @@ const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6)
 directionalLight.position.set(9, 6, 3)
 scene.add(directionalLight)
 
-
-// const dlHelper = new THREE.DirectionalLightHelper(directionalLight)
-// scene.add(dlHelper)
-
-
 // Audio
 const audioPlayer = document.getElementById('music')
 audioPlayer.volume = 0.3
@@ -174,9 +170,9 @@ const generateParticles = () => {
 
   for (let i = 0; i < params.particleCount; i++) {
     const i3 = i * 3
-    vertices[i3 + 0] = (Math.random() * 45) - 35
+    vertices[i3 + 0] = (Math.random() * 90) - 60
     vertices[i3 + 1] = (Math.random() * 5)
-    vertices[i3 + 2] = (Math.random() * 40) - 20
+    vertices[i3 + 2] = (Math.random() * 60) - 30
 
   }
   geometry.setAttribute(
@@ -839,14 +835,13 @@ const messages = [
   "Sometimes I fall asleep, and wake up in places I've never seen before!",
   "It's nice to clean the ocean floor. But where does all that junk come from?",
   "Fish don't have feelings? Good thing I'm not a fish then.",
-  "School was okay, but I prefer to swim in my own way",
+  "School was okay, but I like to swim in my own way",
   "Would you like to see my ink drawings?",
   "A thumb war? No, thank you...",
   "Gosh, I'm thirsty!",
   "A long time ago, something huge fell down from the surface...",
   "The thing that fell from above...did you see it yet?",
   "Once you're done here, maybe I can take you to where the relic landed...",
-  "The nearby relic...I only go when I'm feeling brave.",
   "Time is just an illusion...lunchtime doubly so!"
 ]
 
@@ -859,7 +854,7 @@ const ouch = [
   "...",
   "Yes, yes, okay...",
   "Ow!",
-  "Stop it now.",
+  "Stop it now please.",
   "I mean it.",
   "I have ink, you know?",
   "If you keep doing that, you're gonna be in a world of pain!",
