@@ -65,7 +65,7 @@ scene.background = new THREE.Color(params.background)
 
 // Fog
 const fog = new THREE.Fog(params.background, 1, 10)
-scene.fog = fog
+// scene.fog = fog
 
 
 /**
@@ -342,10 +342,10 @@ const loadPlants = (path, number, maxScaleDifference, minScale, specifiedPositio
           clone.position.x = -i
         } else if (specifiedPosition) {
           clone.position.z = specifiedPosition
-          clone.position.x = Math.random() * xArea - (xArea / 1.5)
+          clone.position.x = Math.random() * 90 - 45
         } else {
-          clone.position.z = Math.random() * zArea - (zArea / 2)
-          clone.position.x = Math.random() * xArea - (xArea / 1.5)
+          clone.position.z = Math.random() * 70 - 35
+          clone.position.x = Math.random() * 90 - 45
           clone.rotation.y = Math.random() * 6
         }
         scene.add(clone)
@@ -362,11 +362,11 @@ loadPlants('Seaweed_A_02_LOD2', 50, 0.02, 0.1)
 loadPlants('Seaweed_A_03_LOD2', 50, 0.02, 0.2)
 
 // Purple coral
-loadPlants('Coral_D_03_LOD3', 10, 0.2, 0.2)
+loadPlants('Coral_D_03_LOD3', 15, 0.2, 0.2)
 // Red Coral
 loadPlants('Coral_C_03_LOD3', 10, 0.1, 0.2 )
-loadPlants('Coral_C_03_LOD3', 5, 0.3, 0.8, -10 )
-loadPlants('Coral_C_03_LOD3', 5, 0.3, 0.8, 30 )
+loadPlants('Coral_C_03_LOD3', 7, 0.3, 0.8, -10 )
+loadPlants('Coral_C_03_LOD3', 7, 0.3, 0.8, 30 )
 
 // Spikey coral
 loadPlants('Coral_A_03_LOD2', 10, 0.1, 0.2)
@@ -374,7 +374,7 @@ loadPlants('Coral_B_03_LOD2', 10, 0.1, 0.1)
 
 // Sponges
 loadPlants('Sponge_A_03_LOD2', 10, 0.1, 0.2)
-loadPlants('Sponge_B_03_LOD2', 10, 0.1, 0.2) // the coolest
+loadPlants('Sponge_B_03_LOD2', 20, 0.1, 0.2) // the coolest
 
 // Starfish
 loadPlants('Starfish_01_LOD3', 40, 0.1, 0.2)
