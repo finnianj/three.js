@@ -23,10 +23,10 @@ let params = {
   keyCodes: {
     // For reference in tick function:
     // 1 is used for positive movement along axis, -1 for negative. 3rd value is rotation
-    '37': ['z', 1, 0],
-    '38': ['x', -1, Math.PI * 1.5],
-    '39': ['z', -1, Math.PI],
-    '40': ['x', 1, Math.PI * 0.5]
+    'ArrowLeft': ['z', 1, 0],
+    'ArrowUp': ['x', -1, Math.PI * 1.5],
+    'ArrowRight': ['z', -1, Math.PI],
+    'ArrowDown': ['x', 1, Math.PI * 0.5]
   },
   // Important -  the items in the held keys array determine the direction of travel
   heldKeys: [],
@@ -307,9 +307,6 @@ const angry = () => {
 
 }
 
-
-
-
 // // --------------------
 // // Plants
 // // --------------------
@@ -324,8 +321,7 @@ const loadPlants = (path, number, maxScaleDifference, minScale, specifiedPositio
     materials.preload();
 
     objLoader.setMaterials(materials).load(`/environment/${path}.obj`, function (object) {
-      // object.children[0].material.shininess = 10
-      let zArea= params.floorWidth;
+      let zArea = params.floorWidth;
       let xArea = params.floorLength;
 
       object.traverse( function ( child ) {
@@ -440,21 +436,22 @@ function onClick() {
 
 document.onkeydown = checkKey;
 document.onkeyup = ((e) => {
-  if (params.keyCodes[e.keyCode]) {
-    let i = params.heldKeys.indexOf(params.keyCodes[e.keyCode])
+  console.log(e.key);
+  if (params.keyCodes[e.key]) {
+    let i = params.heldKeys.indexOf(params.keyCodes[e.key])
     params.heldKeys.splice(i, 1)
     if (params.heldKeys.length == 0) idle()
   }
-  if (e.keyCode == '32' && params.idle == true && params.squashable && params.messageEmpty == true) {
+  if (e.key == ' ' && params.idle == true && params.squashable && params.messageEmpty == true) {
     squash()
   }
 })
 
 let illegalKeys = [
-  '3739',
-  '3937',
-  '3840',
-  '4038'
+  'ArrowUpArrowDown',
+  'ArrowDownArrowUp',
+  'ArrowLeftArrowRight',
+  'ArrowRightArrowLeft'
 ]
 
 
@@ -462,11 +459,11 @@ function checkKey(e) {
   if (e.repeat) { return }
   e = e || window.event;
 
-  if (controls.autoRotate && e.keyCode != '32') {
+  if (controls.autoRotate && e.keyCode != ' ') {
     setControls()
   }
 
-  let key = e.keyCode
+  let key = e.key
 
     //Double movement directions
     if (illegalKeys.includes(`${params.heldKeys[0]}${key}`)) {
