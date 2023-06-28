@@ -173,7 +173,6 @@ const generateParticles = () => {
   material.alphaMap = particleTexture
 
   const points = new THREE.Points(geometry, material)
-  // console.log(points);
 
   for (let i = 0; i < params.particleCount; i++) {
     const i3 = i * 3
@@ -200,7 +199,6 @@ gltfLoader.load('/animals/inkfish.glb', (gltf) => {
   gltf.scene.position.y = 1
   gltf.scene.position.x = 8
   params.model = gltf.scene
-  console.log(gltf);
   scene.add(gltf.scene)
   directionalLight.target = gltf.scene
   controls.target.set(8, 2, 0)
@@ -217,7 +215,6 @@ gltfLoader.load('/animals/inkfish.glb', (gltf) => {
       (anim3) => {
         anim3.animations[0].name = 'Clicked'
         params.animations = [anim.animations[0], anim2.animations[0], anim3.animations[0] ]
-        console.log(params.animations);
         loadActions()
         idle()
       })
@@ -441,7 +438,6 @@ function onClick() {
 
   if (intersects.length > 0) {
     const clickedObject = intersects[0].object;
-    console.log(clickedObject);
     if (clickedObject.userData.url) {
       window.open(clickedObject.userData.url, '_blank');
     }
@@ -473,7 +469,6 @@ function checkKey(e) {
   e = e || window.event;
 
   if (controls.autoRotate && e.keyCode != '32') {
-    console.log('Resetting controls after autorotate');
     setControls()
   }
 
@@ -520,7 +515,6 @@ const outOfBounds = () => {
     params.outOfBounds = true;
     infoContainer.innerHTML = '<h2 style="text-align: center;">Out of bounds</h2>'
     infoContainer.classList.add('out-of-bounds')
-    console.log('Out of bounds');
     setTimeout(() => {
       params.outOfBounds = false;
       infoContainer.classList.remove('out-of-bounds')
@@ -569,7 +563,6 @@ const showInfo = (item) => {
   let name = item.children[0].userData.name
 
   if (["skills", "certifications", "about"].includes(name)) {
-    console.log(name);
     showSidebar(name)
     return
   }
@@ -614,7 +607,6 @@ const setNewMessageTimeout = () => {
 
 
 const randomMessage = (squash = false) => {
-  console.log(params.messageTimeout);
   clearTimeout(params.messageTimeout)
   params.squashable = false
   if (squash) {
@@ -656,7 +648,6 @@ const completed = () => {
 }
 
 const moonFound = () => {
-  console.log('moon found');
   params.moonFound = true;
   const secretMessage = document.getElementById('secret-message')
   secretMessage.innerHTML = '🎉   🎉   🎉 <h3>You found the sunken moon!</h3> 🎉   🎉   🎉<br><p>Submit your name to the hall of fame:</p><br><form action="/winners" method="post"><input id="moon-input" type="text" name="name" placeholder="Your name..."/><input id="moon-input" type="text" name="comment" placeholder="Comment..."/><input type="submit" id="moon-submit" value="Submit" /></form>'
