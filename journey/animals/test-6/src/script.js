@@ -46,7 +46,7 @@ let params = {
     'z1x-1': Math.PI * 1.75,
   },
   // speed: 0.05,
-  speed: 0.1,
+  speed: 0.05,
   messageEmpty: false,
   outOfBounds: false,
   floorLength: 110,
@@ -55,7 +55,7 @@ let params = {
   completedBanner: false, // Set to true once the banner has been shown
   idle: true,
   squashable: true,
-  squashCount: -1,
+  squashCount: 16,
   moonFound: false,
   angry: false,
   // squashCount: 13
@@ -312,7 +312,7 @@ const angry = () => {
       audioPlayer.load()
       audioPlayer.play()
     }, 500);
-  }, 15000);
+  }, 10000);
 
 }
 
@@ -656,10 +656,11 @@ const completed = () => {
 }
 
 const moonFound = () => {
+  console.log('moon found');
   params.moonFound = true;
-  const moonMessage = document.getElementById('moon-message')
-  moonMessage.classList.add('show')
-  moonMessage.classList.remove('d-none')
+  const secretMessage = document.getElementById('secret-message')
+  secretMessage.innerHTML = '🎉   🎉   🎉 <h3>You found the sunken moon!</h3> 🎉   🎉   🎉<br><p>Submit your name to the hall of fame:</p><br><form action="/winners" method="post"><input id="moon-input" type="text" name="name" placeholder="Your name..."/><input id="moon-input" type="text" name="comment" placeholder="Witty comment..."/><input type="submit" id="moon-submit" value="Submit" /></form>'
+  secretMessage.classList.add('show')
 }
 
 /**
