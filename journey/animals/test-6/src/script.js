@@ -854,7 +854,7 @@ const ouch = [
   "If you keep doing that, you're gonna be in a world of pain!",
   "...",
   "...",
-  "Okay, last warning!",
+  "Okay, last warning bozo!",
   "...",
   "Ich sag's dir, das wirst du gleich bereuen!",
   "hhhhHHHHHUUUUUUAAAAAAAA!"

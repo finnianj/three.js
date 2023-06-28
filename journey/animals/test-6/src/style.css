@@ -4,36 +4,29 @@
   src: url('/fonts/CherryBombOne-Regular.ttf');
 }
 
-
-*
-{
-    margin: 0;
-    padding: 0;
+*{
+  margin: 0;
+  padding: 0;
 }
 
-html,
-body
-{
+html, body {
   font-family: cherry;
   overflow: hidden;
   font-weight: 100;
 }
 
-.webgl
-{
-    position: fixed;
-    top: 0;
-    left: 0;
-    outline: none;
-    opacity: 0;
-    transition: 1s;
+.webgl {
+  position: fixed;
+  top: 0;
+  left: 0;
+  outline: none;
+  opacity: 0;
+  transition: 1s;
 }
 
 .pointer-cursor{
   cursor: pointer;
 }
-
-
 
 #text{
   z-index: 10;
