@@ -436,13 +436,12 @@ function onClick() {
 
 document.onkeydown = checkKey;
 document.onkeyup = ((e) => {
-  console.log(e.key);
   if (params.keyCodes[e.key]) {
     let i = params.heldKeys.indexOf(params.keyCodes[e.key])
     params.heldKeys.splice(i, 1)
     if (params.heldKeys.length == 0) idle()
   }
-  if (e.key == ' ' && params.idle == true && params.squashable && params.messageEmpty == true) {
+  if (e.key == ' ' && params.idle && params.squashable && params.messageEmpty) {
     squash()
   }
 })
@@ -459,27 +458,24 @@ function checkKey(e) {
   if (e.repeat) { return }
   e = e || window.event;
 
-  if (controls.autoRotate && e.keyCode != ' ') {
+  if (controls.autoRotate && e.key != ' ') {
     setControls()
   }
 
   let key = e.key
 
-    //Double movement directions
-    if (illegalKeys.includes(`${params.heldKeys[0]}${key}`)) {
-      return
-    }
+  if (illegalKeys.includes(`${params.heldKeys[0]}${key}`)) {
+    return
+  }
 
-    // check it's an arrow
-    if (params.keyCodes[key]) {
-      swim()
-      params.heldKeys.push(params.keyCodes[key])
-      if (audioPlayer.paused == true) {
-        audioPlayer.currentTime = 0;
-        audioPlayer.play()
-      }
-      // controls.reset()
+  if (params.keyCodes[key]) {
+    swim()
+    params.heldKeys.push(params.keyCodes[key])
+    if (audioPlayer.paused == true) {
+      audioPlayer.currentTime = 0;
+      audioPlayer.play()
     }
+  }
 
 }
 
@@ -513,7 +509,6 @@ const outOfBounds = () => {
   }
 }
 
-
 const rotate = (targetRotation) => {
     let currentRotation = params.model.rotation.y
     let rotationDiff = (targetRotation - currentRotation) ;
@@ -540,11 +535,12 @@ const checkDistances = () => {
 
 }
 
-
 const showInfo = (item) => {
 
   params.messageEmpty = false;
+
   if (item.children[2].material.color.g != 1) {
+    // If the hoop is still yellow, then the hoop will turn green
     item.children[2].material.color = new THREE.Color('rgb(4, 255, 58)')
     params.completed += 1
     effectPlayer.currentTime = 0
@@ -588,11 +584,11 @@ const setNewMessageTimeout = () => {
   params.messageEmpty = true;
 
   setTimeout(() => {
-    if (params.messageEmpty == true && params.completedBanner == false && params.completed >= 7) completed()
+    if (params.messageEmpty && !params.completedBanner && params.completed >= 7) completed()
   }, 2000);
 
   params.messageTimeout = setTimeout(() => {
-    if (params.messageEmpty == true) randomMessage()
+    if (params.messageEmpty) randomMessage()
   }, 8000);
 }
 
@@ -606,6 +602,7 @@ const randomMessage = (squash = false) => {
   messageContainer.innerText = ""
   messageContainer.classList.add('show')
   let message = squash ? ouch[params.squashCount] || "" : messages[Math.floor(Math.random() * messages.length)]
+
   let typed = new Typed(messageContainer, {
     strings: [message],
     typeSpeed: 50,
@@ -617,7 +614,7 @@ const randomMessage = (squash = false) => {
         params.squashable = true
       }, 2000)
       params.messageTimeout = setTimeout(() => {
-        if (params.messageEmpty == true && params.squashable == true) {
+        if (params.messageEmpty && params.squashable) {
           randomMessage()
         }
       }, 10000);
@@ -630,7 +627,7 @@ const completed = () => {
   clearTimeout(params.messageTimeout)
   params.messageEmpty = false;
   params.completedBanner = true;
-  infoContainer.innerHTML = '<h2>Yazoo!</h2> <p>You visited all the hoops, congratulations! <p>There is just one more thing left to find...</p></p>'
+  infoContainer.innerHTML = '<h2>Yazoo!</h2> <p>You visited all the hoops, congratulations! <p>Just one more thing left to find...</p></p>'
   infoContainer.classList.add('completed')
   setTimeout(() => {
     params.messageEmpty = true;
@@ -643,6 +640,9 @@ const moonFound = () => {
   const secretMessage = document.getElementById('secret-message')
   secretMessage.innerHTML = '🎉   🎉   🎉 <h3>You found the sunken moon!</h3> 🎉   🎉   🎉<br><p>Submit your name to the hall of fame:</p><br><form action="/winners" method="post"><input id="moon-input" type="text" name="name" placeholder="Your name..."/><input id="moon-input" type="text" name="comment" placeholder="Comment..."/><input type="submit" id="moon-submit" value="Submit" /></form>'
   secretMessage.classList.add('show')
+  setTimeout(() => {
+    secretMessage.classList.remove('show')
+  }, 10000);
 }
 
 /**
@@ -673,7 +673,6 @@ const setControls = () => {
     controls.minAzimuthAngle = 1.2
     canvas.classList.add('show')
   }, 1000);
-
 }
 
 /**
@@ -722,7 +721,6 @@ scene.add(moon)
  */
 const clock = new THREE.Clock()
 let previousTime = 0
-let currentIntersect = null
 
 const tick = () => {
 
@@ -786,7 +784,6 @@ const tick = () => {
     }
 
     // Update controls
-
     controls.update()
 
     // Raycaster
@@ -874,9 +871,7 @@ const infoHash = {
 const messageContainer = document.getElementById('text')
 const infoContainer = document.getElementById('info')
 const skillsAndCerts = document.getElementById('skills-and-certs')
-const skills = document.getElementById('skills')
-const certifications = document.getElementById('certifications')
-const about = document.getElementById('about')
+
 
 window.onload = () => {
   canvas.classList.add('show')
@@ -908,14 +903,14 @@ window.onload = () => {
       params.messageEmpty = true
       setControls()
       params.messageTimeout = setTimeout(() => {
-        if (params.messageEmpty == true) randomMessage()
+        if (params.messageEmpty) randomMessage()
       }, 8000);
     }
   });
 }
 
 const endTyped = () => {
-  if (controls.autoRotate == true) {
+  if (controls.autoRotate) {
     controls.autoRotate = false
     setControls()
   }
@@ -924,7 +919,7 @@ const endTyped = () => {
     params.messageEmpty = true
   }, 1000);
   params.messageTimeout = setTimeout(() => {
-    if (params.messageEmpty == true) randomMessage()
+    if (params.messageEmpty) randomMessage()
   }, 8000);
 }
 
