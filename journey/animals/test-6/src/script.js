@@ -45,7 +45,6 @@ let params = {
     'x-1z1': Math.PI * 1.75,
     'z1x-1': Math.PI * 1.75,
   },
-  // speed: 0.05,
   speed: 0.05,
   messageEmpty: false,
   outOfBounds: false,
@@ -55,10 +54,9 @@ let params = {
   completedBanner: false, // Set to true once the banner has been shown
   idle: true,
   squashable: true,
-  squashCount: 16,
+  squashCount: -1,
   moonFound: false,
   angry: false,
-  // squashCount: 13
 }
 
 
@@ -893,7 +891,7 @@ window.onload = () => {
   if(window.innerWidth <= 800) return;
 
   let typed = new Typed(messageContainer, {
-    strings: ["Oh, it's you!", "I'm glad you made it", " Let's have a look around, shall we?", " Use the arrow keys to move", ""],
+    strings: ["Oh, it's you!", "I'm glad you made it", " Let's have a look around, shall we?", "Use the arrow keys to move", ""],
     typeSpeed: 50,
     startDelay: 1000,
     backDelay: 1000,
