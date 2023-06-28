@@ -18,16 +18,17 @@ let mixer = null
 let params = {
   color: '#e1bf92',
   background: '#0593ff',
-  particleCount: 600,
+  particleCount: 200,
   particleSize: 0.1,
   keyCodes: {
-    // In tick function:
+    // For reference in tick function:
     // 1 is used for positive movement along axis, -1 for negative. 3rd value is rotation
-    '37': ['z', 1, 0],
-    '38': ['x', -1, Math.PI * 1.5],
-    '39': ['z', -1, Math.PI],
-    '40': ['x', 1, Math.PI * 0.5]
+    'ArrowLeft': ['z', 1, 0],
+    'ArrowUp': ['x', -1, Math.PI * 1.5],
+    'ArrowRight': ['z', -1, Math.PI],
+    'ArrowDown': ['x', 1, Math.PI * 0.5]
   },
+  // Important -  the items in the held keys array determine the direction of travel
   heldKeys: [],
   modelPosition: {},
   limits: {
@@ -45,8 +46,7 @@ let params = {
     'x-1z1': Math.PI * 1.75,
     'z1x-1': Math.PI * 1.75,
   },
-  // speed: 0.05,
-  speed: 0.1,
+  speed: 0.05,
   messageEmpty: false,
   outOfBounds: false,
   floorLength: 110,
@@ -55,10 +55,9 @@ let params = {
   completedBanner: false, // Set to true once the banner has been shown
   idle: true,
   squashable: true,
-  squashCount: 15,
+  squashCount: -1,
   moonFound: false,
   angry: false,
-  // squashCount: 13
 }
 
 
@@ -142,14 +141,9 @@ const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6)
 directionalLight.position.set(9, 6, 3)
 scene.add(directionalLight)
 
-
-// const dlHelper = new THREE.DirectionalLightHelper(directionalLight)
-// scene.add(dlHelper)
-
-
 // Audio
 const audioPlayer = document.getElementById('music')
-audioPlayer.volume = 0.7
+audioPlayer.volume = 0.3
 const effectPlayer = document.getElementById('effect')
 effectPlayer.volume = 0.2
 
@@ -173,13 +167,12 @@ const generateParticles = () => {
   material.alphaMap = particleTexture
 
   const points = new THREE.Points(geometry, material)
-  // console.log(points);
 
   for (let i = 0; i < params.particleCount; i++) {
     const i3 = i * 3
-    vertices[i3 + 0] = (Math.random() * 45) - 35
+    vertices[i3 + 0] = (Math.random() * 90) - 60
     vertices[i3 + 1] = (Math.random() * 5)
-    vertices[i3 + 2] = (Math.random() * 40) - 20
+    vertices[i3 + 2] = (Math.random() * 60) - 30
 
   }
   geometry.setAttribute(
@@ -200,7 +193,6 @@ gltfLoader.load('/animals/inkfish.glb', (gltf) => {
   gltf.scene.position.y = 1
   gltf.scene.position.x = 8
   params.model = gltf.scene
-  console.log(gltf);
   scene.add(gltf.scene)
   directionalLight.target = gltf.scene
   controls.target.set(8, 2, 0)
@@ -217,7 +209,6 @@ gltfLoader.load('/animals/inkfish.glb', (gltf) => {
       (anim3) => {
         anim3.animations[0].name = 'Clicked'
         params.animations = [anim.animations[0], anim2.animations[0], anim3.animations[0] ]
-        console.log(params.animations);
         loadActions()
         idle()
       })
@@ -246,7 +237,6 @@ const swim = () => {
   params.mixer._actions.find(a => a._clip.name == 'Swim').play()
 }
 const idle = () => {
-  console.log('idling');
   params.idle = true;
   params.mixer._actions.find(a => a._clip.name == 'Swim').stop()
   params.mixer._actions.find(a => a._clip.name == 'Idle_A').play()
@@ -260,11 +250,12 @@ const idle = () => {
 }
 
 const squash = () => {
+  clearTimeout(params.idleTimeout)
   randomMessage(true)
   params.mixer.stopAllAction()
   params.mixer._actions.find(a => a._clip.name == 'Clicked').play()
 
-  if (params.squashCount == 16) {
+  if (params.squashCount == 17) {
     angry()
     params.squashCount = -1
   }
@@ -311,14 +302,10 @@ const angry = () => {
       audioPlayer.children[0].src = '/sounds/ambient.mp3'
       audioPlayer.load()
       audioPlayer.play()
-      params.angry = false
     }, 500);
-  }, 15000);
+  }, 10000);
 
 }
-
-
-
 
 // // --------------------
 // // Plants
@@ -334,8 +321,7 @@ const loadPlants = (path, number, maxScaleDifference, minScale, specifiedPositio
     materials.preload();
 
     objLoader.setMaterials(materials).load(`/environment/${path}.obj`, function (object) {
-      // object.children[0].material.shininess = 10
-      let zArea= params.floorWidth;
+      let zArea = params.floorWidth;
       let xArea = params.floorLength;
 
       object.traverse( function ( child ) {
@@ -356,10 +342,10 @@ const loadPlants = (path, number, maxScaleDifference, minScale, specifiedPositio
           clone.position.x = -i
         } else if (specifiedPosition) {
           clone.position.z = specifiedPosition
-          clone.position.x = Math.random() * xArea - (xArea / 1.5)
+          clone.position.x = Math.random() * 90 - 45
         } else {
-          clone.position.z = Math.random() * zArea - (zArea / 2)
-          clone.position.x = Math.random() * xArea - (xArea / 1.5)
+          clone.position.z = Math.random() * 70 - 35
+          clone.position.x = Math.random() * 90 - 45
           clone.rotation.y = Math.random() * 6
         }
         scene.add(clone)
@@ -376,11 +362,11 @@ loadPlants('Seaweed_A_02_LOD2', 50, 0.02, 0.1)
 loadPlants('Seaweed_A_03_LOD2', 50, 0.02, 0.2)
 
 // Purple coral
-loadPlants('Coral_D_03_LOD3', 10, 0.2, 0.2)
+loadPlants('Coral_D_03_LOD3', 15, 0.2, 0.2)
 // Red Coral
 loadPlants('Coral_C_03_LOD3', 10, 0.1, 0.2 )
-loadPlants('Coral_C_03_LOD3', 5, 0.3, 0.8, -10 )
-loadPlants('Coral_C_03_LOD3', 5, 0.3, 0.8, 30 )
+loadPlants('Coral_C_03_LOD3', 7, 0.3, 0.8, -10 )
+loadPlants('Coral_C_03_LOD3', 7, 0.3, 0.8, 30 )
 
 // Spikey coral
 loadPlants('Coral_A_03_LOD2', 10, 0.1, 0.2)
@@ -388,7 +374,7 @@ loadPlants('Coral_B_03_LOD2', 10, 0.1, 0.1)
 
 // Sponges
 loadPlants('Sponge_A_03_LOD2', 10, 0.1, 0.2)
-loadPlants('Sponge_B_03_LOD2', 10, 0.1, 0.2) // the coolest
+loadPlants('Sponge_B_03_LOD2', 20, 0.1, 0.2) // the coolest
 
 // Starfish
 loadPlants('Starfish_01_LOD3', 40, 0.1, 0.2)
@@ -427,20 +413,8 @@ const addPortfolioItem = (image, name, url, position, alpha = false) => {
   portfolioItems.push(group)
 }
 
-function onClick() {
-  const intersects = raycaster.intersectObjects(portfolioItems, true);
-
-  if (intersects.length > 0) {
-    const clickedObject = intersects[0].object;
-    console.log(clickedObject);
-    if (clickedObject.userData.url) {
-      window.open(clickedObject.userData.url, '_blank');
-    }
-  }
-}
-
-addPortfolioItem('/images/Moss.jpeg', 'moss', 'https://www.mossradio.live/users/sign_in', [1, 1, 4])
-addPortfolioItem('/images/api.jpeg', 'api', '/api', [-6, 1, -4])
+addPortfolioItem('/images/api.jpeg', 'api', '/api', [1, 1, 4])
+addPortfolioItem('/images/moss.png', 'moss', 'https://www.mossradio.live/users/sign_in', [-6, 1, -4])
 addPortfolioItem('/images/pomodoro.png', 'widgets', '/simple#widgets', [-13, 1, 4], true)
 addPortfolioItem('/images/america.png', 'd3', '/simple#datavis', [-20, 1, -4], true)
 addPortfolioItem('/images/skills.png', 'skills', '/simple#skills', [-27, 1, 3], true)
@@ -448,23 +422,35 @@ addPortfolioItem('/images/finn.png', 'about', '/simple#about', [-30, 1, 7])
 addPortfolioItem('/images/certifications.png', 'certifications', '/simple#certifications', [-27, 1, 11], true)
 portfolioItems.forEach(i => scene.add(i))
 
+
+function onClick() {
+  const intersects = raycaster.intersectObjects(portfolioItems, true);
+
+  if (intersects.length > 0) {
+    const clickedObject = intersects[0].object;
+    if (clickedObject.userData.url) {
+      window.open(clickedObject.userData.url, '_blank');
+    }
+  }
+}
+
 document.onkeydown = checkKey;
 document.onkeyup = ((e) => {
-  if (params.keyCodes[e.keyCode]) {
-    let i = params.heldKeys.indexOf(params.keyCodes[e.keyCode])
+  if (params.keyCodes[e.key]) {
+    let i = params.heldKeys.indexOf(params.keyCodes[e.key])
     params.heldKeys.splice(i, 1)
     if (params.heldKeys.length == 0) idle()
   }
-  if (e.keyCode == '32' && params.idle == true && params.squashable && params.messageEmpty == true) {
+  if (e.key == ' ' && params.idle && params.squashable && params.messageEmpty) {
     squash()
   }
 })
 
 let illegalKeys = [
-  '3739',
-  '3937',
-  '3840',
-  '4038'
+  'ArrowUpArrowDown',
+  'ArrowDownArrowUp',
+  'ArrowLeftArrowRight',
+  'ArrowRightArrowLeft'
 ]
 
 
@@ -472,28 +458,24 @@ function checkKey(e) {
   if (e.repeat) { return }
   e = e || window.event;
 
-  if (controls.autoRotate && e.keyCode != '32') {
-    console.log('Resetting controls after autorotate');
+  if (controls.autoRotate && e.key != ' ') {
     setControls()
   }
 
-  let key = e.keyCode
+  let key = e.key
 
-    //Double movement directions
-    if (illegalKeys.includes(`${params.heldKeys[0]}${key}`)) {
-      return
-    }
+  if (illegalKeys.includes(`${params.heldKeys[0]}${key}`)) {
+    return
+  }
 
-    // check it's an arrow
-    if (params.keyCodes[key]) {
-      swim()
-      params.heldKeys.push(params.keyCodes[key])
-      // if (audioPlayer.paused == true) {
-      //   audioPlayer.currentTime = 0;
-      //   audioPlayer.play()
-      // }
-      // controls.reset()
+  if (params.keyCodes[key]) {
+    swim()
+    params.heldKeys.push(params.keyCodes[key])
+    if (audioPlayer.paused == true) {
+      audioPlayer.currentTime = 0;
+      audioPlayer.play()
     }
+  }
 
 }
 
@@ -520,14 +502,12 @@ const outOfBounds = () => {
     params.outOfBounds = true;
     infoContainer.innerHTML = '<h2 style="text-align: center;">Out of bounds</h2>'
     infoContainer.classList.add('out-of-bounds')
-    console.log('Out of bounds');
     setTimeout(() => {
       params.outOfBounds = false;
       infoContainer.classList.remove('out-of-bounds')
     }, 1000);
   }
 }
-
 
 const rotate = (targetRotation) => {
     let currentRotation = params.model.rotation.y
@@ -558,7 +538,9 @@ const checkDistances = () => {
 const showInfo = (item) => {
 
   params.messageEmpty = false;
+
   if (item.children[2].material.color.g != 1) {
+    // If the hoop is still yellow, then the hoop will turn green
     item.children[2].material.color = new THREE.Color('rgb(4, 255, 58)')
     params.completed += 1
     effectPlayer.currentTime = 0
@@ -568,7 +550,6 @@ const showInfo = (item) => {
   let name = item.children[0].userData.name
 
   if (["skills", "certifications", "about"].includes(name)) {
-    console.log(name);
     showSidebar(name)
     return
   }
@@ -584,6 +565,7 @@ const showInfo = (item) => {
   }, 1000);
 }
 
+
 const showSidebar = (name) => {
   const element =  document.getElementById(name)
   skillsAndCerts.classList.add('show')
@@ -597,23 +579,19 @@ const showSidebar = (name) => {
   }, 1000);
 }
 
-const moonFound = () => {
-  params.moonFound = true;
-  const moonMessage = document.getElementById('moon-message')
-  moonMessage.classList.add('show')
-  moonMessage.classList.remove('d-none')
-}
-
 const setNewMessageTimeout = () => {
   clearTimeout(params.messageTimeout)
   params.messageEmpty = true;
-  if (params.completedBanner == false && params.completed >= 7 && params.messageEmpty == true) completed()
 
+  setTimeout(() => {
+    if (params.messageEmpty && !params.completedBanner && params.completed >= 7) completed()
+  }, 2000);
 
   params.messageTimeout = setTimeout(() => {
-    if (params.messageEmpty == true) randomMessage()
-  }, 5000);
+    if (params.messageEmpty) randomMessage()
+  }, 8000);
 }
+
 
 const randomMessage = (squash = false) => {
   clearTimeout(params.messageTimeout)
@@ -624,6 +602,7 @@ const randomMessage = (squash = false) => {
   messageContainer.innerText = ""
   messageContainer.classList.add('show')
   let message = squash ? ouch[params.squashCount] || "" : messages[Math.floor(Math.random() * messages.length)]
+
   let typed = new Typed(messageContainer, {
     strings: [message],
     typeSpeed: 50,
@@ -635,7 +614,7 @@ const randomMessage = (squash = false) => {
         params.squashable = true
       }, 2000)
       params.messageTimeout = setTimeout(() => {
-        if (params.messageEmpty == true && params.squashable == true) {
+        if (params.messageEmpty && params.squashable) {
           randomMessage()
         }
       }, 10000);
@@ -648,12 +627,22 @@ const completed = () => {
   clearTimeout(params.messageTimeout)
   params.messageEmpty = false;
   params.completedBanner = true;
-  infoContainer.innerHTML = '<h2>Yazoo!</h2> <p>You visited all the hoops, congratulations! <p>There is just one more thing left to find...</p></p>'
+  infoContainer.innerHTML = '<h2>Yazoo!</h2> <p>You visited all the hoops, congratulations! <p>Just one more thing left to find...</p></p>'
   infoContainer.classList.add('completed')
   setTimeout(() => {
     params.messageEmpty = true;
     infoContainer.classList.remove('completed')
   }, 5000);
+}
+
+const moonFound = () => {
+  params.moonFound = true;
+  const secretMessage = document.getElementById('secret-message')
+  secretMessage.innerHTML = '🎉   🎉   🎉 <h3>You found the sunken moon!</h3> 🎉   🎉   🎉<br><p>Submit your name to the hall of fame:</p><br><form action="/winners" method="post"><input id="moon-input" type="text" name="name" placeholder="Your name..."/><input id="moon-input" type="text" name="comment" placeholder="Comment..."/><input type="submit" id="moon-submit" value="Submit" /></form>'
+  secretMessage.classList.add('show')
+  setTimeout(() => {
+    secretMessage.classList.remove('show')
+  }, 10000);
 }
 
 /**
@@ -684,7 +673,6 @@ const setControls = () => {
     controls.minAzimuthAngle = 1.2
     canvas.classList.add('show')
   }, 1000);
-
 }
 
 /**
@@ -733,7 +721,6 @@ scene.add(moon)
  */
 const clock = new THREE.Clock()
 let previousTime = 0
-let currentIntersect = null
 
 const tick = () => {
 
@@ -797,7 +784,6 @@ const tick = () => {
     }
 
     // Update controls
-
     controls.update()
 
     // Raycaster
@@ -843,14 +829,13 @@ const messages = [
   "Sometimes I fall asleep, and wake up in places I've never seen before!",
   "It's nice to clean the ocean floor. But where does all that junk come from?",
   "Fish don't have feelings? Good thing I'm not a fish then.",
-  "School was okay, but I prefer to swim in my own way",
+  "School was okay, but I like to swim in my own way",
   "Would you like to see my ink drawings?",
   "A thumb war? No, thank you...",
   "Gosh, I'm thirsty!",
   "A long time ago, something huge fell down from the surface...",
   "The thing that fell from above...did you see it yet?",
   "Once you're done here, maybe I can take you to where the relic landed...",
-  "The nearby relic...I only go when I'm feeling brave.",
   "Time is just an illusion...lunchtime doubly so!"
 ]
 
@@ -858,24 +843,25 @@ const ouch = [
   "Bonk! Haha.",
   "I have a squishy head!",
   "Oof!",
+  "Who needs brain cells?",
   "Eee!",
   "...",
   "Yes, yes, okay...",
   "Ow!",
-  "Stop it now.",
+  "Stop it now please.",
   "I mean it.",
   "I have ink, you know?",
   "If you keep doing that, you're gonna be in a world of pain!",
   "...",
   "...",
-  "Okay, last warning!",
+  "Okay, last warning bozo!",
   "...",
-  "GLEICH KRIEGSTE EINS RICHTIG DOLL AUF DIE FRESSE!!!",
+  "Ich sag's dir, das wirst du gleich bereuen!",
   "hhhhHHHHHUUUUUUAAAAAAAA!"
 ]
 
 const infoHash = {
-  'moss': '<h2 class="highlight">Moss Radio</h2> <p>Ruby on Rails, PostgreSQL, Stimulus.js.</p><h3 class="highlight">Includes:</h3><p> Live chat, live music stream, beautifully smooth front end, user authentication.</p>',
+  'moss': '<h2 class="highlight">Moss Radio</h2> <p>Ruby on Rails, PostgreSQL, Stimulus.js.</p><h3 class="highlight">Includes:</h3><p> Live chat, live music stream, user authentication.</p>',
   'api': '<h2 class="highlight">My API</h2> <p>Node.js, MongoDB, Express.js</p><h3 class="highlight">Includes:</h3><p> Four different API Microservices, including a community playlist - submit your favourite song!</p>',
   'widgets': '<h2 class="highlight">Widgets</h2> <p>React, Typescript, JQuery</p><h3 class="highlight">Includes:</h3><p>Pomodoro Clock, React Calculator, Drum Machine, Delivery Fee Calculator</p>',
   'd3': '<h2 class="highlight">Data Visualisation</h2> <p>D3.js</p><h3 class="highlight">Includes:</h3><p>US Education Data by County, Global Temperature Variance, Highest Grossing Films.</p',
@@ -885,16 +871,14 @@ const infoHash = {
 const messageContainer = document.getElementById('text')
 const infoContainer = document.getElementById('info')
 const skillsAndCerts = document.getElementById('skills-and-certs')
-const skills = document.getElementById('skills')
-const certifications = document.getElementById('certifications')
-const about = document.getElementById('about')
+
 
 window.onload = () => {
   canvas.classList.add('show')
   if(window.innerWidth <= 800) return;
 
   let typed = new Typed(messageContainer, {
-    strings: ["Oh, it's you!", "I'm glad you made it", " Let's have a look around, shall we?", " Use the arrow keys to move", ""],
+    strings: ["Oh, it's you!", "I'm glad you made it", " Let's have a look around, shall we?", "Use the arrow keys to move", ""],
     typeSpeed: 50,
     startDelay: 1000,
     backDelay: 1000,
@@ -917,17 +901,16 @@ window.onload = () => {
     },
     onComplete: () => {
       params.messageEmpty = true
-      console.log('Resetting controls after completed typing');
       setControls()
-      setTimeout(() => {
-        if (params.messageEmpty == true) randomMessage()
+      params.messageTimeout = setTimeout(() => {
+        if (params.messageEmpty) randomMessage()
       }, 8000);
     }
   });
 }
 
 const endTyped = () => {
-  if (controls.autoRotate == true) {
+  if (controls.autoRotate) {
     controls.autoRotate = false
     setControls()
   }
@@ -936,7 +919,7 @@ const endTyped = () => {
     params.messageEmpty = true
   }, 1000);
   params.messageTimeout = setTimeout(() => {
-    if (params.messageEmpty == true) randomMessage()
+    if (params.messageEmpty) randomMessage()
   }, 8000);
 }
 

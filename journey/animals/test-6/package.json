@@ -11,8 +11,6 @@
     "vite": "^4.0.4"
   },
   "dependencies": {
-    "animate.css": "^4.1.1",
-    "lil-gui": "^0.17.0",
     "three": "^0.148.0"
   }
 }
