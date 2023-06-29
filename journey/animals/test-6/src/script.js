@@ -780,6 +780,10 @@ const tick = () => {
       }
     }
 
+    portfolioItems.forEach((i) => {
+      i.rotation.y = elapsedTime * 0.2
+    })
+
     // Update controls
     controls.update()
 
