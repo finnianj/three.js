@@ -692,9 +692,6 @@ directionalLight.shadow.camera.bottom = -8
 directionalLight.shadow.camera.near = 5
 directionalLight.shadow.camera.far = 8.3
 
-const directionalLightCameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera)
-scene.add(directionalLightCameraHelper)
-
 floor.receiveShadow = true
 directionalLight.castShadow = true
 directionalLight.shadow.mapSize.set(1024, 1024)
