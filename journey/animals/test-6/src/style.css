@@ -117,14 +117,14 @@ html, body {
 }
 
 #skills-and-certs h3{
-  font-size: 30px;
+  font-size: 20px;
   text-align: center;
   margin: 20px;
 }
 
 #skills-and-certs h4{
   font-size: 20px;
-  padding-top: 10px;
+  padding-top: 50px;
 }
 
 #skills-and-certs li {
@@ -138,6 +138,7 @@ html, body {
 }
 
 #certifications a {
+  font-size: 15px;
   text-decoration: none;
   color: white;
 }
