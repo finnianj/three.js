@@ -680,6 +680,10 @@ const loadMoon = () => {
   portfolioItems.push(moon)
 
   scene.add(moon)
+
+  canvas.classList.add('show')
+  license.classList.remove('d-none')
+  greet()
 }
 
 
@@ -813,12 +817,8 @@ const renderEnvironment = () => {
 
   generateParticles()
   tick()
-  setTimeout(() => {
-    canvas.classList.add('show')
-    license.classList.remove('d-none')
 
-  }, 500);
-
+  document.addEventListener('click', onClick)
   loadMoon()
 }
 
@@ -888,12 +888,7 @@ const infoContainer = document.getElementById('info')
 const skillsAndCerts = document.getElementById('skills-and-certs')
 const license = document.getElementById('license')
 
-window.onload = () => {
-  if(window.innerWidth <= 800) return;
-  renderEnvironment()
-  document.addEventListener('click', onClick)
-
-
+const greet = () => {
   let typed = new Typed(messageContainer, {
     strings: ["Oh, it's you!", "I'm glad you made it", " Let's have a look around, shall we?", "Use the arrow keys to move", ""],
     typeSpeed: 50,
@@ -938,4 +933,9 @@ const endTyped = () => {
   params.messageTimeout = setTimeout(() => {
     if (params.messageEmpty) randomMessage()
   }, 8000);
+}
+
+window.onload = () => {
+  if(window.innerWidth <= 800) return;
+  renderEnvironment()
 }
