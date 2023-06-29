@@ -55,7 +55,7 @@ let params = {
   completedBanner: false, // Set to true once the banner has been shown
   idle: true,
   squashable: true,
-  squashCount: -1,
+  squashCount: 15,
   moonFound: false,
   angry: false,
 }
