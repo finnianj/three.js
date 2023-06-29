@@ -109,7 +109,7 @@ html, body {
 
 .non-laptops-only{
   position: fixed;
-  top: 5vh;
+  top: 40vh;
   left: 2vw;
   width: 90%;
   height: fit-content;

@@ -812,6 +812,13 @@ const renderEnvironment = () => {
   portfolioItems.forEach(i => scene.add(i))
 
   generateParticles()
+  tick()
+  setTimeout(() => {
+    canvas.classList.add('show')
+    license.classList.remove('d-none')
+
+  }, 500);
+
   loadMoon()
 }
 
@@ -878,12 +885,11 @@ const infoHash = {
 const messageContainer = document.getElementById('text')
 const infoContainer = document.getElementById('info')
 const skillsAndCerts = document.getElementById('skills-and-certs')
+const license = document.getElementById('license')
 
 window.onload = () => {
-  canvas.classList.add('show')
   if(window.innerWidth <= 800) return;
   renderEnvironment()
-  tick()
   document.addEventListener('click', onClick)
 
 
