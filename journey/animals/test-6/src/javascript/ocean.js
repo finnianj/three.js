@@ -55,7 +55,7 @@ let params = {
   completedBanner: false, // Set to true once the banner has been shown
   idle: true,
   squashable: true,
-  squashCount: -1,
+  squashCount: 15,
   moonFound: false,
   angry: false,
 }
@@ -536,11 +536,13 @@ const showInfo = (item) => {
 const showSidebar = (name) => {
   const element =  document.getElementById(name)
   skillsAndCerts.classList.add('show')
+  skillsAndCerts.classList.add('front')
   element.classList.remove('d-none')
 
   setTimeout(() => {
     skillsAndCerts.classList.remove('show')
     element.classList.add('d-none')
+    skillsAndCerts.classList.remove('front')
 
     setNewMessageTimeout()
   }, 1000);
@@ -605,6 +607,7 @@ const completed = () => {
 const moonFound = () => {
   params.moonFound = true;
   const secretMessage = document.getElementById('secret-message')
+  secretMessage.classList.add('front')
   secretMessage.innerHTML = '🎉   🎉   🎉 <h3>You found the sunken moon!</h3> 🎉   🎉   🎉<br><p>Submit your name to the hall of fame:</p><br><form action="/winners" method="post"><input id="moon-input" type="text" name="name" placeholder="Your name..."/><br><input id="moon-input" type="text" name="comment" placeholder="Comment..."/><br><input type="submit" id="moon-submit" value="Submit" /></form>'
   secretMessage.classList.add('show')
 }

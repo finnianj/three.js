@@ -118,8 +118,11 @@ html, body {
   font-size: 5vw;
 }
 
-#skills-and-certs{
+.front{
   z-index: 1;
+}
+
+#skills-and-certs{
   font-family: monospace;
   position: fixed;
   right: 0;

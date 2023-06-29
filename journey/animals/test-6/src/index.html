@@ -8,7 +8,7 @@
     <meta property="og:description" content="It's under the sea!">
     <meta property="og:image" content="https://drive.google.com/file/d/1fSUzOsAs6hSuakF4WY80d66e_M_kqP4G/view?usp=sharing">
     <meta property="og:url" content="/">
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./stylesheets/ocean.css">
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
 </head>
 <body>
@@ -90,15 +90,18 @@
         <source src="/sounds/pop.mp3" type="audio/mpeg">
       </audio>
 
-    <script>
-        if(window.innerWidth >= 800) {
+      <script>
+        if (window.innerWidth >= 800) {
+
           let script = document.createElement('script');
-          script.type = 'module'
-          script.src = './script.js';
+          script.src = './javascript/ocean.js';
+          script.type = 'module';
+
+          // Append the <script> element to the document's <head> or <body>
           document.head.appendChild(script);
         }
-    </script>
-    <!-- <script type="module" src="./script.js"></script> -->
+      </script>
+    <!-- <script type="module" src="./javascript/ocean.js"></script> -->
     <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
 </body>
 </html>
