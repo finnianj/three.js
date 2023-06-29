@@ -181,40 +181,42 @@ const generateParticles = () => {
   )
   scene.add(points)
 }
-generateParticles()
 
 
 // --------------------
 // Import Squid Model
 // --------------------
 
-gltfLoader.load('/animals/inkfish.glb', (gltf) => {
-  gltf.scene.children[0].children[0].castShadow = true;
-  gltf.scene.position.y = 1
-  gltf.scene.position.x = 8
-  params.model = gltf.scene
-  scene.add(gltf.scene)
-  directionalLight.target = gltf.scene
-  controls.target.set(8, 2, 0)
-  mixer = new THREE.AnimationMixer(gltf.scene)
-  params.mixer = mixer;
+const loadSquid = () => {
 
-  gltfLoader.load('animals/animations/Inkfish_Idle_A.glb',
-  (anim) => {
-    anim.animations[0].name = 'Idle_A'
-    gltfLoader.load('animals/animations/Inkfish_Swim.glb',
-    (anim2) => {
-      anim2.animations[0].name = 'Swim'
-      gltfLoader.load('animals/animations/Inkfish_Clicked.glb',
-      (anim3) => {
-        anim3.animations[0].name = 'Clicked'
-        params.animations = [anim.animations[0], anim2.animations[0], anim3.animations[0] ]
-        loadActions()
-        idle()
+  gltfLoader.load('/animals/inkfish.glb', (gltf) => {
+    gltf.scene.children[0].children[0].castShadow = true;
+    gltf.scene.position.y = 1
+    gltf.scene.position.x = 8
+    params.model = gltf.scene
+    scene.add(gltf.scene)
+    directionalLight.target = gltf.scene
+    controls.target.set(8, 2, 0)
+    mixer = new THREE.AnimationMixer(gltf.scene)
+    params.mixer = mixer;
+
+    gltfLoader.load('animals/animations/Inkfish_Idle_A.glb',
+    (anim) => {
+      anim.animations[0].name = 'Idle_A'
+      gltfLoader.load('animals/animations/Inkfish_Swim.glb',
+      (anim2) => {
+        anim2.animations[0].name = 'Swim'
+        gltfLoader.load('animals/animations/Inkfish_Clicked.glb',
+        (anim3) => {
+          anim3.animations[0].name = 'Clicked'
+          params.animations = [anim.animations[0], anim2.animations[0], anim3.animations[0] ]
+          loadActions()
+          idle()
+        })
       })
     })
   })
-})
+}
 
 // --------------------
 // Squid Animations
@@ -354,31 +356,6 @@ const loadPlants = (path, number, maxScaleDifference, minScale, specifiedPositio
   });
 }
 
-// path, number, max scale difference, min scale, specific position(z axis)
-
-// Seaweed
-loadPlants('Seaweed_A_01_LOD2', 30, 0.05, 0.2, "curve")
-loadPlants('Seaweed_A_02_LOD2', 50, 0.02, 0.1)
-loadPlants('Seaweed_A_03_LOD2', 50, 0.02, 0.2)
-
-// Purple coral
-loadPlants('Coral_D_03_LOD3', 15, 0.2, 0.2)
-// Red Coral
-loadPlants('Coral_C_03_LOD3', 10, 0.1, 0.2 )
-loadPlants('Coral_C_03_LOD3', 7, 0.3, 0.8, -10 )
-loadPlants('Coral_C_03_LOD3', 7, 0.3, 0.8, 30 )
-
-// Spikey coral
-loadPlants('Coral_A_03_LOD2', 10, 0.1, 0.2)
-loadPlants('Coral_B_03_LOD2', 10, 0.1, 0.1)
-
-// Sponges
-loadPlants('Sponge_A_03_LOD2', 10, 0.1, 0.2)
-loadPlants('Sponge_B_03_LOD2', 20, 0.1, 0.2) // the coolest
-
-// Starfish
-loadPlants('Starfish_01_LOD3', 40, 0.1, 0.2)
-
 
 /**
  * Portfolio Items
@@ -412,16 +389,6 @@ const addPortfolioItem = (image, name, url, position, alpha = false) => {
   group.rotation.y = Math.PI * 0.5
   portfolioItems.push(group)
 }
-
-addPortfolioItem('/images/api.jpeg', 'api', '/api', [1, 1, 4])
-addPortfolioItem('/images/moss.png', 'moss', 'https://www.mossradio.live/users/sign_in', [-6, 1, -4])
-addPortfolioItem('/images/pomodoro.png', 'widgets', '/simple#widgets', [-13, 1, 4], true)
-addPortfolioItem('/images/america.png', 'd3', '/simple#datavis', [-20, 1, -4], true)
-addPortfolioItem('/images/skills.png', 'skills', '/simple#skills', [-27, 1, 3], true)
-addPortfolioItem('/images/finn.png', 'about', '/simple#about', [-30, 1, 7])
-addPortfolioItem('/images/certifications.png', 'certifications', '/simple#certifications', [-27, 1, 11], true)
-portfolioItems.forEach(i => scene.add(i))
-
 
 function onClick() {
   const intersects = raycaster.intersectObjects(portfolioItems, true);
@@ -661,10 +628,10 @@ controls.maxPolarAngle = 2.3
 
 const setControls = () => {
   controls.autoRotate = false;
+  document.getElementById('license').classList.add('d-none')
   canvas.classList.remove('show')
   let p = params.model.position
   setTimeout(() => {
-    document.getElementById('license').classList.add('d-none')
     controls.target.set(p.x, p.y + 1, p.z)
     camera.position.set(p.x + 2, 3, p.z)
     controls.maxAzimuthAngle = 1.8
@@ -698,20 +665,22 @@ directionalLight.castShadow = true
 directionalLight.shadow.mapSize.set(1024, 1024)
 
 // moon
-const moonTexture = new THREE.TextureLoader().load('images/moon.jpeg')
-const normalTexture = new THREE.TextureLoader().load('images/normal.jpeg')
-const moon = new THREE.Mesh(
-  new THREE.SphereGeometry(3, 32, 32),
-  new THREE.MeshStandardMaterial({
-    map: moonTexture,
-    normalMap: normalTexture
-  })
-);
-moon.userData.name = "moon"
-moon.position.set(1, 3, 60)
-portfolioItems.push(moon)
+const loadMoon = () => {
+  const moonTexture = new THREE.TextureLoader().load('images/moon.jpeg')
+  const normalTexture = new THREE.TextureLoader().load('images/normal.jpeg')
+  const moon = new THREE.Mesh(
+    new THREE.SphereGeometry(3, 32, 32),
+    new THREE.MeshStandardMaterial({
+      map: moonTexture,
+      normalMap: normalTexture
+    })
+  );
+  moon.userData.name = "moon"
+  moon.position.set(1, 3, 60)
+  portfolioItems.push(moon)
 
-scene.add(moon)
+  scene.add(moon)
+}
 
 
 /**
@@ -810,6 +779,42 @@ const tick = () => {
     window.requestAnimationFrame(tick)
 }
 
+const renderEnvironment = () => {
+  loadSquid()
+
+  // path, number, max scale difference, min scale, specific position(z axis)
+  // Seaweed
+  loadPlants('Seaweed_A_01_LOD2', 30, 0.05, 0.2, "curve")
+  loadPlants('Seaweed_A_02_LOD2', 50, 0.02, 0.1)
+  loadPlants('Seaweed_A_03_LOD2', 50, 0.02, 0.2)
+  // Purple coral
+  loadPlants('Coral_D_03_LOD3', 15, 0.2, 0.2)
+  // Red Coral
+  loadPlants('Coral_C_03_LOD3', 10, 0.1, 0.2 )
+  loadPlants('Coral_C_03_LOD3', 7, 0.3, 0.8, -10 )
+  loadPlants('Coral_C_03_LOD3', 7, 0.3, 0.8, 30 )
+  // Spikey coral
+  loadPlants('Coral_A_03_LOD2', 10, 0.1, 0.2)
+  loadPlants('Coral_B_03_LOD2', 10, 0.1, 0.1)
+  // Sponges
+  loadPlants('Sponge_A_03_LOD2', 10, 0.1, 0.2)
+  loadPlants('Sponge_B_03_LOD2', 20, 0.1, 0.2) // the coolest
+  // Starfish
+  loadPlants('Starfish_01_LOD3', 40, 0.1, 0.2)
+
+  addPortfolioItem('/images/api.jpeg', 'api', '/api', [1, 1, 4])
+  addPortfolioItem('/images/moss.png', 'moss', 'https://www.mossradio.live/users/sign_in', [-6, 1, -4])
+  addPortfolioItem('/images/pomodoro.png', 'widgets', '/simple#widgets', [-13, 1, 4], true)
+  addPortfolioItem('/images/america.png', 'd3', '/simple#datavis', [-20, 1, -4], true)
+  addPortfolioItem('/images/skills.png', 'skills', '/simple#skills', [-27, 1, 3], true)
+  addPortfolioItem('/images/finn.png', 'about', '/simple#about', [-30, 1, 7])
+  addPortfolioItem('/images/certifications.png', 'certifications', '/simple#certifications', [-27, 1, 11], true)
+  portfolioItems.forEach(i => scene.add(i))
+
+  generateParticles()
+  loadMoon()
+}
+
 
 // -----------------------------------------
 // -----------------------------------------
@@ -874,10 +879,13 @@ const messageContainer = document.getElementById('text')
 const infoContainer = document.getElementById('info')
 const skillsAndCerts = document.getElementById('skills-and-certs')
 
-
 window.onload = () => {
   canvas.classList.add('show')
   if(window.innerWidth <= 800) return;
+  renderEnvironment()
+  tick()
+  document.addEventListener('click', onClick)
+
 
   let typed = new Typed(messageContainer, {
     strings: ["Oh, it's you!", "I'm glad you made it", " Let's have a look around, shall we?", "Use the arrow keys to move", ""],
@@ -924,6 +932,3 @@ const endTyped = () => {
     if (params.messageEmpty) randomMessage()
   }, 8000);
 }
-
-tick()
-document.addEventListener('click', onClick)
