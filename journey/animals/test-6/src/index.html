@@ -6,15 +6,18 @@
     <title>Finn's Portfolio</title>
     <meta property="og:title" content="Finn's Portfolio">
     <meta property="og:description" content="It's under the sea!">
-    <meta property="og:image" content="/images/ogImage.png">
+    <meta property="og:image" content="https://drive.google.com/file/d/1fSUzOsAs6hSuakF4WY80d66e_M_kqP4G/view?usp=sharing">
     <meta property="og:url" content="/">
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./stylesheets/ocean.css">
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
 </head>
 <body>
     <canvas class="webgl"></canvas>
       <div id="text" class="show"></div>
       <div id="info"></div>
+      <div id="license" class="d-none">
+        <p>This work is based on <a href="https://sketchfab.com/3d-models/quirky-series-free-animals-pack-19e91ef86cd0448f9cbb5d6c538dade2">"Quirky Series - FREE Animals Pack"</a> by <a href="https://sketchfab.com/omabuarts">Omabuarts Studio</a> licensed under <a href="http://creativecommons.org/licenses/by/4.0/">CC-BY-4.0</a></p>
+      </div>
 
       <a id="simple-mode-link" href="/simple">Simple mode</a>
 
@@ -52,6 +55,7 @@
 
         <div id="certifications" class="d-none">
           <h3>Certifications</h3>
+          <h4></h4>
           <li><a href="https://kitt.lewagon.com/schoolings/22767/public_diploma?token=0b5dfa10a908f7e729afebfc8f26c892e2925f2226c51689d4f56c5725090578" target="_blank">Web Development Bootcamp</a></li>
           <li><a href="https://www.freecodecamp.org/certification/Finnian_Charlton_Jones/javascript-algorithms-and-data-structures" target="_blank">Javascript Algorithms and Data Structures</a></li>
           <li><a href="https://www.freecodecamp.org/certification/Finnian_Charlton_Jones/front-end-development-libraries" target="_blank">Frontend Development Libraries</a></li>
@@ -65,7 +69,7 @@
           <h3>About</h3>
           <p>Hi there!</p>
           <p>My name is Finn. I'm a creative software developer from the UK. I'm 27.</p>
-          <p>Last year I completed a coding bootcamp and became immersed in the process of learning a new skill. Coding unites many of my interests; it is fundamentally based in language, logic and creativity, and this sort of puzzle solving mentality really catalysed my curiosity.</p>
+          <p>Last year I completed a coding bootcamp and became immersed in the process of learning a new skill. Coding unites many of my interests including language, logic and creativity. That really catalysed my curiosity.</p>
           <p>After completing my BA in German & Russian at the University of Bristol, I moved to Berlin in 2020 to pursue drumming. Although I still play in bands and occasionally teach, I prefer to do it non-professionally.</p>
           <p>Now I am eager to discover as many aspects of computer science as possible. Currently I am exploring Angular and Three.js, but I am always ready for something new.</p>
           <p>Thanks for checking out my website. Remember to <a href="/api" target="_blank" style="text-decoration: none; color: blueviolet;">add your favourite song to my playlist API!</a> Have a great day.</p>
@@ -77,7 +81,7 @@
       <div id="secret-message">
       </div>
 
-      <div class="non-laptops-only">Apologies, I'm still working out how to implement squid navigation for mobile. Check back again soon, or visit the simple version of the site (:
+      <div class="non-laptops-only">Sorry pal, you need a bigger screen!<br><br>Check back again soon, or <a href="/simple">visit the simple version of the site</a>
       </div>
       <audio id="music">
         <source src="/sounds/zen.mp3" type="audio/mpeg">
@@ -85,7 +89,19 @@
       <audio id="effect">
         <source src="/sounds/pop.mp3" type="audio/mpeg">
       </audio>
-    <script type="module" src="./script.js"></script>
+
+      <script>
+        if (window.innerWidth >= 800) {
+
+          let script = document.createElement('script');
+          script.src = './javascript/ocean.js';
+          script.type = 'module';
+
+          // Append the <script> element to the document's <head> or <body>
+          document.head.appendChild(script);
+        }
+      </script>
+    <!-- <script type="module" src="./javascript/ocean.js"></script> -->
     <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
 </body>
 </html>

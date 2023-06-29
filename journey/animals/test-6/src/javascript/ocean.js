@@ -55,7 +55,7 @@ let params = {
   completedBanner: false, // Set to true once the banner has been shown
   idle: true,
   squashable: true,
-  squashCount: -1,
+  squashCount: 15,
   moonFound: false,
   angry: false,
 }
@@ -138,7 +138,7 @@ const ambientLight = new THREE.AmbientLight(0xffffff, 0.8)
 scene.add(ambientLight)
 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6)
-directionalLight.position.set(9, 6, 3)
+directionalLight.position.set(8, 8, 0)
 scene.add(directionalLight)
 
 // Audio
@@ -181,40 +181,42 @@ const generateParticles = () => {
   )
   scene.add(points)
 }
-generateParticles()
 
 
 // --------------------
 // Import Squid Model
 // --------------------
 
-gltfLoader.load('/animals/inkfish.glb', (gltf) => {
-  gltf.scene.children[0].children[0].castShadow = true;
-  gltf.scene.position.y = 1
-  gltf.scene.position.x = 8
-  params.model = gltf.scene
-  scene.add(gltf.scene)
-  directionalLight.target = gltf.scene
-  controls.target.set(8, 2, 0)
-  mixer = new THREE.AnimationMixer(gltf.scene)
-  params.mixer = mixer;
+const loadSquid = () => {
 
-  gltfLoader.load('animals/animations/Inkfish_Idle_A.glb',
-  (anim) => {
-    anim.animations[0].name = 'Idle_A'
-    gltfLoader.load('animals/animations/Inkfish_Swim.glb',
-    (anim2) => {
-      anim2.animations[0].name = 'Swim'
-      gltfLoader.load('animals/animations/Inkfish_Clicked.glb',
-      (anim3) => {
-        anim3.animations[0].name = 'Clicked'
-        params.animations = [anim.animations[0], anim2.animations[0], anim3.animations[0] ]
-        loadActions()
-        idle()
+  gltfLoader.load('/animals/inkfish.glb', (gltf) => {
+    gltf.scene.children[0].children[0].castShadow = true;
+    gltf.scene.position.y = 1
+    gltf.scene.position.x = 8
+    params.model = gltf.scene
+    scene.add(gltf.scene)
+    directionalLight.target = gltf.scene
+    controls.target.set(8, 2, 0)
+    mixer = new THREE.AnimationMixer(gltf.scene)
+    params.mixer = mixer;
+
+    gltfLoader.load('animals/animations/Inkfish_Idle_A.glb',
+    (anim) => {
+      anim.animations[0].name = 'Idle_A'
+      gltfLoader.load('animals/animations/Inkfish_Swim.glb',
+      (anim2) => {
+        anim2.animations[0].name = 'Swim'
+        gltfLoader.load('animals/animations/Inkfish_Clicked.glb',
+        (anim3) => {
+          anim3.animations[0].name = 'Clicked'
+          params.animations = [anim.animations[0], anim2.animations[0], anim3.animations[0] ]
+          loadActions()
+          idle()
+        })
       })
     })
   })
-})
+}
 
 // --------------------
 // Squid Animations
@@ -312,10 +314,10 @@ const angry = () => {
 // // --------------------
 
 
-const mtlLoader = new MTLLoader()
-const objLoader = new OBJLoader()
 
 const loadPlants = (path, number, maxScaleDifference, minScale, specifiedPosition = undefined) => {
+  const mtlLoader = new MTLLoader()
+  const objLoader = new OBJLoader()
 
   mtlLoader.load( `/environment/${path}.mtl`, function (materials) {
     materials.preload();
@@ -354,31 +356,6 @@ const loadPlants = (path, number, maxScaleDifference, minScale, specifiedPositio
   });
 }
 
-// path, number, max scale difference, min scale, specific position(z axis)
-
-// Seaweed
-loadPlants('Seaweed_A_01_LOD2', 30, 0.05, 0.2, "curve")
-loadPlants('Seaweed_A_02_LOD2', 50, 0.02, 0.1)
-loadPlants('Seaweed_A_03_LOD2', 50, 0.02, 0.2)
-
-// Purple coral
-loadPlants('Coral_D_03_LOD3', 15, 0.2, 0.2)
-// Red Coral
-loadPlants('Coral_C_03_LOD3', 10, 0.1, 0.2 )
-loadPlants('Coral_C_03_LOD3', 7, 0.3, 0.8, -10 )
-loadPlants('Coral_C_03_LOD3', 7, 0.3, 0.8, 30 )
-
-// Spikey coral
-loadPlants('Coral_A_03_LOD2', 10, 0.1, 0.2)
-loadPlants('Coral_B_03_LOD2', 10, 0.1, 0.1)
-
-// Sponges
-loadPlants('Sponge_A_03_LOD2', 10, 0.1, 0.2)
-loadPlants('Sponge_B_03_LOD2', 20, 0.1, 0.2) // the coolest
-
-// Starfish
-loadPlants('Starfish_01_LOD3', 40, 0.1, 0.2)
-
 
 /**
  * Portfolio Items
@@ -412,16 +389,6 @@ const addPortfolioItem = (image, name, url, position, alpha = false) => {
   group.rotation.y = Math.PI * 0.5
   portfolioItems.push(group)
 }
-
-addPortfolioItem('/images/api.jpeg', 'api', '/api', [1, 1, 4])
-addPortfolioItem('/images/moss.png', 'moss', 'https://www.mossradio.live/users/sign_in', [-6, 1, -4])
-addPortfolioItem('/images/pomodoro.png', 'widgets', '/simple#widgets', [-13, 1, 4], true)
-addPortfolioItem('/images/america.png', 'd3', '/simple#datavis', [-20, 1, -4], true)
-addPortfolioItem('/images/skills.png', 'skills', '/simple#skills', [-27, 1, 3], true)
-addPortfolioItem('/images/finn.png', 'about', '/simple#about', [-30, 1, 7])
-addPortfolioItem('/images/certifications.png', 'certifications', '/simple#certifications', [-27, 1, 11], true)
-portfolioItems.forEach(i => scene.add(i))
-
 
 function onClick() {
   const intersects = raycaster.intersectObjects(portfolioItems, true);
@@ -569,11 +536,13 @@ const showInfo = (item) => {
 const showSidebar = (name) => {
   const element =  document.getElementById(name)
   skillsAndCerts.classList.add('show')
+  skillsAndCerts.classList.add('front')
   element.classList.remove('d-none')
 
   setTimeout(() => {
     skillsAndCerts.classList.remove('show')
     element.classList.add('d-none')
+    skillsAndCerts.classList.remove('front')
 
     setNewMessageTimeout()
   }, 1000);
@@ -638,18 +607,16 @@ const completed = () => {
 const moonFound = () => {
   params.moonFound = true;
   const secretMessage = document.getElementById('secret-message')
-  secretMessage.innerHTML = '🎉   🎉   🎉 <h3>You found the sunken moon!</h3> 🎉   🎉   🎉<br><p>Submit your name to the hall of fame:</p><br><form action="/winners" method="post"><input id="moon-input" type="text" name="name" placeholder="Your name..."/><input id="moon-input" type="text" name="comment" placeholder="Comment..."/><input type="submit" id="moon-submit" value="Submit" /></form>'
+  secretMessage.classList.add('front')
+  secretMessage.innerHTML = '🎉   🎉   🎉 <h3>You found the sunken moon!</h3> 🎉   🎉   🎉<br><p>Submit your name to the hall of fame:</p><br><form action="/winners" method="post"><input id="moon-input" type="text" name="name" placeholder="Your name..."/><br><input id="moon-input" type="text" name="comment" placeholder="Comment..."/><br><input type="submit" id="moon-submit" value="Submit" /></form>'
   secretMessage.classList.add('show')
-  setTimeout(() => {
-    secretMessage.classList.remove('show')
-  }, 10000);
 }
 
 /**
  * Camera
  */
 // Base camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 10)
 camera.position.set(10, 3, 0)
 camera.lookAt(0, 2, 0)
 scene.add(camera)
@@ -659,11 +626,12 @@ const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
 controls.enablePan = false
 controls.autoRotate = true;
-controls.enableZoom = false
+// controls.enableZoom = false
 controls.maxPolarAngle = 2.3
 
 const setControls = () => {
   controls.autoRotate = false;
+  document.getElementById('license').classList.add('d-none')
   canvas.classList.remove('show')
   let p = params.model.position
   setTimeout(() => {
@@ -689,31 +657,39 @@ renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
 directionalLight.shadow.camera.left = -9
-directionalLight.shadow.camera.top = 8
-directionalLight.shadow.camera.right = 8
-directionalLight.shadow.camera.bottom = -8
-directionalLight.shadow.camera.near = 4
-directionalLight.shadow.camera.far = 13
+directionalLight.shadow.camera.top = 9
+directionalLight.shadow.camera.right = 5
+directionalLight.shadow.camera.bottom = -12
+directionalLight.shadow.camera.near = 5
+directionalLight.shadow.camera.far = 8.3
 
 floor.receiveShadow = true
 directionalLight.castShadow = true
 directionalLight.shadow.mapSize.set(1024, 1024)
 
 // moon
-const moonTexture = new THREE.TextureLoader().load('images/moon.jpeg')
-const normalTexture = new THREE.TextureLoader().load('images/normal.jpeg')
-const moon = new THREE.Mesh(
-  new THREE.SphereGeometry(3, 32, 32),
-  new THREE.MeshStandardMaterial({
-    map: moonTexture,
-    normalMap: normalTexture
-  })
-);
-moon.userData.name = "moon"
-moon.position.set(1, 3, 60)
-portfolioItems.push(moon)
+const loadMoon = () => {
+  const moonTexture = new THREE.TextureLoader().load('images/moon.jpeg')
+  const normalTexture = new THREE.TextureLoader().load('images/normal.jpeg')
+  const moon = new THREE.Mesh(
+    new THREE.SphereGeometry(3, 32, 32),
+    new THREE.MeshStandardMaterial({
+      map: moonTexture,
+      normalMap: normalTexture
+    })
+  );
+  moon.userData.name = "moon"
+  moon.position.set(1, 3, 60)
+  portfolioItems.push(moon)
 
-scene.add(moon)
+  scene.add(moon)
+
+  setTimeout(() => {
+    canvas.classList.add('show')
+    license.classList.remove('d-none')
+  }, 500);
+  greet()
+}
 
 
 /**
@@ -777,11 +753,15 @@ const tick = () => {
     if (params.messageEmpty) {
       checkDistances()
     }
-    if (params.angry == true) {
+    if (params.angry) {
       if (params.moonFound == false && params.model.position.distanceTo(portfolioItems[7].position) <= 5) {
         moonFound()
       }
     }
+
+    portfolioItems.forEach((i) => {
+      i.rotation.y = elapsedTime * 0.2
+    })
 
     // Update controls
     controls.update()
@@ -808,8 +788,48 @@ const tick = () => {
     window.requestAnimationFrame(tick)
 }
 
+const renderEnvironment = () => {
+  loadSquid()
+
+  // path, number, max scale difference, min scale, specific position(z axis)
+  // Seaweed
+  loadPlants('Seaweed_A_01_LOD2', 30, 0.05, 0.2, "curve")
+  loadPlants('Seaweed_A_02_LOD2', 50, 0.02, 0.1)
+  loadPlants('Seaweed_A_03_LOD2', 50, 0.02, 0.2)
+  // Purple coral
+  loadPlants('Coral_D_03_LOD3', 15, 0.2, 0.2)
+  // Red Coral
+  loadPlants('Coral_C_03_LOD3', 10, 0.1, 0.2 )
+  loadPlants('Coral_C_03_LOD3', 7, 0.3, 0.8, -10 )
+  loadPlants('Coral_C_03_LOD3', 7, 0.3, 0.8, 30 )
+  // Spikey coral
+  loadPlants('Coral_A_03_LOD2', 10, 0.1, 0.2)
+  loadPlants('Coral_B_03_LOD2', 10, 0.1, 0.1)
+  // Sponges
+  loadPlants('Sponge_A_03_LOD2', 10, 0.1, 0.2)
+  loadPlants('Sponge_B_03_LOD2', 20, 0.1, 0.2) // the coolest
+  // Starfish
+  loadPlants('Starfish_01_LOD3', 40, 0.1, 0.2)
+
+  addPortfolioItem('/images/api.jpeg', 'api', '/api', [1, 1, 4])
+  addPortfolioItem('/images/moss.png', 'moss', 'https://www.mossradio.live/users/sign_in', [-6, 1, -4])
+  addPortfolioItem('/images/pomodoro.png', 'widgets', '/simple#widgets', [-13, 1, 4], true)
+  addPortfolioItem('/images/america.png', 'd3', '/simple#datavis', [-20, 1, -4], true)
+  addPortfolioItem('/images/skills.png', 'skills', '/simple#skills', [-27, 1, 3], true)
+  addPortfolioItem('/images/finn.png', 'about', '/simple#about', [-30, 1, 7])
+  addPortfolioItem('/images/certifications.png', 'certifications', '/simple#certifications', [-27, 1, 11], true)
+  portfolioItems.forEach(i => scene.add(i))
+
+  generateParticles()
+  tick()
+
+  document.addEventListener('click', onClick)
+  loadMoon()
+}
+
 
 // -----------------------------------------
+// Messages, info text and window.onload function
 // -----------------------------------------
 
 
@@ -862,7 +882,7 @@ const ouch = [
 
 const infoHash = {
   'moss': '<h2 class="highlight">Moss Radio</h2> <p>Ruby on Rails, PostgreSQL, Stimulus.js.</p><h3 class="highlight">Includes:</h3><p> Live chat, live music stream, user authentication.</p>',
-  'api': '<h2 class="highlight">My API</h2> <p>Node.js, MongoDB, Express.js</p><h3 class="highlight">Includes:</h3><p> Four different API Microservices, including a community playlist - submit your favourite song!</p>',
+  'api': '<h2 class="highlight">My API</h2> <p>Node.js, Express.js, MongoDB</p><h3 class="highlight">Includes:</h3><p> Four different API Microservices, including a community playlist - submit your favourite song!</p>',
   'widgets': '<h2 class="highlight">Widgets</h2> <p>React, Typescript, JQuery</p><h3 class="highlight">Includes:</h3><p>Pomodoro Clock, React Calculator, Drum Machine, Delivery Fee Calculator</p>',
   'd3': '<h2 class="highlight">Data Visualisation</h2> <p>D3.js</p><h3 class="highlight">Includes:</h3><p>US Education Data by County, Global Temperature Variance, Highest Grossing Films.</p',
   'info': '<h2 class="highlight">Certifications, Skills, About</h2><p>Here you can see all the certifications I have completed, as well as a full list of coding skills and a short bio.</p>',
@@ -871,12 +891,9 @@ const infoHash = {
 const messageContainer = document.getElementById('text')
 const infoContainer = document.getElementById('info')
 const skillsAndCerts = document.getElementById('skills-and-certs')
+const license = document.getElementById('license')
 
-
-window.onload = () => {
-  canvas.classList.add('show')
-  if(window.innerWidth <= 800) return;
-
+const greet = () => {
   let typed = new Typed(messageContainer, {
     strings: ["Oh, it's you!", "I'm glad you made it", " Let's have a look around, shall we?", "Use the arrow keys to move", ""],
     typeSpeed: 50,
@@ -923,5 +940,6 @@ const endTyped = () => {
   }, 8000);
 }
 
-tick()
-document.addEventListener('click', onClick)
+window.onload = () => {
+  renderEnvironment()
+}

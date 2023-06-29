@@ -59,6 +59,23 @@ html, body {
   opacity: 1 !important;
   transition: 1s;
 }
+#license {
+  z-index: 10;
+  font-family: monospace;
+  position: fixed;
+  top: 5px;
+  right: 5px;
+  font-size: 5px;
+  background-color: transparent;
+  width: fit-content;
+  color: rgba(255, 255, 255, 0.666);
+}
+
+#license a{
+  text-decoration: none;
+  color:  rgba(0, 0, 0, 0.666);
+}
+
 .out-of-bounds{
   z-index: 10;
   background-color: rgb(132, 0, 255) !important;
@@ -92,17 +109,20 @@ html, body {
 
 .non-laptops-only{
   position: fixed;
-  top: 5vh;
+  top: 30vh;
   left: 2vw;
   width: 90%;
   height: fit-content;
   padding: 2vw;
   text-align: center;
-  font-size: 3vw;
+  font-size: 5vw;
+}
+
+.front{
+  z-index: 1;
 }
 
 #skills-and-certs{
-  z-index: 1;
   font-family: monospace;
   position: fixed;
   right: 0;
@@ -117,14 +137,14 @@ html, body {
 }
 
 #skills-and-certs h3{
-  font-size: 30px;
+  font-size: 20px;
   text-align: center;
   margin: 20px;
 }
 
 #skills-and-certs h4{
   font-size: 20px;
-  padding-top: 10px;
+  padding-top: 50px;
 }
 
 #skills-and-certs li {
@@ -138,6 +158,7 @@ html, body {
 }
 
 #certifications a {
+  font-size: 15px;
   text-decoration: none;
   color: white;
 }
