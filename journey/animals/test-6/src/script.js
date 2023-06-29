@@ -664,6 +664,7 @@ const setControls = () => {
   canvas.classList.remove('show')
   let p = params.model.position
   setTimeout(() => {
+    document.getElementById('license').classList.add('d-none')
     controls.target.set(p.x, p.y + 1, p.z)
     camera.position.set(p.x + 2, 3, p.z)
     controls.maxAzimuthAngle = 1.8
