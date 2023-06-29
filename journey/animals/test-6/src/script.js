@@ -138,7 +138,7 @@ const ambientLight = new THREE.AmbientLight(0xffffff, 0.8)
 scene.add(ambientLight)
 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6)
-directionalLight.position.set(9, 6, 3)
+directionalLight.position.set(8, 8, 0)
 scene.add(directionalLight)
 
 // Audio
@@ -656,7 +656,7 @@ const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
 controls.enablePan = false
 controls.autoRotate = true;
-controls.enableZoom = false
+// controls.enableZoom = false
 controls.maxPolarAngle = 2.3
 
 const setControls = () => {
@@ -686,11 +686,14 @@ renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
 directionalLight.shadow.camera.left = -9
-directionalLight.shadow.camera.top = 8
-directionalLight.shadow.camera.right = 8
+directionalLight.shadow.camera.top = 9
+directionalLight.shadow.camera.right = 5
 directionalLight.shadow.camera.bottom = -8
-directionalLight.shadow.camera.near = 4
-directionalLight.shadow.camera.far = 13
+directionalLight.shadow.camera.near = 5
+directionalLight.shadow.camera.far = 8.3
+
+const directionalLightCameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera)
+scene.add(directionalLightCameraHelper)
 
 floor.receiveShadow = true
 directionalLight.castShadow = true
