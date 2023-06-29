@@ -314,10 +314,10 @@ const angry = () => {
 // // --------------------
 
 
-const mtlLoader = new MTLLoader()
-const objLoader = new OBJLoader()
 
 const loadPlants = (path, number, maxScaleDifference, minScale, specifiedPosition = undefined) => {
+  const mtlLoader = new MTLLoader()
+  const objLoader = new OBJLoader()
 
   mtlLoader.load( `/environment/${path}.mtl`, function (materials) {
     materials.preload();
@@ -613,7 +613,7 @@ const moonFound = () => {
  * Camera
  */
 // Base camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 10)
 camera.position.set(10, 3, 0)
 camera.lookAt(0, 2, 0)
 scene.add(camera)
