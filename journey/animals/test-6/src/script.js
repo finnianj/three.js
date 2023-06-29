@@ -605,7 +605,7 @@ const completed = () => {
 const moonFound = () => {
   params.moonFound = true;
   const secretMessage = document.getElementById('secret-message')
-  secretMessage.innerHTML = '🎉   🎉   🎉 <h3>You found the sunken moon!</h3> 🎉   🎉   🎉<br><p>Submit your name to the hall of fame:</p><br><form action="/winners" method="post"><input id="moon-input" type="text" name="name" placeholder="Your name..."/><input id="moon-input" type="text" name="comment" placeholder="Comment..."/><input type="submit" id="moon-submit" value="Submit" /></form>'
+  secretMessage.innerHTML = '🎉   🎉   🎉 <h3>You found the sunken moon!</h3> 🎉   🎉   🎉<br><p>Submit your name to the hall of fame:</p><br><form action="/winners" method="post"><input id="moon-input" type="text" name="name" placeholder="Your name..."/><br><input id="moon-input" type="text" name="comment" placeholder="Comment..."/><br><input type="submit" id="moon-submit" value="Submit" /></form>'
   secretMessage.classList.add('show')
 }
 
