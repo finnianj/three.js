@@ -681,8 +681,10 @@ const loadMoon = () => {
 
   scene.add(moon)
 
-  canvas.classList.add('show')
-  license.classList.remove('d-none')
+  setTimeout(() => {
+    canvas.classList.add('show')
+    license.classList.remove('d-none')
+  }, 500);
   greet()
 }
 
@@ -936,6 +938,5 @@ const endTyped = () => {
 }
 
 window.onload = () => {
-  if(window.innerWidth <= 800) return;
   renderEnvironment()
 }
