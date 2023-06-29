@@ -744,7 +744,7 @@ const tick = () => {
     if (params.messageEmpty) {
       checkDistances()
     }
-    if (params.angry == true) {
+    if (params.angry) {
       if (params.moonFound == false && params.model.position.distanceTo(portfolioItems[7].position) <= 5) {
         moonFound()
       }
@@ -824,6 +824,7 @@ const renderEnvironment = () => {
 
 
 // -----------------------------------------
+// Messages, info text and window.onload function
 // -----------------------------------------
 
 

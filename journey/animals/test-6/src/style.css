@@ -109,13 +109,13 @@ html, body {
 
 .non-laptops-only{
   position: fixed;
-  top: 40vh;
+  top: 30vh;
   left: 2vw;
   width: 90%;
   height: fit-content;
   padding: 2vw;
   text-align: center;
-  font-size: 3vw;
+  font-size: 5vw;
 }
 
 #skills-and-certs{
