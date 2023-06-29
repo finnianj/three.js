@@ -688,7 +688,7 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap
 directionalLight.shadow.camera.left = -9
 directionalLight.shadow.camera.top = 9
 directionalLight.shadow.camera.right = 5
-directionalLight.shadow.camera.bottom = -8
+directionalLight.shadow.camera.bottom = -12
 directionalLight.shadow.camera.near = 5
 directionalLight.shadow.camera.far = 8.3
 
