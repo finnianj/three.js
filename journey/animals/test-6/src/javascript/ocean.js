@@ -438,7 +438,7 @@ function checkKey(e) {
   if (params.keyCodes[key]) {
     swim()
     params.heldKeys.push(params.keyCodes[key])
-    if (audioPlayer.paused == true) {
+    if (audioPlayer.paused) {
       audioPlayer.currentTime = 0;
       audioPlayer.play()
     }
@@ -792,6 +792,12 @@ const tick = () => {
 
 const renderEnvironment = () => {
   loadSquid()
+  tick()
+  if (window.innerWidth <= 800) {
+    canvas.classList.add('show')
+    license.classList.remove('d-none')
+    return
+  }
 
   // path, number, max scale difference, min scale, specific position(z axis)
   // Seaweed
@@ -823,7 +829,7 @@ const renderEnvironment = () => {
   portfolioItems.forEach(i => scene.add(i))
 
   generateParticles()
-  tick()
+
 
   document.addEventListener('click', onClick)
   loadMoon()
@@ -943,6 +949,5 @@ const endTyped = () => {
 }
 
 window.onload = () => {
-  if (window.innerWidth <= 800) return
   renderEnvironment()
 }
