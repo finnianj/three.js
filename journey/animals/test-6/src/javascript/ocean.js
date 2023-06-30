@@ -18,7 +18,7 @@ let mixer = null
 let params = {
   color: '#e1bf92',
   background: '#0593ff',
-  particleCount: 200,
+  particleCount: 400,
   particleSize: 0.1,
   keyCodes: {
     // For reference in tick function:
@@ -134,7 +134,7 @@ scene.add(floor)
 /**
  * Lights
  */
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.8)
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
 scene.add(ambientLight)
 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6)
@@ -606,10 +606,12 @@ const completed = () => {
 
 const moonFound = () => {
   params.moonFound = true;
-  const secretMessage = document.getElementById('secret-message')
-  secretMessage.classList.add('front')
+  skillsAndCerts.insertAdjacentHTML('afterend', '<div id="secret-message" class="front"></div>')
+  let secretMessage = document.getElementById('secret-message')
   secretMessage.innerHTML = '🎉   🎉   🎉 <h3>You found the sunken moon!</h3> 🎉   🎉   🎉<br><p>Submit your name to the hall of fame:</p><br><form action="/winners" method="post"><input id="moon-input" type="text" name="name" placeholder="Your name..."/><br><input id="moon-input" type="text" name="comment" placeholder="Comment..."/><br><input type="submit" id="moon-submit" value="Submit" /></form>'
-  secretMessage.classList.add('show')
+  setTimeout(() => {
+    secretMessage.classList.add('show')
+  }, 1000);
 }
 
 /**
@@ -687,8 +689,8 @@ const loadMoon = () => {
   setTimeout(() => {
     canvas.classList.add('show')
     license.classList.remove('d-none')
+    greet()
   }, 500);
-  greet()
 }
 
 
@@ -941,5 +943,6 @@ const endTyped = () => {
 }
 
 window.onload = () => {
+  if (window.innerWidth <= 800) return
   renderEnvironment()
 }

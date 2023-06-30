@@ -78,9 +78,6 @@
         </div>
       </div>
 
-      <div id="secret-message">
-      </div>
-
       <div class="non-laptops-only">Sorry pal, you need a bigger screen!<br><br>Check back again soon, or <a href="/simple">visit the simple version of the site</a>
       </div>
       <audio id="music">
@@ -90,18 +87,7 @@
         <source src="/sounds/pop.mp3" type="audio/mpeg">
       </audio>
 
-      <script>
-        if (window.innerWidth >= 800) {
-
-          let script = document.createElement('script');
-          script.src = './javascript/ocean.js';
-          script.type = 'module';
-
-          // Append the <script> element to the document's <head> or <body>
-          document.head.appendChild(script);
-        }
-      </script>
-    <!-- <script type="module" src="./javascript/ocean.js"></script> -->
+    <script type="module" src="./javascript/ocean.js"></script>
     <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
 </body>
 </html>
