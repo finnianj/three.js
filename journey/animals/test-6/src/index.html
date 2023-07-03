@@ -56,6 +56,7 @@
         <div id="certifications" class="d-none">
           <h3>Certifications</h3>
           <h4></h4>
+          <em><p style="font-size: 8px; text-align: end;">Click for details</p></em>
           <li><a href="https://kitt.lewagon.com/schoolings/22767/public_diploma?token=0b5dfa10a908f7e729afebfc8f26c892e2925f2226c51689d4f56c5725090578" target="_blank">Web Development Bootcamp</a></li>
           <li><a href="https://www.freecodecamp.org/certification/Finnian_Charlton_Jones/javascript-algorithms-and-data-structures" target="_blank">Javascript Algorithms and Data Structures</a></li>
           <li><a href="https://www.freecodecamp.org/certification/Finnian_Charlton_Jones/front-end-development-libraries" target="_blank">Frontend Development Libraries</a></li>
@@ -78,9 +79,6 @@
         </div>
       </div>
 
-      <div id="secret-message">
-      </div>
-
       <div class="non-laptops-only">Sorry pal, you need a bigger screen!<br><br>Check back again soon, or <a href="/simple">visit the simple version of the site</a>
       </div>
       <audio id="music">
@@ -90,18 +88,7 @@
         <source src="/sounds/pop.mp3" type="audio/mpeg">
       </audio>
 
-      <script>
-        if (window.innerWidth >= 800) {
-
-          let script = document.createElement('script');
-          script.src = './javascript/ocean.js';
-          script.type = 'module';
-
-          // Append the <script> element to the document's <head> or <body>
-          document.head.appendChild(script);
-        }
-      </script>
-    <!-- <script type="module" src="./javascript/ocean.js"></script> -->
+    <script type="module" src="./javascript/ocean.js"></script>
     <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
 </body>
 </html>
