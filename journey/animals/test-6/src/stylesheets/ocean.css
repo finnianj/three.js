@@ -126,6 +126,17 @@ html, body {
   text-decoration: none;
 }
 
+#not-loaded {
+  position: fixed;
+  bottom: 10vh;
+  left: 2vw;
+  width: 90%;
+  height: fit-content;
+  padding: 2vw;
+  text-align: center;
+  font-size: 20px;
+}
+
 .front{
   z-index: 1;
 }
@@ -197,6 +208,27 @@ html, body {
 
 .d-none{
   display: none;
+}
+
+#circle {
+  position: fixed;
+  bottom: 10vh;
+  right: 5vw;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #e91e63;
+  color: white;
+  font-size: 30px;
+  text-align: center;
+  line-height: 60px;
+  cursor: pointer;
+  touch-action: none; /* Disable default touch behavior */
+}
+
+#circle span {
+  display: inline-block;
+  vertical-align: middle;
 }
 
 @media (max-width:480px)  {

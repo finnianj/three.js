@@ -21,6 +21,10 @@
 
       <a id="simple-mode-link" href="/simple">Simple mode</a>
 
+      <div id="circle" class="d-none" ontouchstart="startMoving(event)" ontouchmove="moveCircle(event)" ontouchend="stopMoving()">
+        <span>&#8597;</span>
+      </div>
+
       <div id="skills-and-certs">
         <div id="skills" class="d-none">
           <h3>My Skills</h3>
@@ -68,12 +72,12 @@
 
         <div id="about" class="d-none">
           <h3>About</h3>
-          <p>Hi there!</p>
+          <p>Hello there!</p>
           <p>My name is Finn. I'm a creative software developer from the UK. I'm 27.</p>
           <p>Last year I completed a coding bootcamp and became immersed in the process of learning a new skill. Coding unites many of my interests including language, logic and creativity. That really catalysed my curiosity.</p>
           <p>After completing my BA in German & Russian at the University of Bristol, I moved to Berlin in 2020 to pursue drumming. Although I still play in bands and occasionally teach, I prefer to do it non-professionally.</p>
           <p>Now I am eager to discover as many aspects of computer science as possible. Currently I am exploring Angular and Three.js, but I am always ready for something new.</p>
-          <p>Thanks for checking out my website. Remember to <a href="/api" target="_blank" style="text-decoration: none; color: blueviolet;">add your favourite song to my playlist API!</a> Have a great day.</p>
+          <p>Thanks for checking out my website. Remember to <a href="/myapi" target="_blank" style="text-decoration: none; color: blueviolet;">add your favourite song to my playlist API!</a> Have a great day.</p>
           <p>Finn</p>
           <p style="text-align: end;"><a href="/simple#contact" target="_blank" style="text-decoration: none; text-align: end; color: blueviolet;">Contact</a></p>
         </div>
@@ -81,6 +85,7 @@
 
       <div class="non-laptops-only">Sorry pal, you need a bigger screen!<br><br>Check back again soon, or <a href="/simple">visit the simple version of the site</a>
       </div>
+      <div id="not-loaded"><p>Hello there!</p><p>If you still have a white screen after 5 seconds, please refresh the page.</p>
       <audio id="music">
         <source src="/sounds/zen.mp3" type="audio/mpeg">
       </audio>
@@ -89,6 +94,7 @@
       </audio>
 
     <script type="module" src="./javascript/ocean.js"></script>
+    <script type="module" src="./javascript/mobile.js"></script>
     <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
 </body>
 </html>
