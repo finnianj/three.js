@@ -55,7 +55,7 @@ let params = {
   completedBanner: false, // Set to true once the banner has been shown
   idle: true,
   squashable: true,
-  squashCount: 15,
+  squashCount: -1,
   moonFound: false,
   angry: false,
 }
@@ -593,7 +593,7 @@ const randomMessage = (squash = false) => {
 }
 
 const completed = () => {
-  clearTimeout(params.messageTimeout)
+  // clearTimeout(params.messageTimeout)
   params.messageEmpty = false;
   params.completedBanner = true;
   infoContainer.innerHTML = '<h2>Yazoo!</h2> <p>You visited all the hoops, congratulations! <p>Just one more thing left to find...</p></p>'
@@ -608,7 +608,7 @@ const moonFound = () => {
   params.moonFound = true;
   skillsAndCerts.insertAdjacentHTML('afterend', '<div id="secret-message" class="front"></div>')
   let secretMessage = document.getElementById('secret-message')
-  secretMessage.innerHTML = '🎉   🎉   🎉 <h3>You found the sunken moon!</h3> 🎉   🎉   🎉<br><p>Submit your name to the hall of fame:</p><br><form action="/winners" method="post"><input id="moon-input" type="text" name="name" placeholder="Your name..."/><br><input id="moon-input" type="text" name="comment" placeholder="Comment..."/><br><input type="submit" id="moon-submit" value="Submit" /></form>'
+  secretMessage.innerHTML = '🎉   🎉   🎉 <h3>You found the sunken moon!</h3> 🎉   🎉   🎉<br><p>Submit your name to the hall of fame:</p><br><form action="/myapi/supersecretpath" method="post"><input id="moon-input" type="text" name="name" placeholder="Your name..."/><br><input id="moon-input" type="text" name="comment" placeholder="Comment..."/><br><input type="submit" id="moon-submit" value="Submit" /></form>'
   setTimeout(() => {
     secretMessage.classList.add('show')
   }, 1000);
@@ -689,6 +689,7 @@ const loadMoon = () => {
   setTimeout(() => {
     canvas.classList.add('show')
     license.classList.remove('d-none')
+    notLoaded.classList.add('d-none')
     greet()
   }, 500);
 }
@@ -733,9 +734,7 @@ const tick = () => {
 
       let p = params.model.position
       controls.target.set(p.x, p.y + 1, p.z)
-    }
-
-    if (params.heldKeys.length == 1) {
+    } else if (params.heldKeys.length == 1) {
       let axis = params.heldKeys[0][0]
       let axisDir = params.heldKeys[0][1]
 
@@ -750,6 +749,8 @@ const tick = () => {
         controls.target.set(p.x, p.y + 1, p.z)
       }
 
+    } else if (params.heldKeys.length >= 3) {
+      params.heldKeys = []
     }
 
     if (params.messageEmpty) {
@@ -796,6 +797,7 @@ const renderEnvironment = () => {
   if (window.innerWidth <= 800) {
     canvas.classList.add('show')
     license.classList.remove('d-none')
+    notLoaded.classList.add('d-none')
     return
   }
 
@@ -819,7 +821,7 @@ const renderEnvironment = () => {
   // Starfish
   loadPlants('Starfish_01_LOD3', 40, 0.1, 0.2)
 
-  addPortfolioItem('/images/api.jpeg', 'api', '/api', [1, 1, 4])
+  addPortfolioItem('/images/api.jpeg', 'api', '/myapi', [1, 1, 4])
   addPortfolioItem('/images/moss.png', 'moss', 'https://www.mossradio.live/users/sign_in', [-6, 1, -4])
   addPortfolioItem('/images/pomodoro.png', 'widgets', '/simple#widgets', [-13, 1, 4], true)
   addPortfolioItem('/images/america.png', 'd3', '/simple#datavis', [-20, 1, -4], true)
@@ -863,8 +865,10 @@ const messages = [
   "Gosh, I'm thirsty!",
   "A long time ago, something huge fell down from the surface...",
   "The thing that fell from above...did you see it yet?",
-  "Once you're done here, maybe I can take you to where the relic landed...",
-  "Time is just an illusion...lunchtime doubly so!"
+  "Time is just an illusion...lunchtime doubly so!",
+  "The nearby relic...I only go when I'm feeling brave...",
+  "1 times 8? Hmmm...I'll have to think about it.",
+  "Do you ever find it difficult just to float, without any direction?"
 ]
 
 const ouch = [
@@ -890,7 +894,7 @@ const ouch = [
 
 const infoHash = {
   'moss': '<h2 class="highlight">Moss Radio</h2> <p>Ruby on Rails, PostgreSQL, Stimulus.js.</p><h3 class="highlight">Includes:</h3><p> Live chat, live music stream, user authentication.</p><p class="highlight">See also: <a href="https://medium.com/@finnianj/moss-radio-using-ajax-in-rails-c0d8b8f8c434" style="text-decoration: none;">my article on using AJAX in Rails</a></p>',
-  'api': '<h2 class="highlight">My API</h2> <p>Node.js, Express.js, MongoDB</p><h3 class="highlight">Includes:</h3><p> Four different API Microservices, including a community playlist - submit your favourite song!</p>',
+  'api': '<h2 class="highlight">My API</h2> <p>Node.js, Express.js, MongoDB</p><h3 class="highlight">Includes:</h3><p>Four different API Microservices, including a community playlist - submit your favourite song!</p>',
   'widgets': '<h2 class="highlight">Widgets</h2> <p>React, Typescript, JQuery</p><h3 class="highlight">Includes:</h3><p>Pomodoro Clock, React Calculator, Drum Machine, Delivery Fee Calculator</p>',
   'd3': '<h2 class="highlight">Data Visualisation</h2> <p>D3.js</p><h3 class="highlight">Includes:</h3><p>US Education Data by County, Global Temperature Variance, Highest Grossing Films.</p',
   'info': '<h2 class="highlight">Certifications, Skills, About</h2><p>Here you can see all the certifications I have completed, as well as a full list of coding skills and a short bio.</p>',
@@ -900,6 +904,7 @@ const messageContainer = document.getElementById('text')
 const infoContainer = document.getElementById('info')
 const skillsAndCerts = document.getElementById('skills-and-certs')
 const license = document.getElementById('license')
+const notLoaded = document.getElementById('not-loaded')
 
 const greet = () => {
   let typed = new Typed(messageContainer, {
