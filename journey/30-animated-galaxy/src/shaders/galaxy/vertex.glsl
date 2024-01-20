@@ -11,6 +11,7 @@ void main()
       * Position
       */
     vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+
     // Rotate
     float angle = atan(modelPosition.x, modelPosition.z);
     float distanceToCenter = length(modelPosition.xz);
