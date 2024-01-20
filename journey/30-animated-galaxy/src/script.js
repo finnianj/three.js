@@ -49,6 +49,7 @@ const generateGalaxy = () =>
     geometry = new THREE.BufferGeometry()
 
     const positions = new Float32Array(parameters.count * 3)
+    const randomness = new Float32Array(parameters.count * 3)
     const colors = new Float32Array(parameters.count * 3)
     const scales = new Float32Array(parameters.count * 1)
 
@@ -68,9 +69,14 @@ const generateGalaxy = () =>
         const randomY = Math.pow(Math.random(), parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : - 1) * parameters.randomness * radius
         const randomZ = Math.pow(Math.random(), parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : - 1) * parameters.randomness * radius
 
-        positions[i3    ] = Math.cos(branchAngle) * radius + randomX
-        positions[i3 + 1] = randomY
-        positions[i3 + 2] = Math.sin(branchAngle) * radius + randomZ
+        positions[i3    ] = Math.cos(branchAngle) * radius
+        positions[i3 + 1] =
+        positions[i3 + 2] = Math.sin(branchAngle) * radius
+
+        // Randomness
+        randomness[i3    ] = Math.cos(branchAngle) * radius
+        randomness[i3 + 1] = 0
+        randomness[i3 + 2] = Math.sin(branchAngle) * radius
 
         // Color
         const mixedColor = insideColor.clone()
@@ -85,6 +91,7 @@ const generateGalaxy = () =>
     }
 
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+    geometry.setAttribute('aRandomness', new THREE.BufferAttribute(randomness, 3))
     geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3))
     geometry.setAttribute('aScale', new THREE.BufferAttribute(scales, 1))
 
